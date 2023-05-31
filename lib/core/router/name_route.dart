@@ -1,0 +1,13 @@
+const String homeRoute = 'home';
+const String myPlanRoute = 'my_plan';
+const String scheduleRoute = 'my_plan.schedule';
+const String sessionRoute = 'my_plan.session';
+const String detailExerciseRoute = 'my_plan.detail_exercise';
+const String readyWorkoutRoute = 'workoute.ready';
+const String countDownRoute = 'workoute.count_down';
+const String countStepRoute = 'workoute.count_step';
+const String restTimeRoute = 'workoute.rest_time';
+const String completedWorkoutRout = 'workoute.completed';
+const String exploreRoute = 'explore';
+const String messageRoute = 'message';
+const String settingRoute = 'setting';
