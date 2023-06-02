@@ -19,12 +19,12 @@ class _AppBarWidgetState extends ConsumerState<AppBarWidget> {
     return AppBar(
       title: const Text("demo"),
       leading: GoRouter.of(context).canPop()
-            ? IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () => GoRouter.of(context).pop(),
-              )
-            : null,
-      backgroundColor: Colors.purple,
+          ? IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => GoRouter.of(context).pop(),
+            )
+          : null,
+      backgroundColor: Colors.deepPurple,
     );
   }
 }

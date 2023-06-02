@@ -181,7 +181,9 @@ class SessionPage extends ConsumerWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            GoRouter.of(context).pushNamed(readyRoute);
+          },
           label: Container(
               width: MediaQuery.of(context).size.width * 0.9 - 28,
               alignment: Alignment.center,
