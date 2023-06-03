@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class NavigationController extends Notifier<int> {
   @override
   int build() {
-    return 1;
+    return 2;
   }
 
   void updateCurrentIndex(int index) {

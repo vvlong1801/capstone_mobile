@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/features/my_plan/presentation/ui/widgets/schedule_widget.dart';
 
 class SchedulePage extends ConsumerWidget {
@@ -61,7 +63,9 @@ class SchedulePage extends ConsumerWidget {
             ],
           )),
       floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {},
+          onPressed: () {
+            GoRouter.of(context).pushNamed(readyRoute);
+          },
           label: Container(
               width: MediaQuery.of(context).size.width * 0.9 - 28,
               alignment: Alignment.center,

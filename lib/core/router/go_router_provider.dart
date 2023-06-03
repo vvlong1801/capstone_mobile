@@ -10,6 +10,11 @@ import 'package:user_side_final_project/features/my_plan/presentation/ui/pages/m
 import 'package:user_side_final_project/features/my_plan/presentation/ui/pages/schedule.dart';
 import 'package:user_side_final_project/features/my_plan/presentation/ui/pages/session.dart';
 import 'package:user_side_final_project/features/setting/presentation/ui/pages/setting.dart';
+import 'package:user_side_final_project/features/workout/presentation/ui/pages/congratulation.dart';
+import 'package:user_side_final_project/features/workout/presentation/ui/pages/count_down.dart';
+import 'package:user_side_final_project/features/workout/presentation/ui/pages/count_step.dart';
+import 'package:user_side_final_project/features/workout/presentation/ui/pages/ready.dart';
+import 'package:user_side_final_project/features/workout/presentation/ui/pages/rest.dart';
 
 import 'name_route.dart';
 
@@ -21,7 +26,7 @@ final GlobalKey<NavigatorState> _shellNavBarNavigatorKey =
 final goRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
       navigatorKey: _rootNavigatorKey,
-      initialLocation: '/my-plan/detail_exercise',
+      initialLocation: '/explore',
       routes: [
         ShellRoute(
             navigatorKey: _shellNavBarNavigatorKey,
@@ -71,48 +76,47 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   ),
                 ],
               ),
-              // GoRoute(path: '/workout', routes: [
-              //   GoRoute(
-              //     path: 'ready',
-              //     name: readyWorkoutRoute,
-              //     pageBuilder: (context, state) => NoTransitionPage(
-              //         child: ReadyWorkoutPage(
-              //       key: state.pageKey,
-              //     )),
-              //   ),
-              //   GoRoute(
-              //     path: 'count-down',
-              //     name: countDownRoute,
-              //     pageBuilder: (context, state) => NoTransitionPage(
-              //         child: CountDownPage(
-              //       key: state.pageKey,
-              //     )),
-              //   ),
-              //   GoRoute(
-              //     path: 'count-step',
-              //     name: countStepRoute,
-              //     pageBuilder: (context, state) => NoTransitionPage(
-              //         child: CountStepPage(
-              //       key: state.pageKey,
-              //     )),
-              //   ),
-              //   GoRoute(
-              //     path: 'rest-time',
-              //     name: restTimeRoute,
-              //     pageBuilder: (context, state) => NoTransitionPage(
-              //         child: RestTimePage(
-              //       key: state.pageKey,
-              //     )),
-              //   ),
-              //   GoRoute(
-              //     path: 'completed',
-              //     name: completedWorkoutRout,
-              //     pageBuilder: (context, state) => NoTransitionPage(
-              //         child: CompletedWorkoutPage(
-              //       key: state.pageKey,
-              //     )),
-              //   ),
-              // ]),
+              GoRoute(
+                  path: '/workout',
+                  name: readyRoute,
+                  pageBuilder: (context, state) => NoTransitionPage(
+                          child: ReadyPage(
+                        key: state.pageKey,
+                      )),
+                  routes: [
+                    GoRoute(
+                      path: 'count-down',
+                      name: countDownRoute,
+                      pageBuilder: (context, state) => NoTransitionPage(
+                          child: CountDownPage(
+                        key: state.pageKey,
+                      )),
+                    ),
+                    GoRoute(
+                      path: 'count-step',
+                      name: countStepRoute,
+                      pageBuilder: (context, state) => NoTransitionPage(
+                          child: CountStepPage(
+                        key: state.pageKey,
+                      )),
+                    ),
+                    GoRoute(
+                      path: 'rest-time',
+                      name: restRoute,
+                      pageBuilder: (context, state) => NoTransitionPage(
+                          child: RestPage(
+                        key: state.pageKey,
+                      )),
+                    ),
+                    GoRoute(
+                      path: 'congratulation',
+                      name: congratulationRoute,
+                      pageBuilder: (context, state) => NoTransitionPage(
+                          child: CongratulationPage(
+                        key: state.pageKey,
+                      )),
+                    ),
+                  ]),
               GoRoute(
                 path: '/explore',
                 name: exploreRoute,
