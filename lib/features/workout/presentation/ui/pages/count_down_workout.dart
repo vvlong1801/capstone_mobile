@@ -4,7 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/base/widgets/workout_app_bar_widget.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/features/workout/presentation/controller/countdown_exercise_controller.dart';
+import 'package:user_side_final_project/features/workout/presentation/ui/widgets/countdown.dart';
 import 'package:user_side_final_project/features/workout/presentation/ui/widgets/workout_bottom.dart';
+
+final container = ProviderContainer();
 
 class CountDownPage extends ConsumerStatefulWidget {
   const CountDownPage({super.key});
@@ -22,10 +25,6 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
   @override
   void initState() {
     super.initState();
-
-    ref.read(countdownExerciseController.notifier).run(
-        context: context,
-        redirect: () => GoRouter.of(context).goNamed(congratulationRoute));
 
     _animationController = AnimationController(
       duration: const Duration(seconds: 1),
@@ -49,13 +48,14 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
     ));
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        --ref.read(readyCountDownProvider.notifier).state;
         if (ref.watch(readyCountDownProvider) > 0) {
+          --ref.read(readyCountDownProvider.notifier).state;
           _animationController.reset();
           _animationController.forward();
         } else {
-          ref.read(readyCountDownProvider.notifier).dispose();
-          _animationController.dispose();
+          _animationController.clearListeners();
+          ref.read(readyCountDownProvider.notifier).state = 3;
+          ref.read(countdownExerciseController.notifier).run();
         }
       }
     });
@@ -63,18 +63,21 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final int num = ref.watch(readyCountDownProvider);
-    final int seconds = ref.watch(countdownExerciseController);
     final controller = ref.read(countdownExerciseController.notifier);
-    final iconController = ref.read(iconCountDownProvider.notifier);
     final iconCountDown = ref.watch(iconCountDownProvider);
 
     return Scaffold(
       appBar: WorkoutAppBarWidget(
         actionLeading: controller.pause,
         actionContinue: controller.run,
-        actionExit: controller.dispose,
+        actionExit: controller.restart,
       ),
       body: SafeArea(
         child: Padding(
@@ -99,7 +102,8 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
                       Container(
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height * 0.25,
-                        child: num > 0
+                        // ignore: unnecessary_null_comparison
+                        child: _animationController.isAnimating
                             ? Center(
                                 child: SlideTransition(
                                   position: _slideAnimation,
@@ -131,12 +135,19 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
                   const SizedBox(
                     height: 14,
                   ),
-                  Text(
-                    "00:$seconds",
-                    style: const TextStyle(
-                        fontSize: 50,
-                        fontWeight: FontWeight.w900,
-                        color: Colors.deepPurple),
+                  CountDown(
+                    controller: countdownExerciseController,
+                    build: (_, int time) => Text(
+                      "00:$time",
+                      style: const TextStyle(
+                          fontSize: 50,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.deepPurple),
+                    ),
+                    onFinished: () {
+                      controller.restart();
+                      GoRouter.of(context).goNamed(congratulationRoute);
+                    },
                   ),
                   const SizedBox(
                     height: 40,
@@ -150,15 +161,10 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
                       ),
                       GestureDetector(
                         onTap: () {
-                          if (iconCountDown == "running") {
-                            iconController.state = "stop";
-                            controller.pause();
+                          if (iconCountDown == "paused") {
+                            controller.run();
                           } else {
-                            iconController.state = "running";
-                            controller.run(
-                                context: context,
-                                redirect: () => GoRouter.of(context)
-                                    .goNamed(congratulationRoute));
+                            controller.pause();
                           }
                         },
                         child: Padding(
@@ -176,26 +182,17 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
                                 ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          controller.pause();
-                          GoRouter.of(context).goNamed(congratulationRoute);
-                        },
-                        child: const Icon(
-                          Icons.chevron_right_rounded,
-                          size: 50,
-                        ),
-                      )
+                      const Icon(
+                        Icons.chevron_right_rounded,
+                        size: 50,
+                      ),
                     ],
                   ),
                 ],
               ),
               WorkoutBottom(
                   actionBeforeShowModal: controller.pause,
-                  actionAfterShowModal: () => controller.run(
-                      context: context,
-                      redirect: () =>
-                          GoRouter.of(context).goNamed(congratulationRoute))),
+                  actionAfterShowModal: () => controller.run()),
             ],
           ),
         ),

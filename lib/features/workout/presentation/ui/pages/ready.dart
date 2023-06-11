@@ -5,6 +5,7 @@ import 'package:user_side_final_project/base/widgets/workout_app_bar_widget.dart
 import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/features/workout/presentation/controller/audio_controller.dart';
 import 'package:user_side_final_project/features/workout/presentation/controller/countdown_controller.dart';
+import 'package:user_side_final_project/features/workout/presentation/ui/widgets/countdown.dart';
 
 class ReadyPage extends ConsumerStatefulWidget {
   const ReadyPage({super.key});
@@ -17,10 +18,7 @@ class _ReadyPageState extends ConsumerState<ReadyPage> {
   @override
   void initState() {
     super.initState();
-
-    ref.read(readyTimerController.notifier).run(
-        context: context,
-        redirect: () => GoRouter.of(context).pushNamed(countStepRoute));
+    ref.read(readyTimerController.notifier).run();
     ref.read(audioPlayerController.notifier).play();
   }
 
@@ -29,21 +27,15 @@ class _ReadyPageState extends ConsumerState<ReadyPage> {
   }
 
   @override
-  void dispose() {
-    ref.read(readyTimerController.notifier).dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final time = ref.watch(readyTimerController);
+    // final time = ref.watch(readyTimerController);
     final controller = ref.read(readyTimerController.notifier);
 
     return Scaffold(
       appBar: WorkoutAppBarWidget(
         actionLeading: controller.pause,
         actionContinue: controller.run,
-        actionExit: controller.reset,
+        actionExit: controller.restart,
       ),
       body: SafeArea(
         child: Padding(
@@ -83,33 +75,40 @@ class _ReadyPageState extends ConsumerState<ReadyPage> {
               const SizedBox(
                 height: 40,
               ),
-              SizedBox(
-                height: 160,
-                width: 160,
-                child: Stack(fit: StackFit.expand, children: [
-                  CircularProgressIndicator(
-                    value: calcProgressValue(controller.init, time),
-                    color: Colors.deepPurple,
-                    backgroundColor: Colors.black26,
-                    strokeWidth: 14,
-                  ),
-                  Center(
-                    child: Text(
-                      "$time",
+              CountDown(
+                controller: readyTimerController,
+                build: (_, int time) => SizedBox(
+                  height: 160,
+                  width: 160,
+                  child: Stack(fit: StackFit.expand, children: [
+                    CircularProgressIndicator(
+                      // value: calcProgressValue(controller.timeStart, time),
+                      value: calcProgressValue(controller.startTime, time),
+                      color: Colors.deepPurple,
+                      backgroundColor: Colors.black26,
+                      strokeWidth: 14,
+                    ),
+                    Center(
+                        child: Text(
+                      time.toInt().toString(),
                       style: const TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.bold,
                           color: Colors.deepPurple),
-                    ),
-                  )
-                ]),
+                    )),
+                  ]),
+                ),
+                onFinished: () {
+                  controller.restart();
+                  GoRouter.of(context).goNamed(countStepRoute);
+                },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               TextButton(
                 onPressed: () {
-                  controller.reset();
+                  controller.restart();
                   GoRouter.of(context).goNamed(countStepRoute);
                 },
                 style: ButtonStyle(
@@ -120,7 +119,7 @@ class _ReadyPageState extends ConsumerState<ReadyPage> {
                           borderRadius: BorderRadius.circular(8)),
                     ),
                     padding: MaterialStateProperty.all(
-                        EdgeInsets.symmetric(vertical: 14))),
+                        const EdgeInsets.symmetric(vertical: 14))),
                 child: const Center(
                   child: Text(
                     "Start Over",
