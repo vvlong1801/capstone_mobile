@@ -1,13 +1,32 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AppBarController extends Notifier<String> {
+class AppBarNotifier extends Notifier<AppBarState> {
   @override
-  String build() {
-    return "Home";
+  AppBarState build() {
+    return AppBarState(title: "");
   }
 
-  void updatePageTitle(String value) {
-    state = value;
+  void updateTitle(String value) {
+    state.copyWith(title: value);
+  }
+
+  void addActionBeforePop(Function action) {
+    state.copyWith(actionBeforePop: action);
   }
 }
 
+class AppBarState {
+  late Function? actionBeforePop;
+  late String title;
+
+  AppBarState({required this.title, this.actionBeforePop});
+
+  AppBarState copyWith({String? title, Function? actionBeforePop}) {
+    return AppBarState(
+        title: title ?? this.title, actionBeforePop: actionBeforePop);
+  }
+}
+
+final appBarController = NotifierProvider<AppBarNotifier, AppBarState>(() {
+  return AppBarNotifier();
+});

@@ -23,16 +23,21 @@ class SessionPage extends ConsumerWidget {
                     width: MediaQuery.of(context).size.width * 1 / 3 - 28 / 3,
                     alignment: Alignment.center,
                     height: 100,
-                    color: Colors.purpleAccent,
+                    color: Colors.deepPurple,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           "82",
                           style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
-                        Text("KCAL")
+                        Text(
+                          "KCAL",
+                          style: TextStyle(color: Colors.white),
+                        )
                       ],
                     ),
                   ),
@@ -40,16 +45,21 @@ class SessionPage extends ConsumerWidget {
                     width: MediaQuery.of(context).size.width * 1 / 3 - 28 / 3,
                     alignment: Alignment.center,
                     height: 100,
-                    color: Colors.purpleAccent,
+                    color: Colors.deepPurple,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           "82",
                           style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
-                        Text("KCAL")
+                        Text(
+                          "KCAL",
+                          style: TextStyle(color: Colors.white),
+                        )
                       ],
                     ),
                   ),
@@ -57,16 +67,21 @@ class SessionPage extends ConsumerWidget {
                     width: MediaQuery.of(context).size.width * 1 / 3 - 28 / 3,
                     alignment: Alignment.center,
                     height: 100,
-                    color: Colors.purpleAccent,
+                    color: Colors.deepPurple,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           "82",
                           style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
-                        Text("KCAL")
+                        Text(
+                          "KCAL",
+                          style: TextStyle(color: Colors.white),
+                        )
                       ],
                     ),
                   ),
@@ -182,14 +197,18 @@ class SessionPage extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            GoRouter.of(context).pushNamed(readyRoute);
+            GoRouter.of(context).goNamed(readyRoute);
           },
+          backgroundColor: Colors.deepPurple,
           label: Container(
               width: MediaQuery.of(context).size.width * 0.9 - 28,
               alignment: Alignment.center,
               child: Text(
                 "Start",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ))),
     );
   }

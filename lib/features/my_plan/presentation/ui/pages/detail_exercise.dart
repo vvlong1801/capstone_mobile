@@ -13,6 +13,11 @@ class DetailExercisePage extends ConsumerStatefulWidget {
 class _DetailExercisePageState extends ConsumerState<DetailExercisePage> {
   YoutubePlayerController _youtubeController =
       YoutubePlayerController(initialVideoId: "lNQJNImBsKY");
+  @override
+  void dispose() {
+    super.dispose();
+    _youtubeController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -22,7 +22,7 @@ class BottomNavigationWidget extends ConsumerWidget {
           BottomNavigationBarItem(
               icon: Icon(Icons.explore_outlined), label: 'Explore'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.message_outlined), label: 'Message'),
+              icon: Icon(Icons.bookmark_outline_rounded), label: 'Bookmark'),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings_outlined), label: 'Setting'),
         ]);

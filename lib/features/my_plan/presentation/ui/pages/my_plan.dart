@@ -13,7 +13,19 @@ class MyPlanPage extends ConsumerWidget {
       body: Padding(
         padding: const EdgeInsets.all(14.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(
+              "In Progress",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 14,
+            ),
+            ChallengeCard(),
+            SizedBox(
+              height: 14,
+            ),
             Expanded(
               child: DefaultTabController(
                   length: 2,
@@ -22,18 +34,19 @@ class MyPlanPage extends ConsumerWidget {
                     children: [
                       const TabBar(tabs: [
                         Tab(
-                          text: 'Plan List',
+                          text: 'Completed',
                         ),
                         Tab(
-                          text: 'Bookmark',
+                          text: 'Pending',
                         )
                       ]),
+                      SizedBox(
+                        height: 8,
+                      ),
                       Expanded(
                         child: TabBarView(children: [
                           ListView(
                             children: const [
-                              ChallengeCard(),
-                              ChallengeCard(),
                               ChallengeCard(),
                               ChallengeCard(),
                               ChallengeCard(),
