@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+// import 'package:user_side_final_project/base/controller/app_bar_controller.dart';
 
 class AppBarWidget extends ConsumerStatefulWidget
     implements PreferredSizeWidget {
@@ -16,12 +17,25 @@ class AppBarWidget extends ConsumerStatefulWidget
 class _AppBarWidgetState extends ConsumerState<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
+    // final controller = ref.watch(appBarController);
     return AppBar(
-      title: const Text("demo"),
+      title: const Text(
+        "demo",
+        style: TextStyle(color: Colors.white),
+      ),
       leading: GoRouter.of(context).canPop()
           ? IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () => GoRouter.of(context).pop(),
+              icon: const Icon(
+                Icons.chevron_left_rounded,
+                color: Colors.white,
+                size: 32,
+              ),
+              onPressed: () {
+                // if (controller.actionBeforePop != null) {
+                //   controller.actionBeforePop;
+                // }
+                GoRouter.of(context).pop();
+              },
             )
           : null,
       backgroundColor: Colors.deepPurple,

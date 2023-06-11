@@ -55,7 +55,7 @@ class SchedulePage extends ConsumerWidget {
                     LinearProgressIndicator(
                       value: 0.5,
                       minHeight: 14,
-                      color: Colors.purple,
+                      color: Colors.green,
                     )
                   ],
                 ),
@@ -64,14 +64,18 @@ class SchedulePage extends ConsumerWidget {
           )),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            GoRouter.of(context).pushNamed(readyRoute);
+            GoRouter.of(context).goNamed(readyRoute);
           },
+          backgroundColor: Colors.deepPurple,
           label: Container(
               width: MediaQuery.of(context).size.width * 0.9 - 28,
               alignment: Alignment.center,
               child: Text(
                 "Start",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ))),
     );
   }
