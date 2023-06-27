@@ -11,8 +11,8 @@ import 'package:user_side_final_project/features/my_plan/presentation/ui/pages/s
 import 'package:user_side_final_project/features/my_plan/presentation/ui/pages/session.dart';
 import 'package:user_side_final_project/features/setting/presentation/ui/pages/setting.dart';
 import 'package:user_side_final_project/features/workout/presentation/ui/pages/congratulation.dart';
-import 'package:user_side_final_project/features/workout/presentation/ui/pages/count_down.dart';
-import 'package:user_side_final_project/features/workout/presentation/ui/pages/count_step.dart';
+import 'package:user_side_final_project/features/workout/presentation/ui/pages/count_down_workout.dart';
+import 'package:user_side_final_project/features/workout/presentation/ui/pages/count_step_workout.dart';
 import 'package:user_side_final_project/features/workout/presentation/ui/pages/ready.dart';
 import 'package:user_side_final_project/features/workout/presentation/ui/pages/rest.dart';
 

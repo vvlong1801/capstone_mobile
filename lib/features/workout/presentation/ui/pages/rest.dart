@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/base/widgets/workout_app_bar_widget.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/features/workout/presentation/controller/countdown_controller.dart';
+import 'package:user_side_final_project/features/workout/presentation/ui/widgets/countdown.dart';
 
 class RestPage extends ConsumerStatefulWidget {
   const RestPage({super.key});
@@ -16,9 +17,7 @@ class _RestPageState extends ConsumerState<RestPage> {
   @override
   void initState() {
     super.initState();
-    ref.read(restTimerController.notifier).run(
-        context: context,
-        redirect: () => GoRouter.of(context).goNamed(countDownRoute));
+    ref.read(restTimerController.notifier).run();
   }
 
   double? calcProgressValue(int max, int current) {
@@ -27,14 +26,13 @@ class _RestPageState extends ConsumerState<RestPage> {
 
   @override
   Widget build(BuildContext context) {
-    final time = ref.watch(restTimerController);
     final controller = ref.read(restTimerController.notifier);
 
     return Scaffold(
       appBar: WorkoutAppBarWidget(
         actionLeading: controller.pause,
         actionContinue: controller.run,
-        actionExit: controller.dispose,
+        actionExit: controller.restart,
       ),
       body: SafeArea(
         child: Padding(
@@ -59,7 +57,7 @@ class _RestPageState extends ConsumerState<RestPage> {
                 children: [
                   TextButton(
                       onPressed: () {
-                        controller.add(20);
+                        controller.addSeconds(20);
                       },
                       style: ButtonStyle(
                         backgroundColor:
@@ -83,14 +81,15 @@ class _RestPageState extends ConsumerState<RestPage> {
                   ),
                   TextButton(
                       onPressed: () {
-                        controller.dispose();
+                        controller.restart();
                         GoRouter.of(context).goNamed(countDownRoute);
                       },
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.deepPurple),
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)))),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)))),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text(
@@ -106,27 +105,33 @@ class _RestPageState extends ConsumerState<RestPage> {
               SizedBox(
                 height: 30,
               ),
-              SizedBox(
-                height: 160,
-                width: 160,
-                child: Stack(fit: StackFit.expand, children: [
-                  CircularProgressIndicator(
-                    value: calcProgressValue(
-                        ref.read(restTimerController.notifier).init, time),
-                    color: Colors.deepPurple,
-                    backgroundColor: Colors.black26,
-                    strokeWidth: 14,
-                  ),
-                  Center(
-                    child: Text(
-                      "$time",
-                      style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.deepPurple),
+              CountDown(
+                controller: restTimerController,
+                build: (_, int time) => SizedBox(
+                  height: 160,
+                  width: 160,
+                  child: Stack(fit: StackFit.expand, children: [
+                    CircularProgressIndicator(
+                      value: calcProgressValue(controller.startTime, time),
+                      color: Colors.deepPurple,
+                      backgroundColor: Colors.black26,
+                      strokeWidth: 14,
                     ),
-                  )
-                ]),
+                    Center(
+                      child: Text(
+                        "$time",
+                        style: TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.deepPurple),
+                      ),
+                    )
+                  ]),
+                ),
+                onFinished: () {
+                  controller.restart();
+                  GoRouter.of(context).goNamed(countDownRoute);
+                },
               ),
               SizedBox(
                 height: 30,
@@ -145,8 +150,8 @@ class _RestPageState extends ConsumerState<RestPage> {
                       ),
                       Text(
                         "Jumping",
-                        style:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 22),
                       )
                     ],
                   ),
