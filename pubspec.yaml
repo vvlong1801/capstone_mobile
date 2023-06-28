@@ -41,6 +41,9 @@ dependencies:
   youtube_player_flutter: ^8.1.2
   flutter_animate: ^4.1.1+1
   just_audio: ^0.9.34
+  json_annotation: ^4.8.1
+  http: ^1.1.0
+  shared_preferences: ^2.1.2
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +55,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  build_runner: ^2.4.5
+  json_serializable: ^6.7.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
