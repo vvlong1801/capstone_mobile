@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:user_side_final_project/base/base_page.dart';
-import 'package:user_side_final_project/features/explore/presentation/ui/pages/explore.dart';
-import 'package:user_side_final_project/features/home/presentation/ui/pages/home.dart';
-import 'package:user_side_final_project/features/messages/presentation/ui/pages/message.dart';
-import 'package:user_side_final_project/features/my_plan/presentation/ui/pages/detail_exercise.dart';
-import 'package:user_side_final_project/features/my_plan/presentation/ui/pages/my_plan.dart';
-import 'package:user_side_final_project/features/my_plan/presentation/ui/pages/schedule.dart';
-import 'package:user_side_final_project/features/my_plan/presentation/ui/pages/session.dart';
-import 'package:user_side_final_project/features/setting/presentation/ui/pages/setting.dart';
-import 'package:user_side_final_project/features/workout/presentation/ui/pages/congratulation.dart';
-import 'package:user_side_final_project/features/workout/presentation/ui/pages/count_down_workout.dart';
-import 'package:user_side_final_project/features/workout/presentation/ui/pages/count_step_workout.dart';
-import 'package:user_side_final_project/features/workout/presentation/ui/pages/ready.dart';
-import 'package:user_side_final_project/features/workout/presentation/ui/pages/rest.dart';
+import 'package:user_side_final_project/layouts/base_page.dart';
+
+import 'package:user_side_final_project/screens/auth/guest.dart';
+import 'package:user_side_final_project/screens/auth/login.dart';
+import 'package:user_side_final_project/screens/auth/register.dart';
+import 'package:user_side_final_project/screens/explore/detail_challenge.dart';
+import 'package:user_side_final_project/screens/explore/explore.dart';
+import 'package:user_side_final_project/screens/explore/join_success.dart';
+import 'package:user_side_final_project/screens/explore/join_waiting.dart';
+import 'package:user_side_final_project/screens/home/home.dart';
+import 'package:user_side_final_project/screens/messages/message.dart';
+import 'package:user_side_final_project/screens/my_plan/detail_exercise.dart';
+import 'package:user_side_final_project/screens/my_plan/my_plan.dart';
+import 'package:user_side_final_project/screens/my_plan/schedule.dart';
+import 'package:user_side_final_project/screens/my_plan/session.dart';
+import 'package:user_side_final_project/screens/setting/setting.dart';
+import 'package:user_side_final_project/screens/workout/congratulation.dart';
+import 'package:user_side_final_project/screens/workout/count_down_workout.dart';
+import 'package:user_side_final_project/screens/workout/count_step_workout.dart';
+import 'package:user_side_final_project/screens/workout/ready.dart';
+import 'package:user_side_final_project/screens/workout/rest.dart';
 
 import 'name_route.dart';
 
@@ -26,10 +33,26 @@ final GlobalKey<NavigatorState> _shellNavigatorKey =
 //     GlobalKey<NavigatorState>(debugLabel: 'workout');
 
 final goRouterProvider = Provider<GoRouter>((ref) {
+  // bool isAuthenticated = ref.read(authController.notifier).isAuthenticated;
   return GoRouter(
       navigatorKey: _rootNavigatorKey,
-      initialLocation: '/my-plan',
+      initialLocation: '/guest',
       routes: [
+        GoRoute(
+          path: "/guest",
+          name: guestRoute,
+          builder: (context, state) => GuestPage(),
+        ),
+        GoRoute(
+          path: "/login",
+          name: loginRoute,
+          builder: (context, state) => LoginPage(),
+        ),
+        GoRoute(
+          path: "/register",
+          name: registerRoute,
+          builder: (context, state) => RegisterPage(),
+        ),
         ShellRoute(
             navigatorKey: _shellNavigatorKey,
             builder: (context, state, child) {
@@ -50,40 +73,60 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     const NoTransitionPage(child: MyPlanPage()),
                 routes: [
                   GoRoute(
-                    path: 'schedule',
+                    path: 'schedule/:id',
                     name: scheduleRoute,
                     pageBuilder: (context, state) => NoTransitionPage(
                       child: SchedulePage(
-                        key: state.pageKey,
-                      ),
+                          key: state.pageKey,
+                          planId: int.parse(state.pathParameters["id"]!)),
                     ),
                   ),
                   GoRoute(
                     path: 'session',
                     name: sessionRoute,
-                    pageBuilder: (context, state) => NoTransitionPage(
-                      child: SessionPage(
+                    pageBuilder: (context, state) {
+                      return NoTransitionPage(
+                          child: SessionPage(
                         key: state.pageKey,
-                      ),
-                    ),
+                        sessionIndex:
+                            int.parse(state.queryParameters["sessionIndex"]!),
+                        phaseIndex:
+                            int.parse(state.queryParameters["phaseIndex"]!),
+                      ));
+                    },
                   ),
                   GoRoute(
-                    path: 'detail_exercise',
-                    name: detailExerciseRoute,
-                    pageBuilder: (context, state) => NoTransitionPage(
-                      child: DetailExercisePage(
-                        key: state.pageKey,
-                      ),
-                    ),
-                  ),
+                      path: 'detail_exercise/:id',
+                      name: detailExerciseRoute,
+                      pageBuilder: (context, state) {
+                        return NoTransitionPage(
+                          child: DetailExercisePage(
+                            key: state.pageKey,
+                            exerciseId: state.pathParameters["id"],
+                          ),
+                        );
+                      }),
                 ],
               ),
               GoRoute(
-                path: '/explore',
-                name: exploreRoute,
-                pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: ExplorePage()),
-              ),
+                  path: '/explore',
+                  name: exploreRoute,
+                  pageBuilder: (context, state) {
+                    return NoTransitionPage(
+                        child: ExplorePage(
+                      key: state.pageKey,
+                    ));
+                  },
+                  routes: [
+                    GoRoute(
+                      path: 'detail-challenge/:id',
+                      name: detailChallengeRoute,
+                      pageBuilder: (context, state) => NoTransitionPage(
+                          child: DetailChallengePage(
+                        challengId: int.parse(state.pathParameters["id"]!),
+                      )),
+                    ),
+                  ]),
               GoRoute(
                 path: '/message',
                 name: messageRoute,
@@ -98,13 +141,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               ),
             ]),
         GoRoute(
-          path: '/workout/ready',
-          name: readyRoute,
-          pageBuilder: (context, state) => NoTransitionPage(
-              child: ReadyPage(
-            key: state.pageKey,
-          )),
-        ),
+            path: '/workout/ready',
+            name: readyRoute,
+            pageBuilder: (context, state) {
+              return NoTransitionPage(
+                  child: ReadyPage(
+                key: state.pageKey,
+              ));
+            }),
         GoRoute(
           path: '/workout/count-down',
           name: countDownRoute,
@@ -134,6 +178,22 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           name: congratulationRoute,
           pageBuilder: (context, state) => NoTransitionPage(
               child: CongratulationPage(
+            key: state.pageKey,
+          )),
+        ),
+        GoRoute(
+          path: '/explore/join_challenge/success',
+          name: joinChallengeSuccessRoute,
+          pageBuilder: (context, state) => NoTransitionPage(
+              child: JoinSuccessPage(
+            key: state.pageKey,
+          )),
+        ),
+        GoRoute(
+          path: '/explore/join_challenge/waiting',
+          name: joinChallengeWaitingRoute,
+          pageBuilder: (context, state) => NoTransitionPage(
+              child: JoinWaitingPage(
             key: state.pageKey,
           )),
         ),
