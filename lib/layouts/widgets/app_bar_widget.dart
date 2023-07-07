@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:user_side_final_project/layouts/controller/app_bar_controller.dart';
 // import 'package:user_side_final_project/base/controller/app_bar_controller.dart';
 
 class AppBarWidget extends ConsumerStatefulWidget
@@ -17,17 +18,16 @@ class AppBarWidget extends ConsumerStatefulWidget
 class _AppBarWidgetState extends ConsumerState<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
-    // final controller = ref.watch(appBarController);
     return AppBar(
-      title: const Text(
-        "demo",
-        style: TextStyle(color: Colors.white),
+      title: Text(
+        "Demo",
+        style: TextStyle(color: Colors.black87),
       ),
       leading: GoRouter.of(context).canPop()
           ? IconButton(
               icon: const Icon(
                 Icons.chevron_left_rounded,
-                color: Colors.white,
+                color: Colors.black87,
                 size: 32,
               ),
               onPressed: () {
@@ -38,7 +38,7 @@ class _AppBarWidgetState extends ConsumerState<AppBarWidget> {
               },
             )
           : null,
-      backgroundColor: Colors.deepPurple,
+      // backgroundColor: Colors.deepPurple,
     );
   }
 }

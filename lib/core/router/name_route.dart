@@ -21,3 +21,4 @@ const String joinChallengeWaitingRoute = 'explore.join_challenge_waiting';
 
 const String messageRoute = 'message';
 const String settingRoute = 'setting';
+const String reminderRoute = 'setting.reminder';

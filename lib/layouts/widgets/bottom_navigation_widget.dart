@@ -18,9 +18,9 @@ class BottomNavigationWidget extends ConsumerWidget {
           BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined), label: 'Home'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today_outlined), label: 'My Plan'),
+              icon: Icon(Icons.analytics_outlined), label: 'Insight'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.explore_outlined), label: 'Explore'),
+              icon: Icon(Icons.explore_outlined), label: 'Discover'),
           BottomNavigationBarItem(
               icon: Icon(Icons.settings_outlined), label: 'Setting'),
         ]);
@@ -30,10 +30,10 @@ class BottomNavigationWidget extends ConsumerWidget {
     ref.read(navigationProvider.notifier).updateCurrentIndex(index);
     switch (index) {
       case 0:
-        GoRouter.of(context).go('/');
+        GoRouter.of(context).go('/my-plan');
         break;
       case 1:
-        GoRouter.of(context).go('/my-plan');
+        GoRouter.of(context).go('/');
         break;
       case 2:
         GoRouter.of(context).go('/explore');

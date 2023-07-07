@@ -24,7 +24,9 @@ class AuthService {
   Future<String> login(String email, String password) async {
     try {
       var data = {'email': email, 'password': password};
+      print(data);
       var response = await BaseClient().post("/login", data);
+      print(response['data']["access_token"]);
       return response['data']["access_token"];
     } catch (e) {
       rethrow;

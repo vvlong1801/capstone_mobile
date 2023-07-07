@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,8 +36,8 @@ class BaseClient {
   Future<dynamic> post(String endPoint, dynamic data) async {
     var url = Uri.parse(baseUrl + endPoint);
     var _payload = json.encode(data);
-
     _storage = await SharedPreferences.getInstance();
+    debugPrint("init storage");
     String? token = _storage.getString('access_token');
     var headers = {
       'Authorization': 'Bearer $token',
@@ -44,7 +45,6 @@ class BaseClient {
     };
 
     var response = await client.post(url, body: _payload, headers: headers);
-
     if (response.statusCode == 204 || response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {

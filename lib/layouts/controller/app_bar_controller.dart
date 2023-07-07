@@ -30,3 +30,4 @@ class AppBarState {
 final appBarController = NotifierProvider<AppBarNotifier, AppBarState>(() {
   return AppBarNotifier();
 });
+

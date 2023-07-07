@@ -16,6 +16,7 @@ import 'package:user_side_final_project/screens/my_plan/detail_exercise.dart';
 import 'package:user_side_final_project/screens/my_plan/my_plan.dart';
 import 'package:user_side_final_project/screens/my_plan/schedule.dart';
 import 'package:user_side_final_project/screens/my_plan/session.dart';
+import 'package:user_side_final_project/screens/setting/reminder_setting.dart';
 import 'package:user_side_final_project/screens/setting/setting.dart';
 import 'package:user_side_final_project/screens/workout/congratulation.dart';
 import 'package:user_side_final_project/screens/workout/count_down_workout.dart';
@@ -134,11 +135,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     const NoTransitionPage(child: MessagePage()),
               ),
               GoRoute(
-                path: '/setting',
-                name: settingRoute,
-                pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: SettingPage()),
-              ),
+                  path: '/setting',
+                  name: settingRoute,
+                  pageBuilder: (context, state) =>
+                      const NoTransitionPage(child: SettingPage()),
+                  routes: [
+                    GoRoute(path: 'reminder', name: reminderRoute, pageBuilder: (context, state) => NoTransitionPage(child: ReminderSettingPage()),)
+                  ]),
             ]),
         GoRoute(
             path: '/workout/ready',
