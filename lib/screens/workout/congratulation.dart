@@ -64,7 +64,7 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "22",
+                              "38",
                               style: TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.w600),
                             ),

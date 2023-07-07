@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:user_side_final_project/layouts/controller/app_bar_controller.dart';
 import 'package:user_side_final_project/layouts/widgets/bottom_navigation_widget.dart';
 import 'package:user_side_final_project/providers/explore/controllers/explore_controller.dart';
 import 'package:user_side_final_project/services/challenge_service.dart';
@@ -26,6 +27,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     final listChallenges = ref.watch(listChallengeProvider);
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(14),
