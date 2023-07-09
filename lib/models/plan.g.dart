@@ -11,11 +11,13 @@ Plan _$PlanFromJson(Map<String, dynamic> json) => Plan(
       currentSession: json['current_session'] as int,
       currentPhase: json['current_phase'] as int,
       challenge: Challenge.fromJson(json['challenge'] as Map<String, dynamic>),
+      completed: json['completed'] as bool,
     );
 
 Map<String, dynamic> _$PlanToJson(Plan instance) => <String, dynamic>{
       'id': instance.id,
       'current_session': instance.currentSession,
       'current_phase': instance.currentPhase,
+      'completed': instance.completed,
       'challenge': instance.challenge.toJson(),
     };

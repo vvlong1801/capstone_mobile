@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/layouts/base_page.dart';
+import 'package:user_side_final_project/screens/auth/first_login/choose_age.dart';
+import 'package:user_side_final_project/screens/auth/first_login/choose_goal.dart';
+import 'package:user_side_final_project/screens/auth/first_login/choose_height.dart';
+import 'package:user_side_final_project/screens/auth/first_login/choose_level.dart';
+import 'package:user_side_final_project/screens/auth/first_login/choose_gender.dart';
+import 'package:user_side_final_project/screens/auth/first_login/choose_weight.dart';
+import 'package:user_side_final_project/screens/auth/first_login/fill_profile.dart';
 
 import 'package:user_side_final_project/screens/auth/guest.dart';
 import 'package:user_side_final_project/screens/auth/login.dart';
@@ -140,7 +147,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   pageBuilder: (context, state) =>
                       const NoTransitionPage(child: SettingPage()),
                   routes: [
-                    GoRoute(path: 'reminder', name: reminderRoute, pageBuilder: (context, state) => NoTransitionPage(child: ReminderSettingPage()),)
+                    GoRoute(
+                      path: 'reminder',
+                      name: reminderRoute,
+                      pageBuilder: (context, state) =>
+                          NoTransitionPage(child: ReminderSettingPage()),
+                    )
                   ]),
             ]),
         GoRoute(
@@ -197,6 +209,62 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           name: joinChallengeWaitingRoute,
           pageBuilder: (context, state) => NoTransitionPage(
               child: JoinWaitingPage(
+            key: state.pageKey,
+          )),
+        ),
+        GoRoute(
+          path: '/question/gender',
+          name: chooseGenderRoute,
+          pageBuilder: (context, state) => NoTransitionPage(
+              child: ChooseGenderPage(
+            key: state.pageKey,
+          )),
+        ),
+        GoRoute(
+          path: '/question/age',
+          name: chooseAgeRoute,
+          pageBuilder: (context, state) => NoTransitionPage(
+              child: ChooseAgePage(
+            key: state.pageKey,
+          )),
+        ),
+        GoRoute(
+          path: '/question/weight',
+          name: chooseWeightRoute,
+          pageBuilder: (context, state) => NoTransitionPage(
+              child: ChooseWeightPage(
+            key: state.pageKey,
+          )),
+        ),
+        GoRoute(
+          path: '/question/height',
+          name: chooseHeightRoute,
+          pageBuilder: (context, state) => NoTransitionPage(
+              child: ChooseHeightPage(
+            key: state.pageKey,
+          )),
+        ),
+        GoRoute(
+          path: '/question/goal',
+          name: chooseGoalRoute,
+          pageBuilder: (context, state) => NoTransitionPage(
+              child: ChooseGoalPage(
+            key: state.pageKey,
+          )),
+        ),
+        GoRoute(
+          path: '/question/level',
+          name: chooseLevelRoute,
+          pageBuilder: (context, state) => NoTransitionPage(
+              child: ChooseLevelPage(
+            key: state.pageKey,
+          )),
+        ),
+        GoRoute(
+          path: '/question/profile',
+          name: fillProfileRoute,
+          pageBuilder: (context, state) => NoTransitionPage(
+              child: FillProfilePage(
             key: state.pageKey,
           )),
         ),

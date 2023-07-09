@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/layouts/widgets/workout_app_bar_widget.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
-import 'package:user_side_final_project/models/session.dart';
 import 'package:user_side_final_project/models/session_exercise.dart';
 import 'package:user_side_final_project/providers/workout/controller/audio_controller.dart';
 import 'package:user_side_final_project/providers/workout/controller/countdown_controller.dart';
@@ -23,14 +22,15 @@ class _ReadyPageState extends ConsumerState<ReadyPage> {
   @override
   void initState() {
     super.initState();
-    // print(widget.exercises);
-    // ref.read(workoutProvider.notifier).initState(widget.exercises);
+    ref.read(workoutProvider.notifier).startTime = DateTime.now();
     nextExercise = ref.read(workoutProvider.notifier).getCurrentExercise();
     nextRoute = nextExercise.requirementUnit == "reps"
         ? countStepRoute
         : countDownRoute;
     ref.read(readyTimerController.notifier).run();
     ref.read(audioPlayerController.notifier).play();
+    debugPrint("buoi tap bat dau luc ${DateTime.now().toString()}");
+    debugPrint("ban chuan bi tap ${nextExercise.name}");
   }
 
   double? calcProgressValue(int max, int current) {

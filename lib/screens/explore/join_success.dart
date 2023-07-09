@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
-import 'package:user_side_final_project/providers/my_plan/controllers/my_plan_controller.dart';
+import 'package:user_side_final_project/providers/explore/controllers/explore_controller.dart';
+import 'package:user_side_final_project/providers/my_plan/controllers/plan_controller.dart';
 
 class JoinSuccessPage extends ConsumerWidget {
   const JoinSuccessPage({super.key});
@@ -41,13 +42,14 @@ class JoinSuccessPage extends ConsumerWidget {
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
-                    ref.refresh(planController);
-                    GoRouter.of(context).goNamed(myPlanRoute);
+                    ref.read(planController.notifier).fetchPlans();
+                    ref.read(exploreController.notifier).getChallenges();
+                    GoRouter.of(context).goNamed(exploreRoute);
                   },
                   label: const Padding(
                     padding: EdgeInsets.all(14.0),
                     child: Text(
-                      "Return My Plan",
+                      "Return Discover",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

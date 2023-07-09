@@ -155,7 +155,7 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
                   CountDown(
                     controller: countdownExerciseController,
                     build: (_, int time) => Text(
-                      "00:$time",
+                      "00:${time.toString().padLeft(2, "0")}",
                       style: const TextStyle(
                           fontSize: 50,
                           fontWeight: FontWeight.w900,
