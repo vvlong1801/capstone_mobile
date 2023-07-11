@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart';
-import 'package:user_side_final_project/layouts/controller/app_bar_controller.dart';
 import 'package:user_side_final_project/layouts/widgets/bottom_navigation_widget.dart';
 import 'package:user_side_final_project/widgets/home/kcal_chart.dart';
 import 'package:user_side_final_project/widgets/home/time_workout_chart.dart';
@@ -20,22 +18,28 @@ class HomePage extends ConsumerWidget {
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                child: HeatMapCalendar(colorsets: const {
-                  1: Colors.red,
-                  3: Colors.orange,
-                  5: Colors.yellow,
-                  7: Colors.green,
-                  9: Colors.blue,
-                  11: Colors.indigo,
-                  13: Colors.purple,
-                }),
+                child: HeatMapCalendar(
+                  flexible: true,
+                  textColor: Colors.black87,
+                  colorMode: ColorMode.color,
+                  colorsets: const {
+                    1: Colors.orange,
+                    3: Colors.purple,
+                  },
+                  datasets: {
+                    DateTime(2023, 7, 4): 1,
+                    DateTime(2023, 7, 5): 3,
+                    DateTime(2023, 7, 6): 3,
+                    DateTime(2023, 7, 7): 3,
+                  },
+                ),
               ),
               SizedBox(
                 height: 14,
               ),
               KcalChart(),
               Text(
-                "Burned kcal in 7 days",
+                "Burned kcal in this week",
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -46,7 +50,7 @@ class HomePage extends ConsumerWidget {
               ),
               TimeWorkoutChart(),
               Text(
-                "Times workout in 7 days",
+                "Times workout in this week",
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,

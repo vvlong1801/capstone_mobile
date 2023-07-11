@@ -46,6 +46,7 @@ class BaseClient {
 
     var response = await client.post(url, body: _payload, headers: headers);
     if (response.statusCode == 204 || response.statusCode == 200) {
+      debugPrint("post success");
       return jsonDecode(response.body);
     } else {
       throw Exception("Error happend when post data");
@@ -65,10 +66,12 @@ class BaseClient {
 
     var response = await client.put(url, body: _payload, headers: headers);
 
+    print("put success");
+
     if (response.statusCode == 204 || response.statusCode == 200) {
       return response.body;
     } else {
-      throw Exception("Error happend when post data");
+      throw Exception("Error happend when put data");
     }
   }
 

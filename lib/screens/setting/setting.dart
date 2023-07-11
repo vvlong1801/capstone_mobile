@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/layouts/widgets/bottom_navigation_widget.dart';
 
 class SettingPage extends ConsumerStatefulWidget {
@@ -82,7 +84,9 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: ListTile(
-                      onTap: (){},
+                      onTap: () {
+                        GoRouter.of(context).pushNamed(reminderRoute);
+                      },
                       leading: Icon(
                         Icons.alarm_on_outlined,
                         size: 32,
@@ -125,6 +129,9 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: ListTile(
+                      onTap: () {
+                        GoRouter.of(context).goNamed(guestRoute);
+                      },
                       leading: Icon(
                         Icons.logout_outlined,
                         size: 32,

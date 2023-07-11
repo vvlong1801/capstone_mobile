@@ -11,7 +11,7 @@ final iconCountDownProvider = StateProvider<String>((ref) {
 });
 final countdownExerciseController =
     StateNotifierProvider<CountDownNotifier, CountDownState>((ref) {
-  return CountDownNotifier(30);
+  return CountDownNotifier(2);
 });
 
 final initCountdownExercise = StateProvider((ref) => 10);

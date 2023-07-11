@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
+import 'package:user_side_final_project/models/workout_result.dart';
+import 'package:user_side_final_project/providers/my_plan/controllers/plan_controller.dart';
 import 'package:user_side_final_project/providers/workout/controller/audio_controller.dart';
 import 'package:user_side_final_project/providers/workout/controller/workout_controller.dart';
 
@@ -14,8 +16,14 @@ class CongratulationPage extends ConsumerStatefulWidget {
 }
 
 class _CongratulationPageState extends ConsumerState<CongratulationPage> {
+  late Duration? timeWorkout;
+  double kcal = 14;
+  double bpm = 90;
   @override
   void initState() {
+    ref.read(workoutProvider.notifier).finishTime = DateTime.now();
+    timeWorkout = ref.read(workoutProvider.notifier).getTimeWorkout();
+    debugPrint("ban da ket thuc buoi tap luyen");
     super.initState();
   }
 
@@ -64,7 +72,7 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "38",
+                              timeWorkout!.inSeconds.toString(),
                               style: TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.w600),
                             ),
@@ -83,7 +91,7 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "18",
+                              kcal.toString(),
                               style: TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.w600),
                             ),
@@ -103,11 +111,11 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "74",
+                                bpm.toString(),
                                 style: TextStyle(
                                     fontSize: 24, fontWeight: FontWeight.w600),
                               ),
-                              Text("Bmp"),
+                              Text("Bpm"),
                             ],
                           ),
                         );
@@ -154,6 +162,7 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                   TextButton(
                       onPressed: () {
                         ref.read(audioPlayerController.notifier).pause();
+                        ref.read(workoutProvider.notifier).sendResult();
                         GoRouter.of(context).goNamed(myPlanRoute);
                       },
                       style: ButtonStyle(
@@ -162,26 +171,28 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                           shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8)))),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 6.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.home,
-                              color: Colors.white,
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              "HOME",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
+                      child: InkWell(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.home,
+                                color: Colors.white,
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                "HOME",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
                         ),
                       )),
                 ],

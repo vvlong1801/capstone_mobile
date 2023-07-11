@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PersonalTrainerCard extends ConsumerWidget {
-  const PersonalTrainerCard({super.key});
+  String image;
+  String name;
+  List<String>? tags;
+  PersonalTrainerCard({super.key, required this.image, required this.name, this.tags});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,7 +18,7 @@ class PersonalTrainerCard extends ConsumerWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.asset(
-              "assets/images/PT.jpeg",
+              "assets/images/$image",
               width: 150,
               height: 150,
               fit: BoxFit.cover,
@@ -36,7 +39,7 @@ class PersonalTrainerCard extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Martin Ali",
+                  name,
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

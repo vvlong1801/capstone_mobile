@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/providers/explore/controllers/explore_controller.dart';
-import 'package:user_side_final_project/providers/my_plan/controllers/my_plan_controller.dart';
 import 'package:user_side_final_project/utils/index.dart';
 import 'package:user_side_final_project/widgets/common/comment_widget.dart';
 import 'package:user_side_final_project/widgets/common/stat_widget.dart';
@@ -61,11 +60,11 @@ class _DetailChallengePageState extends ConsumerState<DetailChallengePage> {
                         children: [
                           StatWidget(
                             label: "Member",
-                            value: "100",
+                            value: "5",
                           ),
                           StatWidget(
                             label: "Hours",
-                            value: "1000+",
+                            value: "0",
                           ),
                           StatWidget(
                             label: "Star",
@@ -82,7 +81,7 @@ class _DetailChallengePageState extends ConsumerState<DetailChallengePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "Challenge A",
+                          data.name,
                           textAlign: TextAlign.left,
                           style: TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold),

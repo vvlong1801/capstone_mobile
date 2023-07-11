@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
 
+// ignore: must_be_immutable
 class ScheduleWidget extends ConsumerWidget {
   int totalSession;
   int currentSession;
@@ -20,7 +21,7 @@ class ScheduleWidget extends ConsumerWidget {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
-        Expanded(
+        Flexible(
           child: GridView(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 6,
@@ -38,28 +39,22 @@ class ScheduleWidget extends ConsumerWidget {
                 }
               })),
         ),
-        SizedBox(
+        const SizedBox(
           height: 14,
         ),
-        Flexible(
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    "${(((currentSession - 1) / totalSession * 100)).round()}%",
-                    textAlign: TextAlign.end,
-                  ),
-                ],
-              ),
-              LinearProgressIndicator(
-                value: ((currentSession - 1) / totalSession),
-                minHeight: 14,
-                color: Colors.green,
-              )
-            ],
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              "${(((currentSession - 1) / totalSession * 100)).round()}%",
+              textAlign: TextAlign.end,
+            ),
+          ],
+        ),
+        LinearProgressIndicator(
+          value: ((currentSession - 1) / totalSession),
+          minHeight: 14,
+          color: Colors.green,
         )
       ],
     );
@@ -115,7 +110,7 @@ class ScheduleWidget extends ConsumerWidget {
               borderRadius: BorderRadius.circular(90)),
           child: Text(
             number.toString(),
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green),
           ),
         ),
@@ -132,10 +127,10 @@ class ScheduleWidget extends ConsumerWidget {
           // width: 32,
           // height: 32,
           alignment: Alignment.center,
-          decoration: BoxDecoration(color: Colors.black12),
+          decoration: const BoxDecoration(color: Colors.black12),
           child: Text(
             number.toString(),
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.black38),

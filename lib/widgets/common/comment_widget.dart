@@ -20,22 +20,20 @@ class CommentWidget extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.only(top: 4),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(90),
-            child: Container(
+              borderRadius: BorderRadius.circular(90),
+              child: Container(
+                color: Colors.orangeAccent,
                 width: 40,
                 height: 40,
-                child: Image.asset(
-                  "assets/images/PT.jpeg",
-                  fit: BoxFit.cover,
-                )),
-          ),
+                child: Center(child: Text("L")),
+              )),
         ),
         SizedBox(
           width: 8,
         ),
         Expanded(
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 14),
             decoration: BoxDecoration(
                 color: Colors.grey[100],
                 borderRadius: BorderRadius.circular(12)),
@@ -43,7 +41,7 @@ class CommentWidget extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Anthony',
+                  'Long',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.w600, color: Colors.black),
                 ),
@@ -51,7 +49,7 @@ class CommentWidget extends ConsumerWidget {
                   height: 4,
                 ),
                 Text(
-                  'ajbsaofbasfboabg',
+                  'good',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.w300, color: Colors.black),
                 ),

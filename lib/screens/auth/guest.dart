@@ -20,12 +20,23 @@ class GuestPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Center(
-                    child: Text(
-                      "HELLO GUY!!",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold),
+                    child: Column(
+                      children: [
+                        Text(
+                          "CHALLENGE",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 54,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "ME",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 54,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
                   )
                 ],
@@ -38,16 +49,19 @@ class GuestPage extends StatelessWidget {
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.white)),
                   child: const Center(
-                    child: Text(
-                      "LOGIN",
-                      style: TextStyle(
-                          color: Colors.deepPurple,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                        "LOGIN",
+                        style: TextStyle(
+                            color: Colors.deepPurple,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700),
+                      ),
                     ),
                   )),
               const SizedBox(
-                height: 20,
+                height: 24,
               ),
               TextButton(
                   onPressed: () =>
@@ -56,12 +70,15 @@ class GuestPage extends StatelessWidget {
                       backgroundColor:
                           MaterialStateProperty.all(Colors.deepOrangeAccent)),
                   child: const Center(
-                    child: Text(
-                      "REGISTER",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                        "REGISTER",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700),
+                      ),
                     ),
                   )),
             ],

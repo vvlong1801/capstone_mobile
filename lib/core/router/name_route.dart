@@ -22,3 +22,11 @@ const String joinChallengeWaitingRoute = 'explore.join_challenge_waiting';
 const String messageRoute = 'message';
 const String settingRoute = 'setting';
 const String reminderRoute = 'setting.reminder';
+
+const String chooseGenderRoute = "question.sex";
+const String chooseAgeRoute = "question.age";
+const String chooseWeightRoute = "question.weight";
+const String chooseHeightRoute = "question.height";
+const String chooseGoalRoute = "question.goal";
+const String chooseLevelRoute = "question.level";
+const String fillProfileRoute = "question.profile";

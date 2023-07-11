@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:user_side_final_project/layouts/controller/app_bar_controller.dart';
 import 'package:user_side_final_project/layouts/widgets/bottom_navigation_widget.dart';
 import 'package:user_side_final_project/providers/explore/controllers/explore_controller.dart';
-import 'package:user_side_final_project/services/challenge_service.dart';
 import 'package:user_side_final_project/widgets/explore/personal_trainer_card.dart';
 import 'package:user_side_final_project/widgets/explore/challenge_card.dart';
 
@@ -26,7 +24,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
 
   @override
   Widget build(BuildContext context) {
-    final listChallenges = ref.watch(listChallengeProvider);
+    final listChallenges = ref.watch(exploreController);
 
     return Scaffold(
       body: Padding(
@@ -82,28 +80,46 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
               height: 140,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: const [
-                  PersonalTrainerCard(),
-                  PersonalTrainerCard(),
-                  PersonalTrainerCard(),
-                  PersonalTrainerCard(),
+                children: [
+                  PersonalTrainerCard(
+                    image: "PT.jpeg",
+                    name: "Creator 1",
+                  ),
+                  PersonalTrainerCard(
+                    image: 'pt_4.avif',
+                    name: "Creator 2",
+                  ),
+                  PersonalTrainerCard(
+                    image: 'pt_3.jpeg',
+                    name: "creator 3",
+                  ),
                 ],
               ),
             ),
             const SizedBox(
               height: 20,
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Challenges",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                Flex(direction: Axis.horizontal, children: [
+                  const Text(
+                    "Challenges",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                Row(
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        ref.read(exploreController.notifier).getChallenges();
+                      },
+                      icon: const Icon(Icons.refresh_outlined))
+                ]),
+                const Row(
                   children: [
                     Text(
                       "See All",
@@ -120,58 +136,35 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
                 )
               ],
             ),
-            DefaultTabController(
-                length: 3,
-                child: Expanded(
-                  child: Column(
-                    children: [
-                      const TabBar(tabs: [
-                        Tab(text: "Recommend"),
-                        Tab(text: "Popular"),
-                        Tab(text: "Newest"),
-                      ]),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Expanded(
-                        child: TabBarView(children: [
-                          listChallenges.when(
-                              data: (data) {
-                                return ListView.builder(
-                                  controller: scrollChallengeController,
-                                  itemCount: data.length,
-                                  itemBuilder: (context, index) {
-                                    return ChallengeCard(
-                                      id: data[index].id,
-                                      name: data[index].name,
-                                      level: data[index].level,
-                                      image: data[index].mainImage,
-                                      tags: data[index].tags,
-                                      phasesCount: data[index].phasesCount,
-                                      totalSessions: data[index].totalSessions,
-                                    );
-                                  },
-                                );
-                              },
-                              error: ((error, stackTrace) {
-                                return Text(error.toString());
-                              }),
-                              loading: () => const Center(
-                                  child: SizedBox(
-                                      width: 60,
-                                      height: 60,
-                                      child: CircularProgressIndicator()))),
-                          ListView(
-                            children: const [],
-                          ),
-                          ListView(
-                            children: const [],
-                          ),
-                        ]),
-                      )
-                    ],
-                  ),
-                ))
+            Expanded(
+                child: Container(
+              child: listChallenges.when(
+                  data: (data) {
+                    return ListView.builder(
+                      controller: scrollChallengeController,
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        return ChallengeCard(
+                          id: data[index].id,
+                          name: data[index].name,
+                          level: data[index].level,
+                          image: data[index].mainImage,
+                          tags: data[index].tags,
+                          phasesCount: data[index].phasesCount,
+                          totalSessions: data[index].totalSessions,
+                        );
+                      },
+                    );
+                  },
+                  error: ((error, stackTrace) {
+                    return Text(error.toString());
+                  }),
+                  loading: () => const Center(
+                      child: SizedBox(
+                          width: 60,
+                          height: 60,
+                          child: CircularProgressIndicator()))),
+            ))
           ],
         ),
       ),
@@ -184,17 +177,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
             scrollChallengeController.position.maxScrollExtent ||
         scrollChallengeController.position.pixels ==
             scrollChallengeController.position.minScrollExtent) {
-      ref.read(challengeServiceProvider).fetchChallenges();
+      ref.read(exploreController.notifier).getChallenges();
     }
   }
 }
-
-// class ExplorePage extends ConsumerWidget {
-//   const ExplorePage({super.key});
-
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     print("explore");
-
-//   }
-// }
