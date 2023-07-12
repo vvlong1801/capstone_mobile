@@ -75,12 +75,12 @@ class _ReminderSettingPageState extends ConsumerState<ReminderSettingPage> {
                     );
                   }),
             ),
-            // TextButton(
-            //     onPressed: () async {
-            //       await LocalNotificationService(context: context)
-            //           .showLocalNotification(title: "test", body: "It work!");
-            //     },
-            //     child: Text("test Notification"))
+            TextButton(
+                onPressed: () async {
+                  await LocalNotificationService()
+                      .showLocalNotification(title: "test", body: "It work!");
+                },
+                child: Text("test Notification"))
           ],
         ),
       ),

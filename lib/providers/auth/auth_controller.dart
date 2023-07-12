@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user_side_final_project/models/profile.dart';
@@ -11,16 +12,21 @@ class AuthNotifier extends AsyncNotifier<void> {
 
   late SharedPreferences _prefs;
   bool isAuthenticated = false;
-  late String errorMessage;
+  String errorMessage = "";
+  String emailRegister = "";
 
-  Future<void> register(String name, String email, String password,
-      String passwordConfirmation) async {
+  Future<void> register(
+      {required String name,
+      required String email,
+      required String password,
+      required String passwordConfirmation}) async {
     try {
-      String token = await authService.register(
-          name, email, password, passwordConfirmation);
-      await _prefs.setString("access_token", token);
-      isAuthenticated = true;
+      emailRegister = _maskEmail(email);
+      debugPrint(email);
+      await authService.register(name, email, password, passwordConfirmation);
+      debugPrint("register success");
     } catch (e) {
+      errorMessage = e.toString();
       rethrow;
     }
   }
@@ -52,6 +58,18 @@ class AuthNotifier extends AsyncNotifier<void> {
 
   @override
   FutureOr<void> build() async => await authenticate();
+
+  String _maskEmail(String email) {
+    if (email.length <= 2) {
+      return email;
+    }
+
+    String maskedEmail = email.substring(0, 2);
+    maskedEmail += '**';
+    maskedEmail += email.substring(email.indexOf('@'));
+
+    return maskedEmail;
+  }
 }
 
 final authController =

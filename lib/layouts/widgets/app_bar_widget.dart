@@ -20,7 +20,7 @@ class _AppBarWidgetState extends ConsumerState<AppBarWidget> {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(
-        "Demo",
+        "Detail Session",
         style: TextStyle(color: Colors.black87),
       ),
       leading: GoRouter.of(context).canPop()

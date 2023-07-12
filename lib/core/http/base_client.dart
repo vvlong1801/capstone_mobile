@@ -42,14 +42,20 @@ class BaseClient {
     var headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
     };
-
-    var response = await client.post(url, body: _payload, headers: headers);
-    if (response.statusCode == 204 || response.statusCode == 200) {
-      debugPrint("post success");
-      return jsonDecode(response.body);
-    } else {
-      throw Exception("Error happend when post data");
+    try {
+      var response = await client.post(url, body: _payload, headers: headers);
+      if (response.statusCode == 204 || response.statusCode == 200) {
+        debugPrint("post success");
+        return jsonDecode(response.body);
+      } else {
+        debugPrint("errr post");
+        throw Exception(jsonDecode(response.body)["message"] ??
+            "Error happend when post data");
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 

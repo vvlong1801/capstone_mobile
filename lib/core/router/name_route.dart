@@ -1,6 +1,7 @@
 const String guestRoute = 'guest';
 const String loginRoute = 'login';
 const String registerRoute = 'register';
+const String verifyRoute = 'verify';
 const String homeRoute = 'home';
 
 const String myPlanRoute = 'my_plan';
