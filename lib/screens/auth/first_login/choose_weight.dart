@@ -79,7 +79,7 @@ class _ChooseWeightPageState extends ConsumerState<ChooseWeightPage> {
                                   .setWeight(value);
                             },
                             childDelegate: ListWheelChildBuilderDelegate(
-                                childCount: 70,
+                                childCount: 200,
                                 builder: (context, index) {
                                   return Center(
                                     child: Text(

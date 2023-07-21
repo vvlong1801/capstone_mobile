@@ -47,108 +47,110 @@ class _DetailChallengePageState extends ConsumerState<DetailChallengePage> {
           _youtubeController = YoutubePlayerController(
               initialVideoId: getYoutubeId(data.youtubeUrl!)!);
           return Scaffold(
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+            body: Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: SingleChildScrollView(
+                child: Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            StatWidget(
+                              label: "Member",
+                              value: "5",
+                            ),
+                            StatWidget(
+                              label: "Hours",
+                              value: "0",
+                            ),
+                            StatWidget(
+                              label: "Star",
+                              value: "4.5",
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 14,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          StatWidget(
-                            label: "Member",
-                            value: "5",
+                          Text(
+                            data.name,
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold),
                           ),
-                          StatWidget(
-                            label: "Hours",
-                            value: "0",
-                          ),
-                          StatWidget(
-                            label: "Star",
-                            value: "4.5",
-                          ),
+                          IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.bookmark_border_rounded,
+                                size: 28,
+                              ))
                         ],
                       ),
-                    ),
-                    SizedBox(
-                      height: 14,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          data.name,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold),
-                        ),
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.bookmark_border_rounded,
-                              size: 28,
-                            ))
-                      ],
-                    ),
-                    SizedBox(height: 14),
-                    YoutubePlayerBuilder(
-                        player: YoutubePlayer(controller: _youtubeController),
-                        builder: (context, player) {
-                          return Column(children: [player]);
-                        }),
-                    SizedBox(
-                      height: 14,
-                    ),
-                    challenge.when(
-                      data: (data) {
-                        return Text(data.description ?? "");
-                      },
-                      error: (Object error, StackTrace stackTrace) {
-                        return Text("");
-                      },
-                      loading: () {
-                        return Text("");
-                      },
-                    ),
-                    SizedBox(
-                      height: 14,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Feedbacks",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                        Flex(
-                          direction: Axis.horizontal,
-                          children: [
-                            Text(
-                              "See More",
-                              style: TextStyle(
-                                  color: Colors.deepPurple,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              color: Colors.deepPurple,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    CommentWidget(username: "long", content: "goof"),
-                  ],
+                      const SizedBox(height: 14),
+                      YoutubePlayerBuilder(
+                          player: YoutubePlayer(controller: _youtubeController),
+                          builder: (context, player) {
+                            return Column(children: [player]);
+                          }),
+                      const SizedBox(
+                        height: 14,
+                      ),
+                      challenge.when(
+                        data: (data) {
+                          return Text(data.description ?? "");
+                        },
+                        error: (Object error, StackTrace stackTrace) {
+                          return const Text("");
+                        },
+                        loading: () {
+                          return const Text("");
+                        },
+                      ),
+                      const SizedBox(
+                        height: 14,
+                      ),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Feedbacks",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
+                          ),
+                          Flex(
+                            direction: Axis.horizontal,
+                            children: [
+                              Text(
+                                "See More",
+                                style: TextStyle(
+                                    color: Colors.deepPurple,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Icon(
+                                Icons.chevron_right_rounded,
+                                color: Colors.deepPurple,
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      const CommentWidget(username: "long", content: "goof"),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -158,7 +160,7 @@ class _DetailChallengePageState extends ConsumerState<DetailChallengePage> {
                 label: Container(
                     width: MediaQuery.of(context).size.width * 0.9 - 28,
                     alignment: Alignment.center,
-                    child: Text(
+                    child: const Text(
                       "Join",
                       style: TextStyle(
                           fontSize: 22,
@@ -167,10 +169,10 @@ class _DetailChallengePageState extends ConsumerState<DetailChallengePage> {
                     ))),
           );
         },
-        error: (error, stackTrace) => Center(
+        error: (error, stackTrace) => const Center(
               child: Text("Not Found"),
             ),
-        loading: () => Column(
+        loading: () => const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

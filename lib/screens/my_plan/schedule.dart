@@ -17,30 +17,30 @@ class SchedulePage extends ConsumerWidget {
     return Scaffold(
       body: Padding(
           padding: const EdgeInsets.all(14.0),
-          child: plan.when(data: (data) {
-            debugPrint("ban dang xem ${data.challenge.name}");
-            return Column(
-              // mainAxisSize: MainAxisSize.max,
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      data.challenge.name ?? "",
-                      style: const TextStyle(
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.w600,
+          child: SingleChildScrollView(
+            child: plan.when(data: (data) {
+              debugPrint("ban dang xem ${data.challenge.name}");
+              return Column(
+                // mainAxisSize: MainAxisSize.max,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        data.challenge.name ?? "",
+                        style: const TextStyle(
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 14,
-                ),
-                Flexible(
-                  child: Container(
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                  Container(
                     constraints:
-                        const BoxConstraints(minHeight: 100, maxHeight: 300),
+                        const BoxConstraints(minHeight: 100, maxHeight: 400),
                     height: double.infinity,
                     width: MediaQuery.of(context).size.width * 1,
                     child: ScheduleWidget(
@@ -48,78 +48,78 @@ class SchedulePage extends ConsumerWidget {
                       currentSession: data.currentSession,
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 14,
-                ),
-                Container(
-                  constraints:
-                      const BoxConstraints(maxHeight: 88, minHeight: 40),
-                  child: GridView.builder(
-                      itemCount: data.challenge.tags.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              mainAxisSpacing: 8,
-                              crossAxisSpacing: 8,
-                              mainAxisExtent: 40),
-                      itemBuilder: (context, index) {
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                              color: Colors.deepPurple,
-                              child: Center(
-                                  child: Text(
-                                data.challenge.tags[index].name,
-                                style: const TextStyle(color: Colors.white),
-                              ))),
-                        );
-                      }),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flex(
-                      direction: Axis.horizontal,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.orangeAccent,
-                          child: Text("A"),
-                        ),
-                        SizedBox(
-                          width: 14,
-                        ),
-                        Text(
-                          data.challenge.createdBy,
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
-                    IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.remove_red_eye_rounded,
-                        ))
-                  ],
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                Text(
-                  data.challenge.description,
-                  overflow: TextOverflow.visible,
-                ),
-              ],
-            );
-          }, error: (error, StackTrace) {
-            return Center(
-              child: Text(error.toString()),
-            );
-          }, loading: () {
-            return const SizedBox(
-                width: 60, height: 60, child: CircularProgressIndicator());
-          })),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                  Container(
+                    constraints:
+                        const BoxConstraints(maxHeight: 88, minHeight: 40),
+                    child: GridView.builder(
+                        itemCount: data.challenge.tags.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                mainAxisSpacing: 8,
+                                crossAxisSpacing: 8,
+                                mainAxisExtent: 40),
+                        itemBuilder: (context, index) {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                                color: Colors.deepPurple,
+                                child: Center(
+                                    child: Text(
+                                  data.challenge.tags[index].name,
+                                  style: const TextStyle(color: Colors.white),
+                                ))),
+                          );
+                        }),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flex(
+                        direction: Axis.horizontal,
+                        children: [
+                          const CircleAvatar(
+                            backgroundColor: Colors.orangeAccent,
+                            child: Text("A"),
+                          ),
+                          const SizedBox(
+                            width: 14,
+                          ),
+                          Text(
+                            data.challenge.createdBy,
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w500),
+                          )
+                        ],
+                      ),
+                      IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.remove_red_eye_rounded,
+                          ))
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    data.challenge.description,
+                    overflow: TextOverflow.visible,
+                  ),
+                ],
+              );
+            }, error: (error, StackTrace) {
+              return Center(
+                child: Text(error.toString()),
+              );
+            }, loading: () {
+              return const SizedBox(
+                  width: 60, height: 60, child: CircularProgressIndicator());
+            }),
+          )),
     );
   }
 }

@@ -13,6 +13,7 @@ import 'package:user_side_final_project/screens/auth/first_login/fill_profile.da
 import 'package:user_side_final_project/screens/auth/guest.dart';
 import 'package:user_side_final_project/screens/auth/login.dart';
 import 'package:user_side_final_project/screens/auth/register.dart';
+import 'package:user_side_final_project/screens/auth/verify.dart';
 import 'package:user_side_final_project/screens/explore/detail_challenge.dart';
 import 'package:user_side_final_project/screens/explore/explore.dart';
 import 'package:user_side_final_project/screens/explore/join_success.dart';
@@ -60,6 +61,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           path: "/register",
           name: registerRoute,
           builder: (context, state) => RegisterPage(),
+        ),
+        GoRoute(
+          path: "/verify",
+          name: verifyRoute,
+          builder: (context, state) => VerifyPage(),
         ),
         ShellRoute(
             navigatorKey: _shellNavigatorKey,
