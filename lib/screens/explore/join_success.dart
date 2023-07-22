@@ -5,8 +5,10 @@ import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/providers/explore/controllers/explore_controller.dart';
 import 'package:user_side_final_project/providers/my_plan/controllers/plan_controller.dart';
 
+// ignore: must_be_immutable
 class JoinSuccessPage extends ConsumerWidget {
-  const JoinSuccessPage({super.key});
+  String redirectRoute;
+  JoinSuccessPage({super.key, required this.redirectRoute});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,32 +36,33 @@ class JoinSuccessPage extends ConsumerWidget {
                   style: TextStyle(fontSize: 24),
                 ),
                 const SizedBox(
-                  height: 14,
-                ),
-                const Text("Click the button below to start workout"),
-                const SizedBox(
-                  height: 20,
+                  height: 40,
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
                     ref.read(planController.notifier).fetchPlans();
                     ref.read(exploreController.notifier).getChallenges();
-                    GoRouter.of(context).goNamed(exploreRoute);
+                    GoRouter.of(context).goNamed(redirectRoute);
                   },
-                  label: const Padding(
-                    padding: EdgeInsets.all(14.0),
+                  label: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 14, horizontal: 20),
                     child: Text(
-                      "Return Discover",
-                      style: TextStyle(color: Colors.white),
+                      redirectRoute == exploreRoute ? "Discover" : "Invitation",
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                   icon: const Icon(
                     Icons.arrow_back,
                     color: Colors.white,
                   ),
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.deepPurple)),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14))),
                 )
               ],
             ),

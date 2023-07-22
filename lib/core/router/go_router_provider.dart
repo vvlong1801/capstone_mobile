@@ -24,6 +24,8 @@ import 'package:user_side_final_project/screens/my_plan/detail_exercise.dart';
 import 'package:user_side_final_project/screens/my_plan/my_plan.dart';
 import 'package:user_side_final_project/screens/my_plan/schedule.dart';
 import 'package:user_side_final_project/screens/my_plan/session.dart';
+import 'package:user_side_final_project/screens/setting/challenge_invitation.dart';
+import 'package:user_side_final_project/screens/setting/detail_invitation.dart';
 import 'package:user_side_final_project/screens/setting/reminder_setting.dart';
 import 'package:user_side_final_project/screens/setting/setting.dart';
 import 'package:user_side_final_project/screens/workout/congratulation.dart';
@@ -158,7 +160,21 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                       name: reminderRoute,
                       pageBuilder: (context, state) =>
                           NoTransitionPage(child: ReminderSettingPage()),
-                    )
+                    ),
+                    GoRoute(
+                      path: 'invitation',
+                      name: invitationRoute,
+                      pageBuilder: (context, state) =>
+                          NoTransitionPage(child: ChallengeInvitationPage()),
+                    ),
+                    GoRoute(
+                      path: 'invitation/:id',
+                      name: detailInvitationRoute,
+                      pageBuilder: (context, state) => NoTransitionPage(
+                          child: DetailInvitationPage(
+                        challengId: int.parse(state.pathParameters["id"]!),
+                      )),
+                    ),
                   ]),
             ]),
         GoRoute(
@@ -203,13 +219,16 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           )),
         ),
         GoRoute(
-          path: '/explore/join_challenge/success',
-          name: joinChallengeSuccessRoute,
-          pageBuilder: (context, state) => NoTransitionPage(
-              child: JoinSuccessPage(
-            key: state.pageKey,
-          )),
-        ),
+            path: '/explore/join_challenge/success',
+            name: joinChallengeSuccessRoute,
+            pageBuilder: (context, state) {
+              return NoTransitionPage(
+                  child: JoinSuccessPage(
+                key: state.pageKey,
+                redirectRoute:
+                    state.queryParameters['redirectRoute'] ?? exploreRoute,
+              ));
+            }),
         GoRoute(
           path: '/explore/join_challenge/waiting',
           name: joinChallengeWaitingRoute,

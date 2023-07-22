@@ -115,6 +115,23 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: ListTile(
+                      onTap: () {
+                        GoRouter.of(context).pushNamed(invitationRoute);
+                      },
+                      leading: Icon(
+                        Icons.label_important_outline_rounded,
+                        size: 32,
+                      ),
+                      title: Text(
+                        "Challenge Invitations",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 18),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: ListTile(
                       leading: Icon(
                         Icons.info_outline_rounded,
                         size: 32,
