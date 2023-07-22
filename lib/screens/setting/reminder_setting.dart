@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:user_side_final_project/core/notifications/local_notification.dart';
-import 'package:user_side_final_project/providers/setting/reminder_controller.dart';
+import 'package:user_side_final_project/providers/setting/reminder_provider.dart';
 
 class ReminderSettingPage extends ConsumerStatefulWidget {
   const ReminderSettingPage({super.key});

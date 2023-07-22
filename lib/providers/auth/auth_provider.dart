@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:user_side_final_project/models/profile.dart';
-import 'package:user_side_final_project/providers/auth/profile_controller.dart';
+import 'package:user_side_final_project/providers/auth/profile_provider.dart';
 import 'package:user_side_final_project/services/auth_service.dart';
 
 class AuthNotifier extends AsyncNotifier<void> {
