@@ -47,8 +47,11 @@ class _DetailInvitationPageState extends ConsumerState<DetailInvitationPage> {
     debugPrint("build");
     return challenge.when(
         data: (data) {
-          _youtubeController = YoutubePlayerController(
-              initialVideoId: getYoutubeId(data.youtubeUrl!)!);
+          debugPrint(data.youtubeUrl);
+          if (data.youtubeUrl != null) {
+            _youtubeController = YoutubePlayerController(
+                initialVideoId: getYoutubeId(data.youtubeUrl!)!);
+          }
           return Scaffold(
             body: Padding(
               padding: const EdgeInsets.all(14.0),
@@ -98,11 +101,14 @@ class _DetailInvitationPageState extends ConsumerState<DetailInvitationPage> {
                       ],
                     ),
                     const SizedBox(height: 14),
-                    YoutubePlayerBuilder(
-                        player: YoutubePlayer(controller: _youtubeController),
-                        builder: (context, player) {
-                          return player;
-                        }),
+                    data.youtubeUrl != null
+                        ? YoutubePlayerBuilder(
+                            player:
+                                YoutubePlayer(controller: _youtubeController),
+                            builder: (context, player) {
+                              return player;
+                            })
+                        : Image.network(data.mainImage!.url),
                     const SizedBox(
                       height: 14,
                     ),

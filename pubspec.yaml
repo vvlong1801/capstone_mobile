@@ -47,6 +47,7 @@ dependencies:
   flutter_heatmap_calendar: ^1.0.5
   fl_chart: ^0.63.0
   flutter_local_notifications: ^15.0.1
+  galleryimage: ^1.2.0
 
 dev_dependencies:
   flutter_test:

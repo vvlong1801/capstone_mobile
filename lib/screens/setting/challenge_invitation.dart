@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:user_side_final_project/providers/setting/invitation_provider.dart';
+import 'package:user_side_final_project/providers/setting/invitation_controller.dart';
 import 'package:user_side_final_project/widgets/setting/invitation_card.dart';
 
 class ChallengeInvitationPage extends ConsumerStatefulWidget {
