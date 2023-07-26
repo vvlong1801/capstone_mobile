@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:user_side_final_project/providers/workout/controller/audio_controller.dart';
+import 'package:user_side_final_project/providers/workout/controller/workout_controller.dart';
 import 'package:user_side_final_project/widgets/workout/select_music.dart';
 
 // ignore: must_be_immutable
 class WorkoutBottom extends ConsumerWidget {
   Function? actionBeforeShowModal;
   Function? actionAfterShowModal;
-  WorkoutBottom(
-      {super.key, this.actionBeforeShowModal, this.actionAfterShowModal});
+  WorkoutBottom({
+    super.key,
+    this.actionBeforeShowModal,
+    this.actionAfterShowModal,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final audioState = ref.watch(audioPlayerController);
+    final nextExe = ref.read(workoutProvider.notifier).getNextExercise();
+    final nextExeName = nextExe != null ? nextExe.name : "";
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 80,
@@ -57,7 +63,7 @@ class WorkoutBottom extends ConsumerWidget {
                       fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  "Jumping",
+                  nextExeName ?? "",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 22,

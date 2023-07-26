@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
-import 'package:user_side_final_project/models/workout_result.dart';
-import 'package:user_side_final_project/providers/my_plan/controllers/plan_controller.dart';
 import 'package:user_side_final_project/providers/workout/controller/audio_controller.dart';
 import 'package:user_side_final_project/providers/workout/controller/workout_controller.dart';
 
@@ -17,12 +15,17 @@ class CongratulationPage extends ConsumerStatefulWidget {
 
 class _CongratulationPageState extends ConsumerState<CongratulationPage> {
   late Duration? timeWorkout;
-  double kcal = 14;
-  double bpm = 90;
+  double? kcal;
+  double? bpm;
+  TextEditingController feedbackInputController = TextEditingController();
+
   @override
   void initState() {
     ref.read(workoutProvider.notifier).finishTime = DateTime.now();
     timeWorkout = ref.read(workoutProvider.notifier).getTimeWorkout();
+    ref.read(workoutProvider.notifier).getWorkoutData();
+    kcal = ref.read(workoutProvider.notifier).caloriesBurned;
+    bpm = ref.read(workoutProvider.notifier).bpm;
     debugPrint("ban da ket thuc buoi tap luyen");
     super.initState();
   }
@@ -36,13 +39,13 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               Container(
                 width: 160,
                 height: 160,
-                child: Icon(
+                child: const Icon(
                   Icons.emoji_events_rounded,
                   size: 100,
                   color: Colors.white,
@@ -51,7 +54,7 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                     borderRadius: BorderRadius.circular(90),
                     color: Colors.amber),
               ),
-              Center(
+              const Center(
                 child: Text(
                   "Congratulation",
                   style: TextStyle(
@@ -73,10 +76,10 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                           children: [
                             Text(
                               timeWorkout!.inSeconds.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.w600),
                             ),
-                            Text("seconds"),
+                            const Text("seconds"),
                           ],
                         ),
                       ),
@@ -91,11 +94,11 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              kcal.toString(),
-                              style: TextStyle(
+                              kcal != 0.0 ? kcal.toString() : "No data",
+                              style: const TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.w600),
                             ),
-                            Text("Kcal"),
+                            const Text("Kcal"),
                           ],
                         ),
                       ),
@@ -111,11 +114,11 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                bpm.toString(),
-                                style: TextStyle(
+                                bpm != 0.0 ? bpm.toString() : "No data",
+                                style: const TextStyle(
                                     fontSize: 24, fontWeight: FontWeight.w600),
                               ),
-                              Text("Bpm"),
+                              const Text("Bpm"),
                             ],
                           ),
                         );
@@ -127,9 +130,12 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
               Column(
                 children: [
                   TextButton(
-                    onPressed: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6.0),
+                    onPressed: () async {
+                      final feedback = await showFeedbackDialog();
+                      ref.read(workoutProvider.notifier).feedback = feedback;
+                    },
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 6.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -156,7 +162,7 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8)))),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 14,
                   ),
                   TextButton(
@@ -171,9 +177,9 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                           shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8)))),
-                      child: InkWell(
+                      child: const InkWell(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6.0),
+                          padding: EdgeInsets.symmetric(vertical: 6.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -197,13 +203,43 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                       )),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Future<String?> showFeedbackDialog() => showDialog(
+      context: context,
+      builder: (context) {
+        return feedbackModalWidget(context);
+      });
+
+  Widget feedbackModalWidget(context) {
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      content: Container(
+        width: 400,
+        child: TextField(
+          maxLines: 8,
+          controller: feedbackInputController,
+          decoration: InputDecoration(hintText: "Enter feedback"),
+          autofocus: true,
+        ),
+      ),
+      actions: [
+        TextButton(
+            onPressed: () {
+              GoRouter.of(context).pop(feedbackInputController.text);
+              feedbackInputController.clear();
+            },
+            child: Text("Save")),
+      ],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
     );
   }
 }

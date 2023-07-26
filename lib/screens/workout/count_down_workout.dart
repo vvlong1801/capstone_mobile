@@ -72,11 +72,6 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final int num = ref.watch(readyCountDownProvider);
     final controller = ref.read(countdownExerciseController.notifier);

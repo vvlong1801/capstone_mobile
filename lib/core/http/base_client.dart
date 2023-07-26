@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-String baseUrl = "http://192.168.1.232:8000/api/v1";
+String baseUrl = "http://192.168.1.9:8000/api/v1";
 
 class BaseClient {
   var client = http.Client();

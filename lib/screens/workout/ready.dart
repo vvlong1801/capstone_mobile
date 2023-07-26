@@ -80,9 +80,9 @@ class _ReadyPageState extends ConsumerState<ReadyPage> {
                       color: Colors.deepPurple),
                 ),
               ),
-              const Center(
+              Center(
                 child: Text(
-                  "jumping",
+                  nextExercise.name ?? "",
                   style: TextStyle(
                       color: Colors.black45,
                       fontSize: 22,
