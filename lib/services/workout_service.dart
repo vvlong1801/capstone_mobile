@@ -9,7 +9,7 @@ final workoutServiceProvider =
 class WorkoutService {
   Future<void> postWorkoutResult(WorkoutResult result) async {
     try {
-      debugPrint(result.duration);
+      debugPrint(result.feedback);
       var response =
           await BaseClient().post("/workout/result", result.toJson());
     } catch (e) {

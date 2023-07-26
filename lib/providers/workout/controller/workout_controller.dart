@@ -1,5 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:health/health.dart';
+import 'package:user_side_final_project/core/health/health_provider.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/models/session_exercise.dart';
 import 'package:user_side_final_project/models/workout_result.dart';
@@ -19,11 +22,12 @@ class WorkoutNotifier extends Notifier<List<SessionExercise>> {
   late int _planId;
   late int _phaseSessionId;
   late WorkoutResult result;
-  late DateTime _startTime;
-  late DateTime _finishTime;
+  late DateTime startTime;
+  late DateTime finishTime;
+  double caloriesBurned = 0.0;
+  double bpm = 0.0;
+  String? feedback;
 
-  set startTime(DateTime startTime) => _startTime = startTime;
-  set finishTime(DateTime finishTime) => _finishTime = finishTime;
   set planId(int planId) => _planId = planId;
   set phaseSessionId(int phaseSessionId) => _phaseSessionId = phaseSessionId;
 
@@ -33,6 +37,14 @@ class WorkoutNotifier extends Notifier<List<SessionExercise>> {
 
   SessionExercise getCurrentExercise() {
     return state[currentIndex];
+  }
+
+  SessionExercise? getNextExercise() {
+    if (currentIndex < state.length - 1) {
+      return state[currentIndex + 1];
+    } else {
+      return null;
+    }
   }
 
   String getNextRoute() {
@@ -52,11 +64,12 @@ class WorkoutNotifier extends Notifier<List<SessionExercise>> {
   void reset() {
     currentIndex = 0;
     state = [];
+    feedback = null;
   }
 
   Duration? getTimeWorkout() {
-    if (_startTime != null && _finishTime != null) {
-      return _finishTime.difference(_startTime);
+    if (startTime != null && finishTime != null) {
+      return finishTime.difference(startTime);
     }
     return null;
   }
@@ -80,9 +93,43 @@ class WorkoutNotifier extends Notifier<List<SessionExercise>> {
         planId: _planId,
         phaseSessionId: _phaseSessionId,
         duration: duration,
-        caloriesBurned: 22,
-        bpm: 90);
+        caloriesBurned: caloriesBurned,
+        bpm: bpm,
+        feedback: feedback);
     debugPrint(result.toString());
     ref.watch(workoutServiceProvider).postWorkoutResult(result);
+  }
+
+  void getWorkoutData() {
+    if (ref.watch(healthProvider).authorized) {
+      List<HealthDataPoint> healthData =
+          ref.read(healthProvider.notifier).getData(types: [
+        HealthDataType.ACTIVE_ENERGY_BURNED,
+        HealthDataType.BASAL_ENERGY_BURNED,
+        HealthDataType.HEART_RATE,
+      ]);
+
+      Map<HealthDataType, List<HealthDataPoint>> groupedData =
+          groupBy<HealthDataPoint, HealthDataType>(
+              healthData, (HealthDataPoint dataPoint) => dataPoint.type);
+      // Calculate sum of 'value' for each group
+      Map<HealthDataType, double> sumByDataType = {};
+
+      groupedData.forEach((dataType, dataPoints) {
+        double sum = dataPoints
+            .map((dataPoint) => double.parse(dataPoint.value.toString()))
+            .fold(0.0, (previousValue, element) => previousValue + element);
+        sumByDataType[dataType] = sum;
+      });
+
+      print(sumByDataType);
+
+      if (sumByDataType.containsKey(HealthDataType.ACTIVE_ENERGY_BURNED)) {
+        caloriesBurned = sumByDataType[HealthDataType.ACTIVE_ENERGY_BURNED]!;
+      }
+      if (sumByDataType.containsKey(HealthDataType.HEART_RATE)) {
+        bpm = sumByDataType[HealthDataType.HEART_RATE]!;
+      }
+    }
   }
 }

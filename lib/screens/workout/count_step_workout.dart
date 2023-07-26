@@ -58,28 +58,28 @@ class _CountStepPageState extends ConsumerState<CountStepPage> {
                 children: [
                   Text(
                     currentExercise.name ?? "No Name",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 14,
                   ),
                   Text(
                     "${currentExercise.requirement.toString()} ${currentExercise.requirementUnit.toString()}",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Colors.deepPurple),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.chevron_left_rounded,
                         size: 50,
                       ),
@@ -95,14 +95,14 @@ class _CountStepPageState extends ConsumerState<CountStepPage> {
 
                             GoRouter.of(context).pushNamed(nextRoute);
                           },
-                          child: Icon(
+                          child: const Icon(
                             Icons.check_circle_rounded,
                             size: 100,
                             color: Colors.deepPurple,
                           ),
                         ),
                       ),
-                      Icon(
+                      const Icon(
                         Icons.chevron_right_rounded,
                         size: 50,
                       )
