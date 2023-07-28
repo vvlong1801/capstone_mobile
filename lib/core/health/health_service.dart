@@ -69,7 +69,7 @@ class HealthService {
 
     // get data within the last 24 hours
     final now = DateTime.now();
-    final yesterday = now.subtract(Duration(days: 2));
+    final yesterday = now.subtract(const Duration(days: 7));
 
     try {
       // fetch health data

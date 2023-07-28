@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/layouts/controller/app_bar_controller.dart';
-// import 'package:user_side_final_project/base/controller/app_bar_controller.dart';
 
 class AppBarWidget extends ConsumerStatefulWidget
     implements PreferredSizeWidget {
@@ -18,9 +17,10 @@ class AppBarWidget extends ConsumerStatefulWidget
 class _AppBarWidgetState extends ConsumerState<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
+    final appBarData = ref.watch(appBarController);
     return AppBar(
       title: Text(
-        "Detail Session",
+        appBarData.title,
         style: TextStyle(color: Colors.black87),
       ),
       leading: GoRouter.of(context).canPop()

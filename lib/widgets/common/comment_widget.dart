@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:user_side_final_project/models/message.dart';
 
 class CommentWidget extends ConsumerWidget {
-  final String username;
+  final Message comment;
 
-  final String content;
-
-  final String? avatar;
-
-  const CommentWidget(
-      {super.key, required this.username, required this.content, this.avatar});
+  const CommentWidget({super.key, required this.comment});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +21,9 @@ class CommentWidget extends ConsumerWidget {
                 color: Colors.orangeAccent,
                 width: 40,
                 height: 40,
-                child: Center(child: Text("L")),
+                child: Center(
+                    child: Text(
+                        "${comment.sender?.name?.substring(1, 2).toUpperCase()}")),
               )),
         ),
         SizedBox(
@@ -41,7 +39,7 @@ class CommentWidget extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Long',
+                  "${comment.sender?.name}",
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.w600, color: Colors.black),
                 ),
@@ -49,7 +47,7 @@ class CommentWidget extends ConsumerWidget {
                   height: 4,
                 ),
                 Text(
-                  'good',
+                  "${comment.content}",
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.w300, color: Colors.black),
                 ),

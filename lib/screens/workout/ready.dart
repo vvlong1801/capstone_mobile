@@ -10,7 +10,7 @@ import 'package:user_side_final_project/providers/workout/controller/workout_con
 import 'package:user_side_final_project/widgets/workout/countdown.dart';
 
 class ReadyPage extends ConsumerStatefulWidget {
-  ReadyPage({super.key});
+  const ReadyPage({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _ReadyPageState();

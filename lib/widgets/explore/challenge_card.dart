@@ -34,7 +34,8 @@ class ChallengeCard extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         GoRouter.of(context).pushNamed(detailChallengeRoute,
-            pathParameters: {'id': id.toString()});
+            pathParameters: {'id': id.toString()},
+            queryParameters: {"showJoinButton": "show"});
       },
       child: Card(
         child: Stack(

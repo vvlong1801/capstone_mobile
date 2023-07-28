@@ -18,15 +18,19 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
   @override
   void initState() {
     scrollChallengeController.addListener(_scrollChallengeListener);
+    debugPrint("init state explore");
+    ref.read(exploreController.notifier).getChallenges();
     super.initState();
-    // ref.watch(challengeServiceProvider).fetchChallenges();
   }
 
   @override
   Widget build(BuildContext context) {
     final listChallenges = ref.watch(exploreController);
-
+    debugPrint("build explore");
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Discover"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(

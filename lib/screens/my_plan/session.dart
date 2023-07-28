@@ -16,7 +16,7 @@ class SessionPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final planId = ref.read(planController.notifier).planId;
     final schedule = ref.watch(getScheduleProvider(planId));
-    debugPrint("ban dang xem session $sessionIndex");
+
     return Scaffold(
         body: Padding(
           padding: const EdgeInsets.all(14.0),
@@ -24,103 +24,22 @@ class SessionPage extends ConsumerWidget {
             final session = data[phaseIndex].sessions[sessionIndex];
             ref.read(workoutProvider.notifier).phaseSessionId = session.id;
             return session.exercises.length == 0
-                ? EmptyWidget()
+                ? emptyWidget()
                 : Column(
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width * 1 / 3 -
-                                  28 / 3,
-                              alignment: Alignment.center,
-                              height: 100,
-                              color: Colors.deepPurple,
-                              child: const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "2",
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                  Text(
-                                    "Minutes",
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 1 / 3 -
-                                  28 / 3,
-                              alignment: Alignment.center,
-                              height: 100,
-                              color: Colors.deepPurple,
-                              child: const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "22",
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                  Text(
-                                    "KCAL",
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 1 / 3 -
-                                  28 / 3,
-                              alignment: Alignment.center,
-                              height: 100,
-                              color: Colors.deepPurple,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    session.exercises.length.toString(),
-                                    style: const TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                  const Text(
-                                    "Exercise",
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 14,
-                      ),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "Exercises",
                             textAlign: TextAlign.left,
                             style: TextStyle(
                                 fontSize: 22, fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 4,
                           ),
-                          // Text("(5)")
+                          Text("(${session.exercises.length})")
                         ],
                       ),
                       const SizedBox(
@@ -173,41 +92,41 @@ class SessionPage extends ConsumerWidget {
                     width: 60, height: 60, child: CircularProgressIndicator()));
           }),
         ),
-        floatingActionButton: schedule.when(
-            data: (data) {
-              var totalExercises =
-                  data[phaseIndex].sessions[sessionIndex].exercises.length;
-              return totalExercises == 0
-                  ? null
-                  : FloatingActionButton.extended(
-                      onPressed: () {
-                        final exercises =
-                            data[phaseIndex].sessions[sessionIndex].exercises;
-                        ref.read(workoutProvider.notifier).initState(exercises);
-                        GoRouter.of(context).goNamed(
-                          readyRoute,
-                        );
-                      },
-                      backgroundColor: Colors.deepPurple,
-                      label: Container(
-                          width: MediaQuery.of(context).size.width * 0.9 - 28,
-                          alignment: Alignment.center,
-                          child: const Text(
-                            "Start",
-                            style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          )));
-            },
-            error: (error, _) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(error.toString())));
-            },
-            loading: () {}));
+        floatingActionButton: schedule.when(data: (data) {
+          var totalExercises =
+              data[phaseIndex].sessions[sessionIndex].exercises.length;
+          return totalExercises == 0
+              ? null
+              : FloatingActionButton.extended(
+                  onPressed: () {
+                    final exercises =
+                        data[phaseIndex].sessions[sessionIndex].exercises;
+                    ref.read(workoutProvider.notifier).initState(exercises);
+                    GoRouter.of(context).goNamed(
+                      readyRoute,
+                    );
+                  },
+                  backgroundColor: Colors.deepPurple,
+                  label: Container(
+                      width: MediaQuery.of(context).size.width * 0.9 - 28,
+                      alignment: Alignment.center,
+                      child: const Text(
+                        "Start",
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      )));
+        }, error: (error, _) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(error.toString())));
+        }, loading: () {
+          return const SizedBox(
+              width: 60, height: 60, child: CircularProgressIndicator());
+        }));
   }
 
-  Widget EmptyWidget() {
+  Widget emptyWidget() {
     return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

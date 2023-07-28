@@ -1,19 +1,26 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
+import 'package:user_side_final_project/models/media.dart';
+import 'package:user_side_final_project/models/message.dart';
 import 'package:user_side_final_project/providers/explore/controllers/explore_controller.dart';
 import 'package:user_side_final_project/utils/index.dart';
 import 'package:user_side_final_project/widgets/common/comment_widget.dart';
-import 'package:user_side_final_project/widgets/common/stat_widget.dart';
+import 'package:user_side_final_project/widgets/common/tag_widget.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-// ignore: must_be_immutable
+import '../../models/tag.dart';
+
 class DetailChallengePage extends ConsumerStatefulWidget {
   late int? challengId;
+  late bool showJoinButton;
 
-  DetailChallengePage({super.key, required this.challengId});
+  DetailChallengePage(
+      {super.key, required this.challengId, this.showJoinButton = true});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -22,6 +29,7 @@ class DetailChallengePage extends ConsumerStatefulWidget {
 
 class _DetailChallengePageState extends ConsumerState<DetailChallengePage> {
   late YoutubePlayerController _youtubeController;
+  late String previousRoute;
 
   @override
   void initState() {
@@ -44,7 +52,6 @@ class _DetailChallengePageState extends ConsumerState<DetailChallengePage> {
   @override
   Widget build(BuildContext context) {
     final challenge = ref.watch(showChallengeProvider(widget.challengId));
-
     return challenge.when(
         data: (data) {
           if (data.youtubeUrl != null) {
@@ -52,35 +59,17 @@ class _DetailChallengePageState extends ConsumerState<DetailChallengePage> {
                 initialVideoId: getYoutubeId(data.youtubeUrl!)!);
           }
           return Scaffold(
+            appBar: AppBar(
+              title: Text("Detail Challenge"),
+              centerTitle: false,
+            ),
             body: Padding(
               padding: const EdgeInsets.all(14.0),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          StatWidget(
-                            label: "Member",
-                            value: "5",
-                          ),
-                          StatWidget(
-                            label: "Hours",
-                            value: "0",
-                          ),
-                          StatWidget(
-                            label: "Star",
-                            value: "4.5",
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 14,
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -91,12 +80,27 @@ class _DetailChallengePageState extends ConsumerState<DetailChallengePage> {
                           style: const TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold),
                         ),
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.bookmark_border_rounded,
-                              size: 28,
-                            ))
+                        Flex(
+                          direction: Axis.horizontal,
+                          children: [
+                            Text(
+                              "(${data.numRate})",
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black54),
+                            ),
+                            RatingBar.builder(
+                              initialRating: data.rate ?? 0,
+                              itemBuilder: (context, _) => const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              itemSize: 24,
+                              onRatingUpdate: (rating) {},
+                              ignoreGestures: true,
+                              allowHalfRating: true,
+                            )
+                          ],
+                        ),
                       ],
                     ),
                     const SizedBox(height: 14),
@@ -107,62 +111,91 @@ class _DetailChallengePageState extends ConsumerState<DetailChallengePage> {
                             builder: (context, player) {
                               return player;
                             })
-                        : Image.network(data.mainImage!.url),
+                        : carouselImageWidget(data.images!),
                     const SizedBox(
                       height: 14,
                     ),
-                    Text(data.description ?? ""),
-                    const SizedBox(
-                      height: 14,
-                    ),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    Flex(
+                      direction: Axis.horizontal,
                       children: [
-                        Text(
-                          "Feedbacks",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w600),
-                        ),
-                        Flex(
-                          direction: Axis.horizontal,
-                          children: [
-                            Text(
-                              "See More",
-                              style: TextStyle(
-                                  color: Colors.deepPurple,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              color: Colors.deepPurple,
-                            )
-                          ],
-                        )
+                        const Icon(Icons.person_2),
+                        Text("${data.membersCount}/${data.maxMembers} members")
                       ],
                     ),
                     const SizedBox(
                       height: 8,
                     ),
-                    const CommentWidget(username: "long", content: "goof"),
+                    Text(data.description ?? ""),
+                    const SizedBox(
+                      height: 14,
+                    ),
+                    if (data.comments.isNotEmpty)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Comments",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              GoRouter.of(context).pushNamed(listCommentRoute,
+                                  pathParameters: {
+                                    "id": widget.challengId.toString()
+                                  });
+                            },
+                            child: const Flex(
+                              direction: Axis.horizontal,
+                              children: [
+                                Text(
+                                  "See More",
+                                  style: TextStyle(
+                                      color: Colors.deepPurple,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Icon(
+                                  Icons.chevron_right_rounded,
+                                  color: Colors.deepPurple,
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    data.comments.isNotEmpty
+                        ? Column(
+                            children: listComments(data.comments),
+                          )
+                        : const Center(
+                            child: Padding(
+                            padding: EdgeInsets.all(20.0),
+                            child: Text("No Comment"),
+                          ))
                   ],
                 ),
               ),
             ),
-            floatingActionButton: FloatingActionButton.extended(
-                onPressed: () => onJoinChallenge(context),
-                backgroundColor: Colors.deepPurple,
-                label: Container(
-                    width: MediaQuery.of(context).size.width * 0.9 - 28,
-                    alignment: Alignment.center,
-                    child: const Text(
-                      "Join",
-                      style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ))),
+            floatingActionButton: widget.showJoinButton
+                ? FloatingActionButton.extended(
+                    onPressed: () => onJoinChallenge(context),
+                    backgroundColor: Colors.deepPurple,
+                    label: Container(
+                        width: MediaQuery.of(context).size.width * 0.9 - 28,
+                        alignment: Alignment.center,
+                        child: const Text(
+                          "Join",
+                          style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        )))
+                : null,
           );
         },
         error: (error, stackTrace) => const Center(
@@ -176,5 +209,44 @@ class _DetailChallengePageState extends ConsumerState<DetailChallengePage> {
                     width: 60, height: 60, child: CircularProgressIndicator()),
               ],
             ));
+  }
+
+  Widget carouselImageWidget(List<Media> images) {
+    return CarouselSlider(
+        items: images
+            .map((img) => Container(
+                  margin: const EdgeInsets.all(5),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    child: Image.network(
+                      img.url,
+                      fit: BoxFit.cover,
+                      width: 1000.0,
+                    ),
+                  ),
+                ))
+            .toList(),
+        options: CarouselOptions());
+  }
+
+  List<Widget> listComments(List<Message> comments) {
+    return comments
+        .map((cmt) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: CommentWidget(comment: cmt),
+            ))
+        .toList();
+  }
+
+  List<Widget> listTags(List<Tag> tags) {
+    return tags
+        .map((tag) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: TagWidget(
+              text: tag.name,
+              backgroundColor: Colors.blue.shade300,
+              textColor: Colors.white,
+            )))
+        .toList();
   }
 }
