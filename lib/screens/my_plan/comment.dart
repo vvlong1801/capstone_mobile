@@ -26,66 +26,71 @@ class _CommentPageState extends ConsumerState<CommentPage> {
   @override
   Widget build(BuildContext context) {
     comments = ref.watch(commentProvider);
-    return comments.when(data: (data) {
-      return Padding(
-        padding: const EdgeInsets.all(14.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: ListView(
-                children: listCommentWidget(data),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("List Comment"),
+      ),
+      body: comments.when(data: (data) {
+        return Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: ListView(
+                  children: listCommentWidget(data),
+                ),
               ),
-            ),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width - 94,
-                    height: 60,
-                    child: TextField(
-                      controller: commentController,
-                      autofocus: false,
-                      decoration: InputDecoration(
-                          hintText: "Enter comment",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8))),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width - 94,
+                      height: 60,
+                      child: TextField(
+                        controller: commentController,
+                        autofocus: false,
+                        decoration: InputDecoration(
+                            hintText: "Enter comment",
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8))),
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 14,
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Container(
-                      width: 50,
-                      color: Colors.deepPurple,
-                      child: IconButton(
-                          onPressed: () {
-                            ref.read(commentProvider.notifier).sendComment(
-                                widget.challengeId, commentController.text);
-                            commentController.text = "";
-                          },
-                          icon: Icon(
-                            Icons.send_rounded,
-                            color: Colors.white,
-                          )),
+                    const SizedBox(
+                      width: 14,
                     ),
-                  )
-                ]),
-          ],
-        ),
-      );
-    }, error: (error, _) {
-      return Text(error.toString());
-    }, loading: () {
-      return const SizedBox(
-        width: 60,
-        height: 60,
-        child: CircularProgressIndicator(),
-      );
-    });
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Container(
+                        width: 50,
+                        color: Colors.deepPurple,
+                        child: IconButton(
+                            onPressed: () {
+                              ref.read(commentProvider.notifier).sendComment(
+                                  widget.challengeId, commentController.text);
+                              commentController.text = "";
+                            },
+                            icon: const Icon(
+                              Icons.send_rounded,
+                              color: Colors.white,
+                            )),
+                      ),
+                    )
+                  ]),
+            ],
+          ),
+        );
+      }, error: (error, _) {
+        return Text(error.toString());
+      }, loading: () {
+        return const SizedBox(
+          width: 60,
+          height: 60,
+          child: CircularProgressIndicator(),
+        );
+      }),
+    );
   }
 
   List<Widget> listCommentWidget(List comments) {

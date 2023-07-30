@@ -19,17 +19,17 @@ import 'package:user_side_final_project/screens/explore/explore.dart';
 import 'package:user_side_final_project/screens/explore/join_success.dart';
 import 'package:user_side_final_project/screens/explore/join_waiting.dart';
 import 'package:user_side_final_project/screens/explore/list_comment.dart';
-import 'package:user_side_final_project/screens/home/home.dart';
+import 'package:user_side_final_project/screens/home/insight.dart';
 import 'package:user_side_final_project/screens/messages/message.dart';
 import 'package:user_side_final_project/screens/my_plan/comment.dart';
 import 'package:user_side_final_project/screens/my_plan/detail_exercise.dart';
 import 'package:user_side_final_project/screens/my_plan/my_plan.dart';
 import 'package:user_side_final_project/screens/my_plan/schedule.dart';
 import 'package:user_side_final_project/screens/my_plan/session.dart';
-import 'package:user_side_final_project/screens/setting/challenge_invitation.dart';
-import 'package:user_side_final_project/screens/setting/detail_invitation.dart';
-import 'package:user_side_final_project/screens/setting/reminder_setting.dart';
-import 'package:user_side_final_project/screens/setting/setting.dart';
+import 'package:user_side_final_project/screens/profile/challenge_invitation.dart';
+import 'package:user_side_final_project/screens/profile/detail_invitation.dart';
+import 'package:user_side_final_project/screens/profile/reminder_setting.dart';
+import 'package:user_side_final_project/screens/profile/profile.dart';
 import 'package:user_side_final_project/screens/workout/completed_challenge.dart';
 import 'package:user_side_final_project/screens/workout/congratulation.dart';
 import 'package:user_side_final_project/screens/workout/count_down_workout.dart';
@@ -82,7 +82,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 path: '/',
                 name: homeRoute,
                 pageBuilder: (context, state) {
-                  return const NoTransitionPage(child: HomePage());
+                  return const NoTransitionPage(child: InsightPage());
                 },
               ),
               GoRoute(

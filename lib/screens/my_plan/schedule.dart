@@ -31,6 +31,12 @@ class _SchedulePageState extends ConsumerState<SchedulePage> {
         ref.read(planController.notifier).getPlanById(widget.planId);
     feedbacks = ref.watch(listFeedbackProvider(widget.planId!));
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Plan",
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+      ),
       body: Padding(
           padding: const EdgeInsets.all(14.0),
           child: SingleChildScrollView(

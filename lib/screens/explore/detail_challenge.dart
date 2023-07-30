@@ -15,6 +15,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../models/tag.dart';
 
+// ignore: must_be_immutable
 class DetailChallengePage extends ConsumerStatefulWidget {
   late int? challengId;
   late bool showJoinButton;
@@ -60,9 +61,10 @@ class _DetailChallengePageState extends ConsumerState<DetailChallengePage> {
           }
           return Scaffold(
             appBar: AppBar(
-              title: Text("Detail Challenge"),
-              centerTitle: false,
-            ),
+                title: const Text(
+              "Detail Challenge",
+              style: TextStyle(fontWeight: FontWeight.w500),
+            )),
             body: Padding(
               padding: const EdgeInsets.all(14.0),
               child: SingleChildScrollView(

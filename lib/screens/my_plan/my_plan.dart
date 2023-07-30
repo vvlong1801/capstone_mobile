@@ -24,6 +24,12 @@ class _MyPlanPageState extends ConsumerState<MyPlanPage> {
     final completedPlans = ref.watch(completedPlansProvider);
     final firstPlan = ref.watch(firstPlanProvider);
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "My Plan",
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(14.0),
         child: Column(

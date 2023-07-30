@@ -77,7 +77,7 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
     final controller = ref.read(countdownExerciseController.notifier);
     final iconCountDown = ref.watch(iconCountDownProvider);
     final mediaUrl =
-        currentExercise.data.gif!.url ?? currentExercise.data.image?.url;
+        currentExercise.data.gif?.url ?? currentExercise.data.image?.url;
 
     return Scaffold(
       appBar: WorkoutAppBarWidget(
@@ -101,9 +101,10 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
                     child: Image.network(
                       mediaUrl!,
                       fit: BoxFit.cover,
+                      width: 1000,
                       errorBuilder: (context, error, stackTrace) => Image.asset(
                         "assets/images/challenge-2.jpeg",
-                        width: MediaQuery.of(context).size.width,
+                        width: 1000.0,
                         fit: BoxFit.cover,
                       ),
                     )),
