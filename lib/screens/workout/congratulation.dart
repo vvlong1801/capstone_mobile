@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
+import 'package:user_side_final_project/providers/my_plan/controllers/plan_controller.dart';
 import 'package:user_side_final_project/providers/workout/controller/audio_controller.dart';
 import 'package:user_side_final_project/providers/workout/controller/workout_controller.dart';
 
@@ -15,6 +16,7 @@ class CongratulationPage extends ConsumerStatefulWidget {
 
 class _CongratulationPageState extends ConsumerState<CongratulationPage> {
   late Duration? timeWorkout;
+  late bool completeChallenge;
   double? kcal;
   double? bpm;
   TextEditingController feedbackInputController = TextEditingController();
@@ -26,8 +28,19 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
     ref.read(workoutProvider.notifier).getWorkoutData();
     kcal = ref.read(workoutProvider.notifier).caloriesBurned;
     bpm = ref.read(workoutProvider.notifier).bpm;
+    completeChallenge = ref.read(planController.notifier).checkCompletePlan();
     debugPrint("ban da ket thuc buoi tap luyen");
     super.initState();
+  }
+
+  void onClickHome() {
+    ref.read(audioPlayerController.notifier).pause();
+    ref.read(workoutProvider.notifier).sendResult();
+    if (completeChallenge) {
+      GoRouter.of(context).goNamed(completedChallengeRoute);
+    } else {
+      GoRouter.of(context).goNamed(myPlanRoute);
+    }
   }
 
   @override
@@ -42,18 +55,7 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
               const SizedBox(
                 height: 40,
               ),
-              Container(
-                width: 160,
-                height: 160,
-                child: const Icon(
-                  Icons.emoji_events_rounded,
-                  size: 100,
-                  color: Colors.white,
-                ),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(90),
-                    color: Colors.amber),
-              ),
+              Image.asset("assets/images/congratulation_cup.png"),
               const Center(
                 child: Text(
                   "Congratulation",
@@ -96,7 +98,9 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                             Text(
                               kcal != 0.0 ? kcal.toString() : "No data",
                               style: const TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.w600),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black38),
                             ),
                             const Text("Kcal"),
                           ],
@@ -116,7 +120,9 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                               Text(
                                 bpm != 0.0 ? bpm.toString() : "No data",
                                 style: const TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.w600),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black38),
                               ),
                               const Text("Bpm"),
                             ],
@@ -135,20 +141,20 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                       ref.read(workoutProvider.notifier).feedback = feedback;
                     },
                     child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 6.0),
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            Icons.near_me,
+                            Icons.add_box_rounded,
                             color: Colors.white,
                           ),
                           SizedBox(
                             width: 4,
                           ),
                           Text(
-                            "SEND TO CREATOR",
+                            "Feedback",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
@@ -160,26 +166,22 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                         backgroundColor:
                             MaterialStateProperty.all(Colors.deepPurple),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8)))),
+                            borderRadius: BorderRadius.circular(14)))),
                   ),
                   const SizedBox(
                     height: 14,
                   ),
                   TextButton(
-                      onPressed: () {
-                        ref.read(audioPlayerController.notifier).pause();
-                        ref.read(workoutProvider.notifier).sendResult();
-                        GoRouter.of(context).goNamed(myPlanRoute);
-                      },
+                      onPressed: () => onClickHome(),
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.black38),
                           shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)))),
+                                  borderRadius: BorderRadius.circular(14)))),
                       child: const InkWell(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 6.0),
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.center,

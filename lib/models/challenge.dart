@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:user_side_final_project/models/message.dart';
 
 import 'media.dart';
 import 'tag.dart';
@@ -11,6 +12,10 @@ class Challenge {
   String name;
   String? level;
   int? phasesCount;
+  int? maxMembers;
+  int? membersCount;
+  double? rate;
+  int? numRate;
   List<Tag> tags;
   Media? mainImage;
 
@@ -19,9 +24,10 @@ class Challenge {
   String? youtubeUrl;
 
   List<Media>? images;
-  
+  List<Message> comments;
+
   String? description;
-  
+
   String? createdBy;
 
   Challenge(
@@ -30,11 +36,16 @@ class Challenge {
       required this.level,
       List<Tag>? tags,
       this.phasesCount,
+      this.membersCount,
+      this.maxMembers,
+      this.rate,
+      this.numRate,
       required this.totalSessions,
       this.mainImage,
       this.description,
       this.createdBy,
       this.youtubeUrl,
+      required this.comments,
       this.images})
       : tags = tags ?? <Tag>[];
 

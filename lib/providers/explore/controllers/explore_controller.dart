@@ -15,10 +15,15 @@ final showChallengeProvider =
       ref.watch(challengeServiceProvider).fetchChallengeById(id);
   return challenge;
 });
+
 final joinChallengeProvider =
     FutureProvider.family<bool, int?>((ref, id) async {
   Future<bool> approved = ref.watch(challengeServiceProvider).joinChallenge(id);
   return approved;
+});
+
+final listComment = FutureProvider.family<List, int>((ref, challengeId) async {
+  return ref.watch(challengeServiceProvider).fetchComments(challengeId);
 });
 
 class ExploreNotifier extends AsyncNotifier<List> {

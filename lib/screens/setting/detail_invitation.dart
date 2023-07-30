@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
+import 'package:user_side_final_project/models/message.dart';
 import 'package:user_side_final_project/providers/explore/controllers/explore_controller.dart';
 import 'package:user_side_final_project/services/challenge_service.dart';
 import 'package:user_side_final_project/utils/index.dart';
@@ -146,7 +147,15 @@ class _DetailInvitationPageState extends ConsumerState<DetailInvitationPage> {
                     const SizedBox(
                       height: 8,
                     ),
-                    const CommentWidget(username: "long", content: "goof"),
+                    data.comments.isNotEmpty
+                        ? Column(
+                            children: listComments(data.comments),
+                          )
+                        : const Center(
+                            child: Padding(
+                            padding: EdgeInsets.all(20.0),
+                            child: Text("No Comment"),
+                          ))
                   ],
                 ),
               ),
@@ -173,5 +182,14 @@ class _DetailInvitationPageState extends ConsumerState<DetailInvitationPage> {
               child: SizedBox(
                   width: 60, height: 60, child: CircularProgressIndicator()),
             ));
+  }
+
+  List<Widget> listComments(List<Message> comments) {
+    return comments
+        .map((cmt) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: CommentWidget(comment: cmt),
+            ))
+        .toList();
   }
 }

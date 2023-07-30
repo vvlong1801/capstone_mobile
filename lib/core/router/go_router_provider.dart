@@ -18,8 +18,10 @@ import 'package:user_side_final_project/screens/explore/detail_challenge.dart';
 import 'package:user_side_final_project/screens/explore/explore.dart';
 import 'package:user_side_final_project/screens/explore/join_success.dart';
 import 'package:user_side_final_project/screens/explore/join_waiting.dart';
+import 'package:user_side_final_project/screens/explore/list_comment.dart';
 import 'package:user_side_final_project/screens/home/home.dart';
 import 'package:user_side_final_project/screens/messages/message.dart';
+import 'package:user_side_final_project/screens/my_plan/comment.dart';
 import 'package:user_side_final_project/screens/my_plan/detail_exercise.dart';
 import 'package:user_side_final_project/screens/my_plan/my_plan.dart';
 import 'package:user_side_final_project/screens/my_plan/schedule.dart';
@@ -28,6 +30,7 @@ import 'package:user_side_final_project/screens/setting/challenge_invitation.dar
 import 'package:user_side_final_project/screens/setting/detail_invitation.dart';
 import 'package:user_side_final_project/screens/setting/reminder_setting.dart';
 import 'package:user_side_final_project/screens/setting/setting.dart';
+import 'package:user_side_final_project/screens/workout/completed_challenge.dart';
 import 'package:user_side_final_project/screens/workout/congratulation.dart';
 import 'package:user_side_final_project/screens/workout/count_down_workout.dart';
 import 'package:user_side_final_project/screens/workout/count_step_workout.dart';
@@ -85,8 +88,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/my-plan',
                 name: myPlanRoute,
-                pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: MyPlanPage()),
+                pageBuilder: (context, state) {
+                  return const NoTransitionPage(child: MyPlanPage());
+                },
                 routes: [
                   GoRoute(
                     path: 'schedule/:id',
@@ -96,6 +100,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                           key: state.pageKey,
                           planId: int.parse(state.pathParameters["id"]!)),
                     ),
+                  ),
+                  GoRoute(
+                    path: 'challenges/:id/comments',
+                    name: commentRoute,
+                    pageBuilder: (context, state) => NoTransitionPage(
+                        child: CommentPage(
+                      challengeId: int.parse(state.pathParameters["id"]!),
+                    )),
                   ),
                   GoRoute(
                     path: 'session',
@@ -135,11 +147,27 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   },
                   routes: [
                     GoRoute(
-                      path: 'detail-challenge/:id',
-                      name: detailChallengeRoute,
+                        path: 'detail-challenge/:id',
+                        name: detailChallengeRoute,
+                        pageBuilder: (context, state) {
+                          var show =
+                              state.queryParameters["showJoinButton"] == "show"
+                                  ? true
+                                  : false;
+                          return NoTransitionPage(
+                              child: DetailChallengePage(
+                            challengId: int.parse(
+                              state.pathParameters["id"]!,
+                            ),
+                            showJoinButton: show,
+                          ));
+                        }),
+                    GoRoute(
+                      path: 'challenges/:id/comments',
+                      name: listCommentRoute,
                       pageBuilder: (context, state) => NoTransitionPage(
-                          child: DetailChallengePage(
-                        challengId: int.parse(state.pathParameters["id"]!),
+                          child: ListCommentPage(
+                        challengeId: int.parse(state.pathParameters["id"]!),
                       )),
                     ),
                   ]),
@@ -215,6 +243,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           name: congratulationRoute,
           pageBuilder: (context, state) => NoTransitionPage(
               child: CongratulationPage(
+            key: state.pageKey,
+          )),
+        ),
+        GoRoute(
+          path: '/workout/completed_challenge',
+          name: completedChallengeRoute,
+          pageBuilder: (context, state) => NoTransitionPage(
+              child: CompletedChallengePage(
             key: state.pageKey,
           )),
         ),

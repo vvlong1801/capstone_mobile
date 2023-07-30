@@ -49,16 +49,10 @@ class _MyPlanPageState extends ConsumerState<MyPlanPage> {
             firstPlan.when(
               data: (data) {
                 return PlanCard(
-                  id: data.id,
-                  name: data.challenge.name,
-                  level: data.challenge.level,
-                  image: data.challenge.mainImage,
-                  tags: data.challenge.tags,
-                  phasesCount: data.challenge.phasesCount,
-                  totalSessions: data.challenge.totalSessions,
+                  plan: data,
                 );
               },
-              error: (error, stackTrace) => Text(error.toString()),
+              error: (error, stackTrace) => const Text("NO PLAN"),
               loading: () => const Center(
                   child: SizedBox(
                       width: 60,
@@ -93,15 +87,7 @@ class _MyPlanPageState extends ConsumerState<MyPlanPage> {
                                     itemCount: data.length,
                                     itemBuilder: (context, index) {
                                       return PlanCard(
-                                        id: data[index].id,
-                                        name: data[index].challenge.name,
-                                        level: data[index].challenge.level,
-                                        image: data[index].challenge.mainImage,
-                                        tags: data[index].challenge.tags,
-                                        phasesCount:
-                                            data[index].challenge.phasesCount,
-                                        totalSessions:
-                                            data[index].challenge.totalSessions,
+                                        plan: data[index],
                                       );
                                     });
                               },
@@ -118,15 +104,7 @@ class _MyPlanPageState extends ConsumerState<MyPlanPage> {
                                 itemCount: data.length,
                                 itemBuilder: (context, index) {
                                   return PlanCard(
-                                    id: data[index].id,
-                                    name: data[index].challenge.name,
-                                    level: data[index].challenge.level,
-                                    image: data[index].challenge.mainImage,
-                                    tags: data[index].challenge.tags,
-                                    phasesCount:
-                                        data[index].challenge.phasesCount,
-                                    totalSessions:
-                                        data[index].challenge.totalSessions,
+                                    plan: data[index],
                                   );
                                 });
                           }, error: (error, stackTrace) {
