@@ -29,7 +29,7 @@ class _CountStepPageState extends ConsumerState<CountStepPage> {
   @override
   Widget build(BuildContext context) {
     final mediaUrl =
-        currentExercise.data.gif!.url ?? currentExercise.data.image?.url;
+        currentExercise.data.gif?.url ?? currentExercise.data.image?.url;
     return Scaffold(
       appBar: WorkoutAppBarWidget(
         actionExit: () {
@@ -43,17 +43,20 @@ class _CountStepPageState extends ConsumerState<CountStepPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
-                    mediaUrl!,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Image.asset(
-                      "assets/images/challenge-2.jpeg",
-                      width: MediaQuery.of(context).size.width,
+              Container(
+                width: 1000,
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      mediaUrl!,
                       fit: BoxFit.cover,
-                    ),
-                  )),
+                      errorBuilder: (context, error, stackTrace) => Image.asset(
+                        "assets/images/challenge-2.jpeg",
+                        width: 1000.0,
+                        fit: BoxFit.cover,
+                      ),
+                    )),
+              ),
               Column(
                 children: [
                   Text(

@@ -26,11 +26,19 @@ class _ListCommentPageState extends ConsumerState<ListCommentPage> {
   Widget build(BuildContext context) {
     comments = ref.watch(commentProvider);
     return comments.when(data: (data) {
-      return Padding(
-        padding: const EdgeInsets.all(14.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: listCommentWidget(data),
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            "List Comment",
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: listCommentWidget(data),
+            ),
           ),
         ),
       );

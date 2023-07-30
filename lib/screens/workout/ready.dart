@@ -62,6 +62,7 @@ class _ReadyPageState extends ConsumerState<ReadyPage> {
                   child: Image.network(
                     nextExercise.image!.url,
                     fit: BoxFit.cover,
+                    width: 1000,
                     errorBuilder: (context, error, stackTrace) => Image.asset(
                       "assets/images/challenge-2.jpeg",
                       width: MediaQuery.of(context).size.width,

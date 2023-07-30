@@ -18,8 +18,14 @@ class _ReminderSettingPageState extends ConsumerState<ReminderSettingPage> {
     var remindDays = ref.watch(remindOfDayData);
     var time = ref.watch(remindTime);
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Reminder",
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
+      ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 14, vertical: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 200),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -29,7 +35,7 @@ class _ReminderSettingPageState extends ConsumerState<ReminderSettingPage> {
                 height: 100,
                 child: Text(
                   "${time.hourOfPeriod.toString()}:${time.minute.toString().padLeft(2, "0")} ${time.period == DayPeriod.am ? "AM" : "PM"}",
-                  style: TextStyle(fontSize: 60, fontWeight: FontWeight.w600),
+                  style: const TextStyle(fontSize: 60, fontWeight: FontWeight.w600),
                 ),
               ),
             ),
@@ -80,7 +86,7 @@ class _ReminderSettingPageState extends ConsumerState<ReminderSettingPage> {
                   await LocalNotificationService()
                       .showLocalNotification(title: "test", body: "It work!");
                 },
-                child: Text("test Notification"))
+                child: const Text("test Notification"))
           ],
         ),
       ),
@@ -90,7 +96,7 @@ class _ReminderSettingPageState extends ConsumerState<ReminderSettingPage> {
               await showTimePicker(context: context, initialTime: time);
           ref.read(remindTime.notifier).state = newTime ?? time;
         },
-        child: Icon(
+        child: const Icon(
           Icons.alarm_add_outlined,
           size: 40,
         ),

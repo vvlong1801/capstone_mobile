@@ -1,8 +1,11 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:user_side_final_project/models/analysis_data.dart';
 
+// ignore: must_be_immutable
 class _BarChart extends StatelessWidget {
-  const _BarChart();
+  List<TimeInDay> data;
+  _BarChart(this.data);
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +17,16 @@ class _BarChart extends StatelessWidget {
         barGroups: barGroups,
         gridData: const FlGridData(show: false),
         alignment: BarChartAlignment.spaceAround,
-        maxY: 20,
       ),
     );
+  }
+
+  double _timeToMinutes(String timeString) {
+    List<String> timeParts = timeString.split(':');
+    int hours = int.parse(timeParts[0]);
+    int minutes = int.parse(timeParts[1]);
+    double totalMinutes = (hours * 60 + minutes).toDouble();
+    return totalMinutes;
   }
 
   BarTouchData get barTouchData => BarTouchData(
@@ -49,26 +59,26 @@ class _BarChart extends StatelessWidget {
       fontSize: 14,
     );
     String text;
-    switch (value.toInt()) {
-      case 0:
+    switch (data[value.toInt()].day) {
+      case 1:
         text = 'Mn';
         break;
-      case 1:
+      case 2:
         text = 'Te';
         break;
-      case 2:
+      case 3:
         text = 'Wd';
         break;
-      case 3:
+      case 4:
         text = 'Tu';
         break;
-      case 4:
+      case 5:
         text = 'Fr';
         break;
-      case 5:
+      case 6:
         text = 'St';
         break;
-      case 6:
+      case 0:
         text = 'Sn';
         break;
       default:
@@ -106,7 +116,7 @@ class _BarChart extends StatelessWidget {
         show: false,
       );
 
-  LinearGradient get _barsGradient => LinearGradient(
+  LinearGradient get _barsGradient => const LinearGradient(
         colors: [
           Colors.deepPurple,
           Colors.purpleAccent,
@@ -116,81 +126,24 @@ class _BarChart extends StatelessWidget {
       );
 
   List<BarChartGroupData> get barGroups => [
-        BarChartGroupData(
-          x: 0,
-          barRods: [
-            BarChartRodData(
-              toY: 0,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 1,
-          barRods: [
-            BarChartRodData(
-              toY: 0,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 2,
-          barRods: [
-            BarChartRodData(
-              toY: 1,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 3,
-          barRods: [
-            BarChartRodData(
-              toY: 3,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 4,
-          barRods: [
-            BarChartRodData(
-              toY: 13,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 5,
-          barRods: [
-            BarChartRodData(
-              toY: 5,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 6,
-          barRods: [
-            BarChartRodData(
-              toY: 0,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
+        for (int i = 0; i < data.length; i++)
+          BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                toY: _timeToMinutes(data[i].totalDuration!),
+                gradient: _barsGradient,
+              )
+            ],
+            showingTooltipIndicators: [0],
+          ),
       ];
 }
 
+// ignore: must_be_immutable
 class TimeWorkoutChart extends StatefulWidget {
-  const TimeWorkoutChart({super.key});
+  List<TimeInDay> data;
+  TimeWorkoutChart({super.key, required this.data});
 
   @override
   State<StatefulWidget> createState() => TimeWorkoutChartState();
@@ -199,9 +152,9 @@ class TimeWorkoutChart extends StatefulWidget {
 class TimeWorkoutChartState extends State<TimeWorkoutChart> {
   @override
   Widget build(BuildContext context) {
-    return const AspectRatio(
+    return AspectRatio(
       aspectRatio: 1.6,
-      child: _BarChart(),
+      child: _BarChart(widget.data),
     );
   }
 }

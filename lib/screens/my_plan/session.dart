@@ -18,6 +18,12 @@ class SessionPage extends ConsumerWidget {
     final schedule = ref.watch(getScheduleProvider(planId));
 
     return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            "Session",
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+        ),
         body: Padding(
           padding: const EdgeInsets.all(14.0),
           child: schedule.when(data: (data) {

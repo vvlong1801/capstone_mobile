@@ -21,8 +21,7 @@ class BottomNavigationWidget extends ConsumerWidget {
               icon: Icon(Icons.analytics_outlined), label: 'Insight'),
           BottomNavigationBarItem(
               icon: Icon(Icons.explore_outlined), label: 'Discover'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings_outlined), label: 'Setting'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ]);
   }
 

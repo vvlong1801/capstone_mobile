@@ -1,8 +1,30 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:user_side_final_project/models/analysis_data.dart';
 
+// ignore: must_be_immutable
+class KcalChart extends StatefulWidget {
+  List<CalInDay> data;
+  KcalChart({super.key, required this.data});
+
+  @override
+  State<StatefulWidget> createState() => KcalChartState();
+}
+
+class KcalChartState extends State<KcalChart> {
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 1.6,
+      child: _BarChart(widget.data),
+    );
+  }
+}
+
+// ignore: must_be_immutable
 class _BarChart extends StatelessWidget {
-  const _BarChart();
+  List<CalInDay> data;
+  _BarChart(this.data);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +36,6 @@ class _BarChart extends StatelessWidget {
         barGroups: barGroups,
         gridData: const FlGridData(show: false),
         alignment: BarChartAlignment.spaceAround,
-        maxY: 20,
       ),
     );
   }
@@ -43,32 +64,32 @@ class _BarChart extends StatelessWidget {
       );
 
   Widget getTitles(double value, TitleMeta meta) {
-    final style = TextStyle(
+    const style = TextStyle(
       color: Colors.deepOrange,
       fontWeight: FontWeight.bold,
       fontSize: 14,
     );
     String text;
-    switch (value.toInt()) {
-      case 0:
+    switch (data[value.toInt()].day) {
+      case 1:
         text = 'Mn';
         break;
-      case 1:
+      case 2:
         text = 'Te';
         break;
-      case 2:
+      case 3:
         text = 'Wd';
         break;
-      case 3:
+      case 4:
         text = 'Tu';
         break;
-      case 4:
+      case 5:
         text = 'Fr';
         break;
-      case 5:
+      case 6:
         text = 'St';
         break;
-      case 6:
+      case 0:
         text = 'Sn';
         break;
       default:
@@ -106,7 +127,7 @@ class _BarChart extends StatelessWidget {
         show: false,
       );
 
-  LinearGradient get _barsGradient => LinearGradient(
+  LinearGradient get _barsGradient => const LinearGradient(
         colors: [
           Colors.deepOrange,
           Colors.orangeAccent,
@@ -116,92 +137,16 @@ class _BarChart extends StatelessWidget {
       );
 
   List<BarChartGroupData> get barGroups => [
-        BarChartGroupData(
-          x: 0,
-          barRods: [
-            BarChartRodData(
-              toY: 0,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 1,
-          barRods: [
-            BarChartRodData(
-              toY: 0,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 2,
-          barRods: [
-            BarChartRodData(
-              toY: 3,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 3,
-          barRods: [
-            BarChartRodData(
-              toY: 8,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 4,
-          barRods: [
-            BarChartRodData(
-              toY: 13,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 5,
-          barRods: [
-            BarChartRodData(
-              toY: 7,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
-        BarChartGroupData(
-          x: 6,
-          barRods: [
-            BarChartRodData(
-              toY: 0,
-              gradient: _barsGradient,
-            )
-          ],
-          showingTooltipIndicators: [0],
-        ),
+        for (int i = 0; i < data.length; i++)
+          BarChartGroupData(
+            x: i,
+            barRods: [
+              BarChartRodData(
+                toY: data[i].calSum!.toDouble(),
+                gradient: _barsGradient,
+              )
+            ],
+            showingTooltipIndicators: [0],
+          ),
       ];
-}
-
-class KcalChart extends StatefulWidget {
-  const KcalChart({super.key});
-
-  @override
-  State<StatefulWidget> createState() => KcalChartState();
-}
-
-class KcalChartState extends State<KcalChart> {
-  @override
-  Widget build(BuildContext context) {
-    return const AspectRatio(
-      aspectRatio: 1.6,
-      child: _BarChart(),
-    );
-  }
 }

@@ -29,7 +29,10 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
     debugPrint("build explore");
     return Scaffold(
       appBar: AppBar(
-        title: Text("Discover"),
+        title: const Text(
+          "Discover",
+          style: TextStyle(fontWeight: FontWeight.w500),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(14),

@@ -50,9 +50,9 @@ class _RestPageState extends ConsumerState<RestPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Center(
+              const Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30),
+                  padding: EdgeInsets.symmetric(vertical: 30),
                   child: Text(
                     "REST",
                     style: TextStyle(
@@ -76,8 +76,8 @@ class _RestPageState extends ConsumerState<RestPage> {
                           borderRadius: BorderRadius.circular(8),
                         )),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
                           "+20s",
                           style: TextStyle(
@@ -86,7 +86,7 @@ class _RestPageState extends ConsumerState<RestPage> {
                               color: Colors.white),
                         ),
                       )),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   TextButton(
@@ -100,8 +100,8 @@ class _RestPageState extends ConsumerState<RestPage> {
                           shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8)))),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text(
                           "Cancel",
                           style: TextStyle(
@@ -112,7 +112,7 @@ class _RestPageState extends ConsumerState<RestPage> {
                       )),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               CountDown(
@@ -130,7 +130,7 @@ class _RestPageState extends ConsumerState<RestPage> {
                     Center(
                       child: Text(
                         "$time",
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 40,
                             fontWeight: FontWeight.bold,
                             color: Colors.deepPurple),
@@ -143,7 +143,7 @@ class _RestPageState extends ConsumerState<RestPage> {
                   GoRouter.of(context).goNamed(countDownRoute);
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Row(
@@ -156,18 +156,18 @@ class _RestPageState extends ConsumerState<RestPage> {
                     children: [
                       Text(
                         "Next $progress",
-                        style: TextStyle(color: Colors.black54, fontSize: 14),
+                        style: const TextStyle(color: Colors.black54, fontSize: 14),
                       ),
                       Text(
                         nextExercise.name ?? "No Name",
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 22),
                       )
                     ],
                   ),
                   Text(
                     "${nextExercise.requirement} ${nextExercise.requirementUnit}",
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.deepPurple,
                         fontSize: 16,
                         fontWeight: FontWeight.bold),
@@ -179,6 +179,7 @@ class _RestPageState extends ConsumerState<RestPage> {
                 child: Image.network(
                   nextExercise.image!.url,
                   fit: BoxFit.cover,
+                  width: 1000,
                   errorBuilder: (context, error, stackTrace) => Image.asset(
                     "assets/images/challenge-2.jpeg",
                     fit: BoxFit.cover,

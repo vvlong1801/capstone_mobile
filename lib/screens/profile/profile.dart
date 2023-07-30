@@ -75,7 +75,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                     padding: EdgeInsets.symmetric(vertical: 4),
                     child: ListTile(
                       leading: Icon(
-                        Icons.person_4_outlined,
+                        Icons.person,
                         size: 32,
                       ),
                       title: Text(
