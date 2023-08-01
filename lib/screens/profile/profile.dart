@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/health/health_provider.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/layouts/widgets/bottom_navigation_widget.dart';
+import 'package:user_side_final_project/providers/auth/profile_controller.dart';
 
 class SettingPage extends ConsumerStatefulWidget {
   const SettingPage({super.key});
@@ -17,6 +18,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
   @override
   Widget build(BuildContext context) {
     bool authorized = ref.watch(healthProvider).authorized;
+    final profile = ref.watch(profileProvider);
     print("authorized health data: $authorized");
     return Scaffold(
       body: Padding(
@@ -25,7 +27,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              child: const Column(
+              child: Column(
                 children: [
                   SizedBox(
                     height: 120,
@@ -33,7 +35,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                     child: CircleAvatar(
                       child: Center(
                         child: Text(
-                          "L",
+                          profile.name!.substring(0, 1) ?? "L",
                           style: TextStyle(
                               fontSize: 80,
                               fontWeight: FontWeight.bold,
@@ -46,7 +48,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                     height: 8,
                   ),
                   Text(
-                    "Long",
+                    "${profile.name}",
                     style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
@@ -56,7 +58,7 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                     height: 8,
                   ),
                   Text(
-                    "long@gmail.com",
+                    "${profile.email}",
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
@@ -97,20 +99,6 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                       ),
                       title: const Text(
                         "Setting reminder",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 18),
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 4),
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.notifications_none_outlined,
-                        size: 32,
-                      ),
-                      title: Text(
-                        "Notifications",
                         style: TextStyle(
                             fontWeight: FontWeight.w500, fontSize: 18),
                       ),

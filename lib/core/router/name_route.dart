@@ -19,7 +19,10 @@ const String completedChallengeRoute = 'workout.completed_challenge';
 
 const String exploreRoute = 'explore';
 const String detailChallengeRoute = 'explore.detail_challenge';
-const String listCommentRoute = 'explore.challenge.comments';
+const String listCommentRoute = 'explore.challenges.comments';
+const String listChallenge = 'explore.challenges';
+const String listPTRoute = 'explore.personal_trainers';
+const String detailPTRoute = 'explore.personal_trainers.detail';
 const String joinChallengeSuccessRoute = 'explore.join_challenge_success';
 const String joinChallengeWaitingRoute = 'explore.join_challenge_waiting';
 

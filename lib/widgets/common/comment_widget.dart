@@ -23,7 +23,7 @@ class CommentWidget extends ConsumerWidget {
                 height: 40,
                 child: Center(
                     child: Text(
-                        "${comment.sender?.name?.substring(1, 2).toUpperCase()}")),
+                        "${comment.sender?.name?.substring(0, 1).toUpperCase()}")),
               )),
         ),
         SizedBox(

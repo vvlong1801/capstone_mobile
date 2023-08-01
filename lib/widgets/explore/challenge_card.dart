@@ -2,39 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
-import 'package:user_side_final_project/models/media.dart';
-import 'package:user_side_final_project/models/tag.dart';
+import 'package:user_side_final_project/models/challenge.dart';
 import 'package:user_side_final_project/widgets/common/tag_widget.dart';
 
 class ChallengeCard extends ConsumerWidget {
-  final int id;
-  final Media? image;
-
-  final String? level;
-
-  final String name;
-
-  final List<Tag> tags;
-
-  final int phasesCount;
-  final String? totalSessions;
+  final Challenge challenge;
 
   const ChallengeCard(
       {super.key,
-      required this.name,
-      this.level,
-      required this.tags,
-      this.image,
-      this.totalSessions,
-      required this.id,
-      this.phasesCount = 0});
+      required this.challenge,
+      });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
         GoRouter.of(context).pushNamed(detailChallengeRoute,
-            pathParameters: {'id': id.toString()},
+            pathParameters: {'id': challenge.id.toString()},
             queryParameters: {"showJoinButton": "show"});
       },
       child: Card(
@@ -43,7 +27,7 @@ class ChallengeCard extends ConsumerWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                image!.url,
+                challenge.mainImage!.url,
                 errorBuilder: (context, error, stackTrace) => Image.asset(
                   "assets/images/challenge-2.jpeg",
                   fit: BoxFit.cover,
@@ -72,7 +56,7 @@ class ChallengeCard extends ConsumerWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 4, bottom: 4),
                     child: Text(
-                      name,
+                      challenge.name,
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: 22,
@@ -82,17 +66,17 @@ class ChallengeCard extends ConsumerWidget {
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      if (level != null) TagWidget(text: level!),
-                      if (phasesCount > 1)
-                        TagWidget(text: '$phasesCount phases'),
-                      if (totalSessions != null)
-                        TagWidget(text: '$totalSessions days'),
+                      if (challenge.level != null) TagWidget(text: challenge.level!),
+                      if (challenge.phasesCount! > 1)
+                        TagWidget(text: '${challenge.phasesCount} phases'),
+                      if (challenge.totalSessions.isNotEmpty)
+                        TagWidget(text: '${challenge.totalSessions} days'),
                     ],
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.max,
-                    children: List.generate(tags.length,
-                        (index) => TagWidget(text: tags[index].name)),
+                    children: List.generate(challenge.tags.length,
+                        (index) => TagWidget(text: challenge.tags[index].name)),
                   )
                 ],
               ),
