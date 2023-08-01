@@ -15,10 +15,13 @@ import 'package:user_side_final_project/screens/auth/login.dart';
 import 'package:user_side_final_project/screens/auth/register.dart';
 import 'package:user_side_final_project/screens/auth/verify.dart';
 import 'package:user_side_final_project/screens/explore/detail_challenge.dart';
+import 'package:user_side_final_project/screens/explore/detail_pt.dart';
 import 'package:user_side_final_project/screens/explore/explore.dart';
 import 'package:user_side_final_project/screens/explore/join_success.dart';
 import 'package:user_side_final_project/screens/explore/join_waiting.dart';
+import 'package:user_side_final_project/screens/explore/list_challenge.dart';
 import 'package:user_side_final_project/screens/explore/list_comment.dart';
+import 'package:user_side_final_project/screens/explore/list_pt.dart';
 import 'package:user_side_final_project/screens/home/insight.dart';
 import 'package:user_side_final_project/screens/messages/message.dart';
 import 'package:user_side_final_project/screens/my_plan/comment.dart';
@@ -161,6 +164,32 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                             ),
                             showJoinButton: show,
                           ));
+                        }),
+                    GoRoute(
+                        path: 'personal-trainers',
+                        name: listPTRoute,
+                        pageBuilder: (context, state) {
+                          return NoTransitionPage(
+                            child: ListPersonalTrainerPage(),
+                          );
+                        }),
+                    GoRoute(
+                        path: 'personal-trainers/:id',
+                        name: detailPTRoute,
+                        pageBuilder: (context, state) {
+                          return NoTransitionPage(
+                            child: DetailPersonalTrainerPage(
+                              id: int.parse(state.pathParameters["id"]!),
+                            ),
+                          );
+                        }),
+                    GoRoute(
+                        path: 'challenges',
+                        name: listChallenge,
+                        pageBuilder: (context, state) {
+                          return NoTransitionPage(
+                            child: ListChallengePage(),
+                          );
                         }),
                     GoRoute(
                       path: 'challenges/:id/comments',

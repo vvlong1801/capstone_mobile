@@ -35,8 +35,8 @@ class SelectMusicBottomSheet extends ConsumerWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  title: Text("Music A"),
-                  subtitle: Text("01:27"),
+                  title: Text("Music 1"),
+                  subtitle: Text("07:35"),
                   trailing: Icon(
                     Icons.check_circle_rounded,
                     size: 32,
@@ -52,37 +52,19 @@ class SelectMusicBottomSheet extends ConsumerWidget {
                   leading: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.asset(
-                      "assets/images/challenge-2.jpeg",
+                      "assets/images/challenge.avif",
                       width: 60,
                       height: 60,
                       fit: BoxFit.cover,
                     ),
                   ),
-                  title: Text("Music A"),
-                  subtitle: Text("01:27"),
+                  title: Text("Music 2"),
+                  subtitle: Text("05:27"),
                   trailing: Icon(
                     Icons.check_circle_rounded,
                     size: 32,
                   ),
-                ),
-                ListTile(
-                  onTap: () {},
-                  leading: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      "assets/images/challenge-2.jpeg",
-                      width: 60,
-                      height: 60,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  title: Text("Music A"),
-                  subtitle: Text("01:27"),
-                  trailing: Icon(
-                    Icons.check_circle_rounded,
-                    size: 32,
-                  ),
-                ),
+                )
               ],
             ))
           ],
