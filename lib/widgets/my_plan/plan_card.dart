@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/models/plan.dart';
+import 'package:user_side_final_project/providers/my_plan/controllers/plan_controller.dart';
 import 'package:user_side_final_project/widgets/common/tag_widget.dart';
 
 class PlanCard extends ConsumerWidget {
@@ -17,6 +18,7 @@ class PlanCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
+        ref.read(planIdProvider.notifier).update((state) => state = plan.id);
         GoRouter.of(context).pushNamed(scheduleRoute,
             pathParameters: {'id': plan.id.toString()});
       },
@@ -76,7 +78,7 @@ class PlanCard extends ConsumerWidget {
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     children: List.generate(
-                        plan.challenge.tags.length,
+                        2,
                         (index) =>
                             TagWidget(text: plan.challenge.tags[index].name)),
                   )

@@ -3,7 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/providers/my_plan/controllers/plan_controller.dart';
+// import 'package:user_side_final_project/providers/my_plan/controllers/plan_controller.dart';
+import 'package:user_side_final_project/providers/my_plan/controllers/session_controller.dart';
 import 'package:user_side_final_project/providers/workout/controller/workout_controller.dart';
+// import 'package:user_side_final_project/providers/workout/controller/workout_test_controller.dart';
 
 // ignore: must_be_immutable
 class SessionPage extends ConsumerWidget {
@@ -14,9 +17,10 @@ class SessionPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final planId = ref.read(planController.notifier).planId;
-    final schedule = ref.watch(getScheduleProvider(planId));
-
+    // final planId = ref.read(planController.notifier).planId;
+    // final schedule = ref.watch(getPlanProvider(planId));
+    final planId = ref.watch(planIdProvider);
+    final schedule = ref.watch(detailPlanProvider(planId));
     return Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -27,9 +31,9 @@ class SessionPage extends ConsumerWidget {
         body: Padding(
           padding: const EdgeInsets.all(14.0),
           child: schedule.when(data: (data) {
-            final session = data[phaseIndex].sessions[sessionIndex];
-            ref.read(workoutProvider.notifier).phaseSessionId = session.id;
-            return session.exercises.length == 0
+            final session = data[phaseIndex].sessions![sessionIndex];
+            // ref.read(workoutProvider.notifier).phaseSessionId = session.id;
+            return session.exercises!.isEmpty
                 ? emptyWidget()
                 : Column(
                     children: [
@@ -45,7 +49,7 @@ class SessionPage extends ConsumerWidget {
                           const SizedBox(
                             width: 4,
                           ),
-                          Text("(${session.exercises.length})")
+                          Text("(${session.exercises!.length})")
                         ],
                       ),
                       const SizedBox(
@@ -53,32 +57,37 @@ class SessionPage extends ConsumerWidget {
                       ),
                       Expanded(
                         child: ListView.builder(
-                          itemCount: session.exercises.length,
+                          itemCount: session.exercises!.length,
                           itemBuilder: (BuildContext context, int index) {
-                            final exercise = session.exercises[index];
+                            final exercise = session.exercises![index];
                             return ListTile(
                               onTap: () {
-                                GoRouter.of(context)
-                                    .pushNamed(detailExerciseRoute);
+                                ref
+                                    .read(exerciseIndexProvider.notifier)
+                                    .update((state) => state = index);
+                                GoRouter.of(context).pushNamed(
+                                    detailExerciseRoute,
+                                    pathParameters: {
+                                      "index": index.toString()
+                                    });
                               },
                               leading: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
-                                child: Container(
+                                child: Image.network(
+                                  exercise.image!.url,
                                   width: 80,
                                   height: 60,
-                                  child: Image.network(
-                                    exercise.image.url,
-                                    errorBuilder:
-                                        (context, error, stackTrace) =>
-                                            Image.asset(
-                                      "assets/images/challenge-2.jpeg",
-                                      fit: BoxFit.cover,
-                                    ),
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Image.asset(
+                                    "assets/images/challenge-2.jpeg",
+                                    width: 80,
+                                    height: 60,
                                     fit: BoxFit.cover,
                                   ),
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                              title: Text(exercise.name),
+                              title: Text(exercise.name!),
                               subtitle: Text(
                                   "${exercise.requirement} ${exercise.requirementUnit}"),
                               trailing: const Icon(Icons.arrow_right_rounded),
@@ -100,14 +109,18 @@ class SessionPage extends ConsumerWidget {
         ),
         floatingActionButton: schedule.when(data: (data) {
           var totalExercises =
-              data[phaseIndex].sessions[sessionIndex].exercises.length;
+              data[phaseIndex].sessions![sessionIndex].exercises!.length;
           return totalExercises == 0
               ? null
               : FloatingActionButton.extended(
                   onPressed: () {
+                    // final exercises =
+                    //     data[phaseIndex].sessions![sessionIndex].exercises;
                     final exercises =
-                        data[phaseIndex].sessions[sessionIndex].exercises;
-                    ref.read(workoutProvider.notifier).initState(exercises);
+                        ref.watch(sessionProvider).value!.exercises;
+                    ref
+                        .read(workoutController.notifier)
+                        .updateListExercise(exercises!);
                     GoRouter.of(context).goNamed(
                       readyRoute,
                     );
@@ -126,9 +139,9 @@ class SessionPage extends ConsumerWidget {
         }, error: (error, _) {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(error.toString())));
+          return;
         }, loading: () {
-          return const SizedBox(
-              width: 60, height: 60, child: CircularProgressIndicator());
+          return;
         }));
   }
 

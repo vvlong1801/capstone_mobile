@@ -5,6 +5,7 @@ import 'package:user_side_final_project/core/health/health_provider.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/layouts/widgets/bottom_navigation_widget.dart';
 import 'package:user_side_final_project/providers/auth/profile_controller.dart';
+import 'package:user_side_final_project/providers/setting/invitation_controller.dart';
 
 class SettingPage extends ConsumerStatefulWidget {
   const SettingPage({super.key});
@@ -19,12 +20,16 @@ class _SettingPageState extends ConsumerState<SettingPage> {
   Widget build(BuildContext context) {
     bool authorized = ref.watch(healthProvider).authorized;
     final profile = ref.watch(profileProvider);
+    final invitations = ref.watch(listInvitationsProvider);
     print("authorized health data: $authorized");
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
           children: [
+            const SizedBox(
+              height: 28,
+            ),
             Container(
               width: MediaQuery.of(context).size.width,
               child: Column(
@@ -35,8 +40,8 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                     child: CircleAvatar(
                       child: Center(
                         child: Text(
-                          profile.name!.substring(0, 1) ?? "L",
-                          style: TextStyle(
+                          profile.name?.substring(0, 1) ?? "L",
+                          style: const TextStyle(
                               fontSize: 80,
                               fontWeight: FontWeight.bold,
                               color: Colors.black87),
@@ -44,22 +49,22 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Text(
                     "${profile.name}",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w600,
                         color: Colors.black87),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   Text(
                     "${profile.email}",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         color: Colors.black54),
@@ -107,19 +112,44 @@ class _SettingPageState extends ConsumerState<SettingPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: ListTile(
-                      onTap: () {
-                        GoRouter.of(context).pushNamed(invitationRoute);
-                      },
-                      leading: const Icon(
-                        Icons.label_important_outline_rounded,
-                        size: 32,
-                      ),
-                      title: const Text(
-                        "Challenge Invitations",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 18),
-                      ),
-                    ),
+                        onTap: () {
+                          GoRouter.of(context).pushNamed(invitationRoute);
+                        },
+                        leading: const Icon(
+                          Icons.label_important_outline_rounded,
+                          size: 32,
+                        ),
+                        title: const Text(
+                          "Challenge Invitations",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500, fontSize: 18),
+                        ),
+                        trailing: invitations.when(
+                            data: (data) {
+                              return data.isNotEmpty
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(right: 4),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(18),
+                                        child: Container(
+                                          color: Colors.red,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 4),
+                                            child: Text(
+                                              "${data.length}",
+                                              style: const TextStyle(
+                                                  fontSize: 18,
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : null;
+                            },
+                            error: (error, _) => null,
+                            loading: () => null)),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),

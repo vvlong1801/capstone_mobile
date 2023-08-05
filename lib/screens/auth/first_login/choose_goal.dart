@@ -17,8 +17,8 @@ class _ChooseGoalPageState extends ConsumerState<ChooseGoalPage> {
   @override
   Widget build(BuildContext context) {
     final goals = ref.watch(listGoalData);
-    choosedGoals = ref.watch(profileProvider).goals!;
-    print(choosedGoals);
+    choosedGoals = ref.watch(profileProvider).goals ?? [];
+    // print(choosedGoals);
     return Scaffold(
         body: SafeArea(
       child: Padding(

@@ -5,6 +5,7 @@ import 'package:user_side_final_project/layouts/widgets/workout_app_bar_widget.d
 import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/models/session_exercise.dart';
 import 'package:user_side_final_project/providers/workout/controller/countdown_controller.dart';
+import 'package:user_side_final_project/providers/workout/controller/countdown_exercise_controller.dart';
 import 'package:user_side_final_project/providers/workout/controller/workout_controller.dart';
 import 'package:user_side_final_project/widgets/workout/countdown.dart';
 
@@ -21,8 +22,11 @@ class _RestPageState extends ConsumerState<RestPage> {
   @override
   void initState() {
     super.initState();
-    nextRoute = ref.read(workoutProvider.notifier).getNextRoute();
-    nextExercise = ref.read(workoutProvider.notifier).getCurrentExercise();
+    // ref.read(workoutProvider.notifier).startTime = DateTime.now();
+    // nextExercise = ref.read(workoutProvider.notifier).getCurrentExercise();
+
+    // nextRoute = ref.read(workoutProvider.notifier).getNextRoute();
+    // nextExercise = ref.read(workoutProvider.notifier).getCurrentExercise();
     ref.read(restTimerController.notifier).run();
   }
 
@@ -33,14 +37,19 @@ class _RestPageState extends ConsumerState<RestPage> {
   @override
   Widget build(BuildContext context) {
     final controller = ref.read(restTimerController.notifier);
-    final progress = ref.read(workoutProvider.notifier).getProgress();
-
+    nextExercise = ref.watch(workoutController).currentExercise;
+    nextRoute = nextExercise.requirementUnit == "reps"
+        ? countStepRoute
+        : countDownRoute;
+    // final progress = ref.read(workoutProvider.notifier).getProgress();
+    final progress = ref.watch(workoutController.notifier).getProgress();
     return Scaffold(
       appBar: WorkoutAppBarWidget(
         actionLeading: controller.pause,
         actionContinue: controller.run,
         actionExit: () {
-          ref.read(workoutProvider.notifier).reset();
+          // ref.read(workoutProvider.notifier).reset();
+          ref.read(workoutController.notifier).reset();
           controller.restart();
         },
       ),
@@ -140,7 +149,7 @@ class _RestPageState extends ConsumerState<RestPage> {
                 ),
                 onFinished: () {
                   controller.restart();
-                  GoRouter.of(context).goNamed(countDownRoute);
+                  GoRouter.of(context).goNamed(nextRoute);
                 },
               ),
               const SizedBox(
@@ -156,7 +165,8 @@ class _RestPageState extends ConsumerState<RestPage> {
                     children: [
                       Text(
                         "Next $progress",
-                        style: const TextStyle(color: Colors.black54, fontSize: 14),
+                        style: const TextStyle(
+                            color: Colors.black54, fontSize: 14),
                       ),
                       Text(
                         nextExercise.name ?? "No Name",

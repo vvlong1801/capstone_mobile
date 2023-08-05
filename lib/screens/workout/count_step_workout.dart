@@ -20,20 +20,26 @@ class _CountStepPageState extends ConsumerState<CountStepPage> {
   @override
   void initState() {
     super.initState();
-    currentExercise = ref.read(workoutProvider.notifier).getCurrentExercise();
-    nextRoute = ref.read(workoutProvider.notifier).checkCompleted()
-        ? congratulationRoute
-        : restRoute;
+    // currentExercise = ref.read(workoutProvider.notifier).getCurrentExercise();
+    // nextRoute = ref.read(workoutProvider.notifier).checkCompleted()
+    //     ? congratulationRoute
+    //     : restRoute;
   }
 
   @override
   Widget build(BuildContext context) {
+    currentExercise = ref.watch(workoutController).currentExercise;
     final mediaUrl =
         currentExercise.data.gif?.url ?? currentExercise.data.image?.url;
+
+    nextRoute = ref.watch(workoutController.notifier).checkComplete()
+        ? congratulationRoute
+        : restRoute;
     return Scaffold(
       appBar: WorkoutAppBarWidget(
         actionExit: () {
-          ref.read(workoutProvider.notifier).reset();
+          // ref.read(workoutProvider.notifier).reset();
+          ref.read(workoutController.notifier).reset();
         },
       ),
       body: SafeArea(
@@ -90,11 +96,19 @@ class _CountStepPageState extends ConsumerState<CountStepPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: GestureDetector(
                           onTap: () {
-                            nextRoute == congratulationRoute
-                                ? ref.read(workoutProvider.notifier).reset()
-                                : ref
-                                    .read(workoutProvider.notifier)
-                                    .currentIndex++;
+                            // nextRoute == congratulationRoute
+                            //     ? ref.read(workoutProvider.notifier).reset()
+                            //     : ref
+                            //         .read(workoutProvider.notifier)
+                            //         .currentIndex++;
+
+                            if (nextRoute == congratulationRoute) {
+                              ref.read(workoutController.notifier).reset();
+                            } else {
+                              ref
+                                  .read(workoutController.notifier)
+                                  .increaseCurrentIndex();
+                            }
 
                             GoRouter.of(context).pushNamed(nextRoute);
                           },

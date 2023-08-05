@@ -3,7 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
-import 'package:user_side_final_project/providers/my_plan/controllers/plan_controller.dart';
+import 'package:user_side_final_project/providers/my_plan/controllers/plan_test_controller.dart';
 
 class CompletedChallengePage extends ConsumerStatefulWidget {
   const CompletedChallengePage({super.key});
@@ -26,7 +26,7 @@ class _CompletedChallengePageState
   void onClickHome() async {
     if (rateValue != null && rateValue! > 0) {
       debugPrint("post rate $rateValue");
-      await ref.read(planController.notifier).postRate(rateValue!);
+      ref.read(rateChallengeFuture(rateValue!));
     }
     GoRouter.of(context).goNamed(myPlanRoute);
   }
@@ -38,11 +38,11 @@ class _CompletedChallengePageState
           child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          SizedBox(
+          const SizedBox(
             height: 60,
           ),
           Image.asset("assets/images/challenge.avif"),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Text(
@@ -59,10 +59,10 @@ class _CompletedChallengePageState
                 fontSize: 40,
                 fontWeight: FontWeight.w900),
           ),
-          SizedBox(
+          const SizedBox(
             height: 14,
           ),
-          Center(
+          const Center(
             child: Text(
               "Please rating for challenge",
               style: TextStyle(
@@ -71,7 +71,7 @@ class _CompletedChallengePageState
                   fontWeight: FontWeight.w500),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
           RatingBar.builder(
@@ -81,8 +81,8 @@ class _CompletedChallengePageState
               allowHalfRating: false,
               itemCount: 5,
               itemSize: 60,
-              itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-              itemBuilder: (context, _) => Icon(
+              itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+              itemBuilder: (context, _) => const Icon(
                     Icons.star,
                     color: Colors.amber,
                   ),
@@ -92,7 +92,7 @@ class _CompletedChallengePageState
                   print(rateValue);
                 });
               }),
-          SizedBox(
+          const SizedBox(
             height: 160,
           ),
           if (rateValue != null && rateValue! > 0)

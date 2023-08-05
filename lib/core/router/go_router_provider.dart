@@ -22,6 +22,7 @@ import 'package:user_side_final_project/screens/explore/join_waiting.dart';
 import 'package:user_side_final_project/screens/explore/list_challenge.dart';
 import 'package:user_side_final_project/screens/explore/list_comment.dart';
 import 'package:user_side_final_project/screens/explore/list_pt.dart';
+import 'package:user_side_final_project/screens/explore/search_challenge.dart';
 import 'package:user_side_final_project/screens/home/insight.dart';
 import 'package:user_side_final_project/screens/messages/message.dart';
 import 'package:user_side_final_project/screens/my_plan/comment.dart';
@@ -127,13 +128,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     },
                   ),
                   GoRoute(
-                      path: 'detail_exercise/:id',
+                      path: 'detail_exercise/:index',
                       name: detailExerciseRoute,
                       pageBuilder: (context, state) {
                         return NoTransitionPage(
                           child: DetailExercisePage(
                             key: state.pageKey,
-                            exerciseId: state.pathParameters["id"],
+                            index: int.parse(state.pathParameters["index"]!),
                           ),
                         );
                       }),
@@ -189,6 +190,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                         pageBuilder: (context, state) {
                           return NoTransitionPage(
                             child: ListChallengePage(),
+                          );
+                        }),
+                    GoRoute(
+                        path: 'challenges/search',
+                        name: searchChallengeRoute,
+                        pageBuilder: (context, state) {
+                          return NoTransitionPage(
+                            child: SearchChallengePage(),
                           );
                         }),
                     GoRoute(

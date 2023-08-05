@@ -21,6 +21,7 @@ const String exploreRoute = 'explore';
 const String detailChallengeRoute = 'explore.detail_challenge';
 const String listCommentRoute = 'explore.challenges.comments';
 const String listChallenge = 'explore.challenges';
+const String searchChallengeRoute = 'explore.challenges.search';
 const String listPTRoute = 'explore.personal_trainers';
 const String detailPTRoute = 'explore.personal_trainers.detail';
 const String joinChallengeSuccessRoute = 'explore.join_challenge_success';

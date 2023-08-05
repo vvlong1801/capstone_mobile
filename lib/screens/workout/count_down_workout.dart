@@ -29,12 +29,14 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
   @override
   void initState() {
     super.initState();
-    currentExercise = ref.read(workoutProvider.notifier).getCurrentExercise();
+
+    // currentExercise = ref.read(workoutProvider.notifier).getCurrentExercise();
     // ref.read(initCountdownExercise.notifier).state =
     //     int.parse(currentExercise.requirement!);
-    nextRoute = ref.read(workoutProvider.notifier).checkCompleted()
-        ? congratulationRoute
-        : restRoute;
+    // nextRoute = ref.read(workoutProvider.notifier).checkCompleted()
+    //     ? congratulationRoute
+    //     : restRoute;
+
     _animationController = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
@@ -64,6 +66,8 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
         } else {
           _animationController.clearListeners();
           ref.read(readyCountDownProvider.notifier).state = 3;
+          ref.read(initCountdownExercise.notifier).update((state) =>
+              state = int.parse(currentExercise.requirement ?? "15"));
           ref.read(countdownExerciseController.notifier).run();
         }
       }
@@ -76,6 +80,11 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
     final int num = ref.watch(readyCountDownProvider);
     final controller = ref.read(countdownExerciseController.notifier);
     final iconCountDown = ref.watch(iconCountDownProvider);
+
+    currentExercise = ref.watch(workoutController).currentExercise;
+    nextRoute = ref.read(workoutController.notifier).checkComplete()
+        ? congratulationRoute
+        : restRoute;
     final mediaUrl =
         currentExercise.data.gif?.url ?? currentExercise.data.image?.url;
 
@@ -84,7 +93,8 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
         actionLeading: controller.pause,
         actionContinue: controller.run,
         actionExit: () {
-          ref.read(workoutProvider.notifier).reset();
+          // ref.read(workoutProvider.notifier).reset();
+          ref.read(workoutController.notifier).reset();
           controller.restart();
         },
       ),
@@ -140,7 +150,7 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
                 children: [
                   Text(
                     currentExercise.name ?? "NO NAME",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.bold,
                         color: Colors.black45),
@@ -159,9 +169,17 @@ class _CountDownPageState extends ConsumerState<CountDownPage>
                     ),
                     onFinished: () {
                       controller.restart();
-                      nextRoute == congratulationRoute
-                          ? ref.read(workoutProvider.notifier).reset()
-                          : ref.read(workoutProvider.notifier).currentIndex++;
+                      if (nextRoute == congratulationRoute) {
+                        debugPrint("done");
+                        ref.read(workoutController.notifier).reset();
+                      } else {
+                        ref
+                            .read(workoutController.notifier)
+                            .increaseCurrentIndex();
+                      }
+                      // nextRoute == congratulationRoute
+                      //     ? ref.read(workoutProvider.notifier).reset()
+                      //     : ref.read(workoutProvider.notifier).currentIndex++;
                       GoRouter.of(context).goNamed(nextRoute);
                     },
                   ),
