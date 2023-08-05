@@ -11,8 +11,11 @@ class Challenge {
   int id;
   String name;
   String? level;
+  String? sortDesc;
   int? phasesCount;
   int? maxMembers;
+
+  @JsonKey(name: "members_count")
   int? membersCount;
   double? rate;
   int? numRate;
@@ -37,6 +40,7 @@ class Challenge {
       List<Tag>? tags,
       this.phasesCount,
       this.membersCount,
+      this.sortDesc,
       this.maxMembers,
       this.rate,
       this.numRate,

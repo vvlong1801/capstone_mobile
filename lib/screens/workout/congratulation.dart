@@ -23,19 +23,23 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
 
   @override
   void initState() {
-    ref.read(workoutProvider.notifier).finishTime = DateTime.now();
-    timeWorkout = ref.read(workoutProvider.notifier).getTimeWorkout();
-    ref.read(workoutProvider.notifier).getWorkoutData();
-    kcal = ref.read(workoutProvider.notifier).caloriesBurned;
-    bpm = ref.read(workoutProvider.notifier).bpm;
-    completeChallenge = ref.read(planController.notifier).checkCompletePlan();
+    // timeWorkout = ref.read(workoutProvider.notifier).getTimeWorkout();
+
+    // ref.read(workoutProvider.notifier).getWorkoutData();
+    ref.read(workoutController.notifier).getWorkoutData();
+    kcal = ref.read(workoutController.notifier).calo;
+    bpm = ref.read(workoutController.notifier).heartRate;
+    // kcal = ref.read(workoutProvider.notifier).caloriesBurned;
+    // bpm = ref.read(workoutProvider.notifier).bpm;
+    // completeChallenge = ref.read(planController.notifier).checkCompletePlan();
+    completeChallenge = ref.read(completePlanProvider);
     debugPrint("ban da ket thuc buoi tap luyen");
     super.initState();
   }
 
   void onClickHome() {
     ref.read(audioPlayerController.notifier).pause();
-    ref.read(workoutProvider.notifier).sendResult();
+    ref.read(workoutController.notifier).sendResult();
     if (completeChallenge) {
       GoRouter.of(context).goNamed(completedChallengeRoute);
     } else {
@@ -45,6 +49,10 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
 
   @override
   Widget build(BuildContext context) {
+    ref.read(workoutController.notifier).updateEndTime(DateTime.now());
+    print(ref.read(workoutController.notifier).startTime);
+    print(ref.read(workoutController.notifier).endTime);
+    timeWorkout = ref.read(workoutController.notifier).timeWorkout;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -81,7 +89,10 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                               style: const TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.w600),
                             ),
-                            const Text("seconds"),
+                            const Text(
+                              "seconds",
+                              style: const TextStyle(color: Colors.black38),
+                            ),
                           ],
                         ),
                       ),
@@ -96,13 +107,16 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              kcal != 0.0 ? kcal.toString() : "No data",
+                              kcal != 0.0 ? kcal.toString() : "...",
                               style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black38),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                            const Text("Kcal"),
+                            const Text(
+                              "calories",
+                              style: const TextStyle(color: Colors.black38),
+                            ),
                           ],
                         ),
                       ),
@@ -118,13 +132,16 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                bpm != 0.0 ? bpm.toString() : "No data",
+                                bpm != 0.0 ? bpm.toString() : "...",
                                 style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black38),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                              const Text("Bpm"),
+                              const Text(
+                                "heart rate",
+                                style: const TextStyle(color: Colors.black38),
+                              ),
                             ],
                           ),
                         );
@@ -138,7 +155,10 @@ class _CongratulationPageState extends ConsumerState<CongratulationPage> {
                   TextButton(
                     onPressed: () async {
                       final feedback = await showFeedbackDialog();
-                      ref.read(workoutProvider.notifier).feedback = feedback;
+                      // ref.read(workoutProvider.notifier).feedback = feedback;
+                      ref
+                          .read(workoutController.notifier)
+                          .updateFeedback(feedback ?? "");
                     },
                     child: const Padding(
                       padding: EdgeInsets.symmetric(vertical: 8.0),

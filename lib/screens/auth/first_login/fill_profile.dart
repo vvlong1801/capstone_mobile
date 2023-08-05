@@ -59,7 +59,7 @@ class _FillProfilePageState extends ConsumerState<FillProfilePage> {
                           child: CircleAvatar(
                             backgroundColor: Colors.grey.shade200,
                             child: const Icon(
-                              Icons.person_2_rounded,
+                              Icons.person,
                               size: 120,
                               color: Colors.black54,
                             ),

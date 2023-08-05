@@ -20,7 +20,11 @@ class AuthService {
 
   Future<dynamic> login(String email, String password) async {
     try {
-      var data = {'email': email, 'password': password};
+      var data = {
+        'email': email,
+        'password': password,
+        'device_name': "iphone long"
+      };
       print(data);
       var response = await BaseClient().post("/login", data);
       print(response['data']["access_token"]);

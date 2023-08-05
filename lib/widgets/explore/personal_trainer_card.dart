@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/models/personal_trainer.dart';
+import 'package:user_side_final_project/providers/explore/controllers/personal_trainer_controller.dart';
 
 // ignore: must_be_immutable
 class PersonalTrainerCard extends ConsumerWidget {
@@ -16,6 +17,9 @@ class PersonalTrainerCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
+        ref
+            .read(personalTrainerIdProvider.notifier)
+            .update((state) => state = pt.id!);
         GoRouter.of(context)
             .pushNamed(detailPTRoute, pathParameters: {"id": pt.id.toString()});
       },

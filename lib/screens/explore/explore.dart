@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/layouts/widgets/bottom_navigation_widget.dart';
+import 'package:user_side_final_project/providers/auth/profile_controller.dart';
 import 'package:user_side_final_project/providers/explore/controllers/explore_controller.dart';
 import 'package:user_side_final_project/providers/explore/controllers/personal_trainer_controller.dart';
 import 'package:user_side_final_project/widgets/explore/personal_trainer_card.dart';
@@ -31,6 +32,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     final listChallenges = ref.watch(exploreController);
+    final profile = ref.watch(profileProvider);
     listPersonalTrainer = ref.watch(listPersonalTrainerProvider);
     debugPrint("build explore");
     return Scaffold(
@@ -44,13 +46,13 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
         padding: const EdgeInsets.all(14),
         child: Column(
           children: [
-            const Row(
+            Row(
               children: [
                 Text(
-                  'Morning, Long',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  "Hi, ${profile.name!}",
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                Icon(
+                const Icon(
                   Icons.front_hand_rounded,
                   color: Colors.amber,
                 )
@@ -62,7 +64,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   "Personal Trainer",
                   style: TextStyle(
                     fontSize: 18,
@@ -73,7 +75,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
                   onTap: () {
                     GoRouter.of(context).pushNamed(listPTRoute);
                   },
-                  child: Flex(
+                  child: const Flex(
                     direction: Axis.horizontal,
                     children: [
                       Text(
@@ -139,7 +141,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
                   onTap: () {
                     GoRouter.of(context).pushNamed(listChallenge);
                   },
-                  child: Flex(
+                  child: const Flex(
                     direction: Axis.horizontal,
                     children: [
                       Text(

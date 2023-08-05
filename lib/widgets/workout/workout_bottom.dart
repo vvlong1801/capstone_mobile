@@ -17,7 +17,7 @@ class WorkoutBottom extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final audioState = ref.watch(audioPlayerController);
-    final nextExe = ref.read(workoutProvider.notifier).getNextExercise();
+    final nextExe = ref.read(workoutController).nextExercise;
     final nextExeName = nextExe != null ? nextExe.name : "";
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -25,7 +25,7 @@ class WorkoutBottom extends ConsumerWidget {
       decoration: BoxDecoration(
           color: Colors.deepPurple, borderRadius: BorderRadius.circular(8)),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 14),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,7 +45,7 @@ class WorkoutBottom extends ConsumerWidget {
                   }
                 });
               },
-              child: Icon(
+              child: const Icon(
                 Icons.music_note_rounded,
                 size: 24,
                 color: Colors.white,
@@ -55,7 +55,7 @@ class WorkoutBottom extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "next",
                   style: TextStyle(
                       color: Colors.white38,
@@ -64,7 +64,7 @@ class WorkoutBottom extends ConsumerWidget {
                 ),
                 Text(
                   nextExeName ?? "",
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 22,
                       fontWeight: FontWeight.bold),
@@ -80,12 +80,12 @@ class WorkoutBottom extends ConsumerWidget {
                 }
               },
               child: audioState == AudioPlayerState.mute
-                  ? Icon(
+                  ? const Icon(
                       Icons.volume_off_rounded,
                       size: 24,
                       color: Colors.white,
                     )
-                  : Icon(
+                  : const Icon(
                       Icons.volume_up_rounded,
                       size: 24,
                       color: Colors.white,

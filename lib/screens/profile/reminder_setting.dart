@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:user_side_final_project/core/notifications/local_notification.dart';
@@ -35,7 +36,8 @@ class _ReminderSettingPageState extends ConsumerState<ReminderSettingPage> {
                 height: 100,
                 child: Text(
                   "${time.hourOfPeriod.toString()}:${time.minute.toString().padLeft(2, "0")} ${time.period == DayPeriod.am ? "AM" : "PM"}",
-                  style: const TextStyle(fontSize: 60, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                      fontSize: 60, fontWeight: FontWeight.w600),
                 ),
               ),
             ),
@@ -83,7 +85,10 @@ class _ReminderSettingPageState extends ConsumerState<ReminderSettingPage> {
             ),
             TextButton(
                 onPressed: () async {
-                  await LocalNotificationService()
+                  // await LocalNotificationService()
+                  //     .showLocalNotification(title: "test", body: "It work!");
+                  ref
+                      .watch(notificationServiceProvider)
                       .showLocalNotification(title: "test", body: "It work!");
                 },
                 child: const Text("test Notification"))
@@ -94,7 +99,21 @@ class _ReminderSettingPageState extends ConsumerState<ReminderSettingPage> {
         onPressed: () async {
           TimeOfDay? newTime =
               await showTimePicker(context: context, initialTime: time);
-          ref.read(remindTime.notifier).state = newTime ?? time;
+          ref.read(remindTime.notifier).update((state) => newTime ?? state);
+          final mappedIndex = remindDays
+              .mapIndexed((index, element) => element ? index + 1 : 0)
+              .toList();
+          final scheduledDays =
+              mappedIndex.where((element) => element != 0).toList();
+          if (newTime != null) {
+            final now = DateTime.now();
+            ref.watch(notificationServiceProvider).showScheduledNotification(
+                title: "Remind Workout Time",
+                body: "Let's start workout now!!",
+                scheduledDate: DateTime(
+                    now.year, now.month, now.day, newTime.hour, newTime.minute),
+                days: scheduledDays);
+          }
         },
         child: const Icon(
           Icons.alarm_add_outlined,

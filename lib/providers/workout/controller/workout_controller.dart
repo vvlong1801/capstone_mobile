@@ -1,103 +1,57 @@
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:health/health.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:user_side_final_project/core/health/health_provider.dart';
-import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/models/session_exercise.dart';
 import 'package:user_side_final_project/models/workout_result.dart';
+import 'package:user_side_final_project/providers/my_plan/controllers/plan_controller.dart';
+import 'package:user_side_final_project/providers/my_plan/controllers/session_controller.dart';
+import 'package:user_side_final_project/providers/workout/state/workout_state.dart';
 import 'package:user_side_final_project/services/workout_service.dart';
 
-final workoutProvider =
-    NotifierProvider<WorkoutNotifier, List<SessionExercise>>(
-        WorkoutNotifier.new);
+class WorkoutNotifier extends Notifier<WorkoutState> {
+  late DateTime? startTime;
+  late DateTime? endTime;
+  late double? calo = 0;
+  late double? heartRate = 0;
 
-class WorkoutNotifier extends Notifier<List<SessionExercise>> {
   @override
-  List<SessionExercise> build() {
-    return [];
+  WorkoutState build() {
+    return WorkoutState(listExercise: [], currentIndex: 0);
   }
 
-  int currentIndex = 0;
-  late int _planId;
-  late int _phaseSessionId;
-  late WorkoutResult result;
-  late DateTime startTime;
-  late DateTime finishTime;
-  double caloriesBurned = 0.0;
-  double bpm = 0.0;
-  String? feedback;
+  Duration get timeWorkout => endTime!.difference(startTime!);
 
-  set planId(int planId) => _planId = planId;
-  set phaseSessionId(int phaseSessionId) => _phaseSessionId = phaseSessionId;
-
-  void initState(List<SessionExercise> exercises) {
-    state = exercises;
+  void increaseCurrentIndex() {
+    state = state.copyWith(currentIndex: state.currentIndex + 1);
   }
 
-  SessionExercise getCurrentExercise() {
-    return state[currentIndex];
+  void updateStartTime(DateTime time) {
+    startTime = time;
   }
 
-  SessionExercise? getNextExercise() {
-    if (currentIndex < state.length - 1) {
-      return state[currentIndex + 1];
-    } else {
-      return null;
-    }
+  void updateEndTime(DateTime time) {
+    endTime = time;
   }
 
-  String getNextRoute() {
-    return state[currentIndex].requirementUnit == "reps"
-        ? countStepRoute
-        : countDownRoute;
+  void updateFeedback(String feedback) {
+    state = state.copyWith(feedback: feedback);
   }
 
-  bool checkCompleted() {
-    return currentIndex + 1 == state.length;
-  }
-
-  String getProgress() {
-    return "${(currentIndex + 1).toString()}/${state.length}";
+  void updateListExercise(List<SessionExercise> listExe) {
+    state = state.copyWith(listExercise: listExe);
   }
 
   void reset() {
-    currentIndex = 0;
-    state = [];
-    feedback = null;
+    state = state.copyWith(kcal: 0, heartRate: 0, currentIndex: 0);
   }
 
-  Duration? getTimeWorkout() {
-    if (startTime != null && finishTime != null) {
-      return finishTime.difference(startTime);
-    }
-    return null;
+  String getProgress() {
+    return "${(state.currentIndex + 1).toString()}/${state.listExercise.length}";
   }
 
-  String _formatDuration(Duration duration) {
-    String twoDigits(int n) {
-      if (n >= 10) return "$n";
-      return "0$n";
-    }
-
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-
-    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
-  }
-
-  void sendResult() {
-    var duration = _formatDuration(getTimeWorkout()!);
-    debugPrint(duration);
-    result = WorkoutResult(
-        planId: _planId,
-        phaseSessionId: _phaseSessionId,
-        duration: duration,
-        caloriesBurned: caloriesBurned,
-        bpm: bpm,
-        feedback: feedback);
-    debugPrint(result.toString());
-    ref.watch(workoutServiceProvider).postWorkoutResult(result);
+  bool checkComplete() {
+    return state.currentIndex + 1 == state.listExercise.length;
   }
 
   void getWorkoutData() {
@@ -125,11 +79,45 @@ class WorkoutNotifier extends Notifier<List<SessionExercise>> {
       print(sumByDataType);
 
       if (sumByDataType.containsKey(HealthDataType.ACTIVE_ENERGY_BURNED)) {
-        caloriesBurned = sumByDataType[HealthDataType.ACTIVE_ENERGY_BURNED]!;
+        calo = sumByDataType[HealthDataType.ACTIVE_ENERGY_BURNED] ?? null;
       }
       if (sumByDataType.containsKey(HealthDataType.HEART_RATE)) {
-        bpm = sumByDataType[HealthDataType.HEART_RATE]!;
+        heartRate = sumByDataType[HealthDataType.HEART_RATE] ?? null;
+        // bpm = sumByDataType[HealthDataType.HEART_RATE]!;
       }
     }
   }
+
+  void sendResult() {
+    var duration = _formatDuration(timeWorkout);
+    final planId = ref.watch(planIdProvider);
+    final sessionId = ref.watch(sessionProvider).value!.id;
+
+    WorkoutResult result = WorkoutResult(
+        planId: planId,
+        phaseSessionId: sessionId,
+        duration: duration,
+        caloriesBurned: calo ?? 0,
+        bpm: heartRate ?? 0,
+        feedback: state.feedback);
+    ref.watch(workoutServiceProvider).postWorkoutResult(result);
+    print("sended");
+  }
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) {
+      if (n >= 10) return "$n";
+      return "0$n";
+    }
+
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+
+    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+  }
 }
+
+final workoutController =
+    NotifierProvider<WorkoutNotifier, WorkoutState>(WorkoutNotifier.new);
+
+final sendResult = FutureProvider((ref) {});

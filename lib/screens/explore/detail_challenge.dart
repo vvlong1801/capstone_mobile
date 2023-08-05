@@ -8,6 +8,7 @@ import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/models/media.dart';
 import 'package:user_side_final_project/models/message.dart';
 import 'package:user_side_final_project/providers/explore/controllers/explore_controller.dart';
+import 'package:user_side_final_project/services/challenge_service.dart';
 import 'package:user_side_final_project/utils/index.dart';
 import 'package:user_side_final_project/widgets/common/comment_widget.dart';
 import 'package:user_side_final_project/widgets/common/tag_widget.dart';
@@ -39,8 +40,10 @@ class _DetailChallengePageState extends ConsumerState<DetailChallengePage> {
 
   void onJoinChallenge(BuildContext context) async {
     await ref
-        .watch(joinChallengeProvider(widget.challengId).future)
+        .watch(challengeServiceProvider)
+        .joinChallenge(widget.challengId)
         .then((value) {
+      print(value);
       if (value) {
         GoRouter.of(context).goNamed(joinChallengeSuccessRoute,
             queryParameters: {'redirectRoute': exploreRoute});
@@ -120,8 +123,17 @@ class _DetailChallengePageState extends ConsumerState<DetailChallengePage> {
                     Flex(
                       direction: Axis.horizontal,
                       children: [
-                        const Icon(Icons.person_2),
-                        Text("${data.membersCount}/${data.maxMembers} members")
+                        const Icon(
+                          Icons.group,
+                          size: 28,
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          "${data.membersCount}/${data.maxMembers} members",
+                          style: const TextStyle(fontSize: 18),
+                        )
                       ],
                     ),
                     const SizedBox(

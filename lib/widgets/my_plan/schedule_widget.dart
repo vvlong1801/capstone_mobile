@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
-import 'package:user_side_final_project/providers/my_plan/controllers/plan_controller.dart';
+import 'package:user_side_final_project/providers/my_plan/controllers/plan_test_controller.dart';
+import 'package:user_side_final_project/providers/my_plan/controllers/session_controller.dart';
 
+// ignore: must_be_immutable
 class ScheduleWidget extends ConsumerStatefulWidget {
   int totalSession;
   int currentSession;
@@ -70,7 +72,10 @@ class _ScheduleWidgetState extends ConsumerState<ScheduleWidget> {
       borderRadius: BorderRadius.circular(90),
       child: GestureDetector(
         onTap: () {
-          ref.read(planController.notifier).sessionWorkoutIndex = number;
+          ref
+              .read(sessionIndexProvider.notifier)
+              .update((state) => state = number - 1);
+          // ref.read(planController.notifier).sessionWorkoutIndex = number;
           GoRouter.of(context).pushNamed(sessionRoute, queryParameters: {
             'sessionIndex': (number - 1).toString(),
             'phaseIndex': widget.index.toString()
@@ -96,7 +101,9 @@ class _ScheduleWidgetState extends ConsumerState<ScheduleWidget> {
       borderRadius: BorderRadius.circular(90),
       child: GestureDetector(
         onTap: () {
-          ref.read(planController.notifier).sessionWorkoutIndex = number;
+          ref
+              .read(sessionIndexProvider.notifier)
+              .update((state) => state = number - 1);
           GoRouter.of(context).pushNamed(sessionRoute, queryParameters: {
             'sessionIndex': (number - 1).toString(),
             'phaseIndex': widget.index.toString()

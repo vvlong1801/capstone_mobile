@@ -37,7 +37,7 @@ class HealthNotifier extends StateNotifier<HealthState> {
 
   List<HealthDataPoint> getData(
       {DateTime? start, DateTime? end, required List<HealthDataType> types}) {
-    ref.watch(healthServiceProvider).fetchData(dataTypes: types).then((value) {
+    ref.read(healthServiceProvider).fetchData(dataTypes: types).then((value) {
       state = state.copyWith(healthData: value);
     });
     return state.healthData;

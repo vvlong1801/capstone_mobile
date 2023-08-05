@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:user_side_final_project/layouts/widgets/bottom_navigation_widget.dart';
 import 'package:user_side_final_project/providers/my_plan/controllers/plan_controller.dart';
+// import 'package:user_side_final_project/providers/my_plan/controllers/plan_controller.dart';
 import 'package:user_side_final_project/widgets/my_plan/plan_card.dart';
 
 class MyPlanPage extends ConsumerStatefulWidget {
@@ -12,14 +13,16 @@ class MyPlanPage extends ConsumerStatefulWidget {
 }
 
 class _MyPlanPageState extends ConsumerState<MyPlanPage> {
+  late AsyncValue listPlans;
   @override
   void initState() {
-    ref.read(planController.notifier).fetchPlans();
+    listPlans = ref.refresh(listPlanProvider);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    listPlans = ref.watch(listPlanProvider);
     final otherPlans = ref.watch(doingPlansProvider);
     final completedPlans = ref.watch(completedPlansProvider);
     final firstPlan = ref.watch(firstPlanProvider);
@@ -44,7 +47,8 @@ class _MyPlanPageState extends ConsumerState<MyPlanPage> {
                 ),
                 IconButton(
                     onPressed: () {
-                      ref.read(planController.notifier).fetchPlans();
+                      // ref.read(planController.notifier).fetchPlans();
+                      listPlans = ref.refresh(listPlanProvider);
                     },
                     icon: const Icon(Icons.refresh_outlined))
               ],

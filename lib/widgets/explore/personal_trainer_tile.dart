@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/models/personal_trainer.dart';
+import 'package:user_side_final_project/providers/explore/controllers/personal_trainer_controller.dart';
 
 class PersonalTrainerTile extends ConsumerWidget {
   PersonalTrainer pt;
@@ -41,20 +42,19 @@ class PersonalTrainerTile extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
                   child: _PersonalTrainerDescription(
-                    name: pt.user!.name!,
-                    introduce: pt.introduce!,
-                    members: pt.members!,
-                    verifiedAt: pt.verifiedAt!,
-                    rate: pt.rate!,
+                    pt: pt,
                   ),
                 ),
               ),
               IconButton(
                 onPressed: () {
+                  ref
+                      .read(personalTrainerIdProvider.notifier)
+                      .update((state) => pt.id!);
                   GoRouter.of(context).pushNamed(detailPTRoute,
                       pathParameters: {"id": pt.id.toString()});
                 },
-                icon: Icon(Icons.chevron_right_rounded),
+                icon: const Icon(Icons.chevron_right_rounded),
                 iconSize: 30,
               )
             ],
@@ -67,18 +67,10 @@ class PersonalTrainerTile extends ConsumerWidget {
 
 class _PersonalTrainerDescription extends StatelessWidget {
   const _PersonalTrainerDescription({
-    required this.name,
-    required this.introduce,
-    required this.verifiedAt,
-    required this.rate,
-    required this.members,
+    required this.pt,
   });
 
-  final String name;
-  final String introduce;
-  final String verifiedAt;
-  final int rate;
-  final int members;
+  final PersonalTrainer pt;
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +82,7 @@ class _PersonalTrainerDescription extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                name,
+                pt.user!.name!,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -99,7 +91,7 @@ class _PersonalTrainerDescription extends StatelessWidget {
                 ),
               ),
               RatingBar.builder(
-                initialRating: rate.toDouble() ?? 0,
+                initialRating: pt.rate?.toDouble() ?? 0,
                 itemBuilder: (context, _) => const Icon(
                   Icons.star,
                   color: Colors.amber,
@@ -111,60 +103,70 @@ class _PersonalTrainerDescription extends StatelessWidget {
               ),
               const Padding(padding: EdgeInsets.only(bottom: 2.0)),
               Text(
-                introduce,
-                maxLines: 2,
+                pt.certificateIssuer!.name,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 10,
                   color: Colors.black54,
                 ),
               ),
+              const SizedBox(
+                height: 4,
+              ),
+              Flex(
+                direction: Axis.horizontal,
+                children: [
+                  Text("${pt.desiredSalary}"),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  const Icon(Icons.monetization_on_outlined),
+                ],
+              )
             ],
           ),
         ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Flex(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                direction: Axis.horizontal,
-                children: [
-                  Icon(
-                    Icons.groups,
-                    color: Colors.black87,
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    "$members",
-                    style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w500),
-                  ),
-                ],
-              ),
-              // Flex(direction: Axis.horizontal, children: [
-              //   Icon(
-              //     Icons.verified_rounded,
-              //     color: Colors.green,
-              //   ),
-              //   SizedBox(
-              //     width: 4,
-              //   ),
-              //   Text(
-              //     '$verifiedAt',
-              //     style: const TextStyle(
-              //       fontSize: 16,
-              //       color: Colors.black87,
-              //     ),
-              //   ),
-              // ]),
-            ],
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Flex(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              direction: Axis.horizontal,
+              children: [
+                const Icon(
+                  Icons.groups,
+                  color: Colors.black87,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  "${pt.members}",
+                  style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+            // Flex(direction: Axis.horizontal, children: [
+            //   Icon(
+            //     Icons.verified_rounded,
+            //     color: Colors.green,
+            //   ),
+            //   SizedBox(
+            //     width: 4,
+            //   ),
+            //   Text(
+            //     '$verifiedAt',
+            //     style: const TextStyle(
+            //       fontSize: 16,
+            //       color: Colors.black87,
+            //     ),
+            //   ),
+            // ]),
+          ],
         ),
       ],
     );

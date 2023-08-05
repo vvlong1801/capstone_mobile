@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:go_router/go_router.dart';
-import 'package:user_side_final_project/core/router/name_route.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class LocalNotificationService {
   final localNotificationPlugin = FlutterLocalNotificationsPlugin();
@@ -31,29 +29,6 @@ class LocalNotificationService {
     );
   }
 
-  // void onDidReceiveLocalNotification(
-  //     int id, String? title, String? body, String? payload) async {
-  //   // display a dialog with the notification details, tap ok to go to another page
-  //   print("object");
-  //   await showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) => CupertinoAlertDialog(
-  //       title: Text(title!),
-  //       content: Text(body!),
-  //       actions: [
-  //         CupertinoDialogAction(
-  //           isDefaultAction: true,
-  //           child: Text('Ok'),
-  //           onPressed: () async {
-  //             GoRouter.of(context).pop();
-  //             GoRouter.of(context).pushNamed(reminderRoute);
-  //           },
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
-
   notificationDetails() {
     return const NotificationDetails(
         android: AndroidNotificationDetails('channelId', 'channelName'),
@@ -65,4 +40,47 @@ class LocalNotificationService {
     return localNotificationPlugin.show(
         id, title, body, await notificationDetails());
   }
+
+  Future showScheduledNotification(
+      {int id = 0,
+      String? title,
+      String? body,
+      String? payLoad,
+      required DateTime scheduledDate,
+      List<int>? days}) async {
+    return await localNotificationPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        tz.TZDateTime.from(scheduledDate, tz.local),
+        await notificationDetails(),
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
+  }
+
+  tz.TZDateTime _scheduleDaily(DateTime time) {
+    var now = tz.TZDateTime.now(tz.local);
+    var scheduledDate = tz.TZDateTime(
+        tz.local, now.year, now.month, now.day - 1, time.hour, time.minute);
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+    print(scheduledDate);
+    return scheduledDate;
+  }
+
+  tz.TZDateTime _scheduledWeekly(DateTime time, {required List<int> days}) {
+    tz.TZDateTime scheduledDate = _scheduleDaily(time);
+    while (!days.contains(scheduledDate.weekday)) {
+      print(scheduledDate.weekday);
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+    print(scheduledDate);
+    return scheduledDate;
+  }
 }
+
+final notificationServiceProvider = Provider<LocalNotificationService>((ref) {
+  return LocalNotificationService();
+});
