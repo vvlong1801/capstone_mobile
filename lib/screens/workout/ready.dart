@@ -22,15 +22,11 @@ class _ReadyPageState extends ConsumerState<ReadyPage> {
   @override
   void initState() {
     super.initState();
-    ref.read(workoutProvider.notifier).startTime = DateTime.now();
-    nextExercise = ref.read(workoutProvider.notifier).getCurrentExercise();
-    nextRoute = nextExercise.requirementUnit == "reps"
-        ? countStepRoute
-        : countDownRoute;
+    // ref.read(workoutProvider.notifier).startTime = DateTime.now();
+    // nextExercise = ref.read(workoutProvider.notifier).getCurrentExercise();
+    // ref.read(workoutController.notifier).build();
     ref.read(readyTimerController.notifier).run();
     ref.read(audioPlayerController.notifier).play();
-    debugPrint("buoi tap bat dau luc ${DateTime.now().toString()}");
-    debugPrint("ban chuan bi tap ${nextExercise.name}");
   }
 
   double? calcProgressValue(int max, int current) {
@@ -41,13 +37,21 @@ class _ReadyPageState extends ConsumerState<ReadyPage> {
   Widget build(BuildContext context) {
     // final time = ref.watch(readyTimerController);
     final controller = ref.read(readyTimerController.notifier);
+    ref.read(workoutController.notifier).updateStartTime(DateTime.now());
+
+    // print(ref.read(workoutController.notifier).startTime);
+    nextExercise = ref.watch(workoutController).currentExercise;
+    nextRoute = nextExercise.requirementUnit == "reps"
+        ? countStepRoute
+        : countDownRoute;
 
     return Scaffold(
       appBar: WorkoutAppBarWidget(
         actionLeading: controller.pause,
         actionContinue: controller.run,
         actionExit: () {
-          ref.read(workoutProvider.notifier).reset();
+          // ref.read(workoutProvider.notifier).reset();
+          ref.read(workoutController.notifier).reset();
           controller.restart();
         },
       ),
@@ -127,7 +131,6 @@ class _ReadyPageState extends ConsumerState<ReadyPage> {
               TextButton(
                 onPressed: () {
                   controller.restart();
-
                   GoRouter.of(context).goNamed(nextRoute);
                 },
                 style: ButtonStyle(

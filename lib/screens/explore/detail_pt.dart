@@ -21,17 +21,18 @@ class _DetailPersonalTrainerPageState
   TextEditingController messageInputController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final pt = ref.watch(detailPersonalTrainerProvider(widget.id));
+    final personalTrainer = ref.watch(detailPersonalTrainerProvider);
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text(pt!.user!.name!),
+          title: const Text("Detail Personal Trainer"),
           backgroundColor: Colors.white,
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
+            child: personalTrainer.when(data: (pt) {
+          return SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.all(14),
+              padding: const EdgeInsets.all(14),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -49,7 +50,7 @@ class _DetailPersonalTrainerPageState
                               width: 1000,
                             ),
                           )),
-                      SizedBox(
+                      const SizedBox(
                         width: 14,
                       ),
                       Column(
@@ -59,14 +60,14 @@ class _DetailPersonalTrainerPageState
                         children: [
                           Text(
                             "${pt.user!.name}",
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w600),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 4,
                           ),
                           RatingBar.builder(
-                            initialRating: pt.rate!.toDouble() ?? 0,
+                            initialRating: pt.rate!.toDouble(),
                             itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: Colors.amber,
@@ -76,7 +77,7 @@ class _DetailPersonalTrainerPageState
                             ignoreGestures: true,
                             allowHalfRating: true,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 14,
                           ),
                           Flex(
@@ -97,7 +98,7 @@ class _DetailPersonalTrainerPageState
                                       ),
                                     );
                                   }),
-                              SizedBox(
+                              const SizedBox(
                                 width: 8,
                               ),
                               Link(
@@ -122,7 +123,7 @@ class _DetailPersonalTrainerPageState
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Card(
@@ -146,11 +147,11 @@ class _DetailPersonalTrainerPageState
                               children: [
                                 Text(
                                   "${pt.members}",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 20),
                                 ),
-                                Text(
+                                const Text(
                                   "Member",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -170,11 +171,11 @@ class _DetailPersonalTrainerPageState
                               children: [
                                 Text(
                                   "${pt.challenges}",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 20),
                                 ),
-                                Text(
+                                const Text(
                                   "Challenge",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -194,11 +195,11 @@ class _DetailPersonalTrainerPageState
                               children: [
                                 Text(
                                   "${pt.numRate}",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.w600,
                                       fontSize: 20),
                                 ),
-                                Text(
+                                const Text(
                                   "Rating",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w600,
@@ -212,7 +213,7 @@ class _DetailPersonalTrainerPageState
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 14,
                   ),
                   Card(
@@ -230,161 +231,151 @@ class _DetailPersonalTrainerPageState
                               Flex(
                                 direction: Axis.horizontal,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.agriculture,
                                     color: Colors.black54,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 8,
                                   ),
                                   Text(
                                     "${pt.age} years old",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.black87),
                                   )
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 14,
                               ),
                               Flex(
                                 direction: Axis.horizontal,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.local_activity,
                                     color: Colors.black54,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 8,
                                   ),
                                   Text(
                                     "${pt.gender}",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600),
                                   )
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 14,
                               ),
                               Flex(
                                 direction: Axis.horizontal,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.location_on_outlined,
                                     color: Colors.black54,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 8,
                                   ),
                                   Text(
                                     "${pt.address}",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600),
                                   )
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 14,
                               ),
                               Flex(
                                 direction: Axis.horizontal,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.mail_outline_rounded,
                                     color: Colors.black54,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 8,
                                   ),
                                   Text(
                                     "${pt.user!.email}",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600),
                                   )
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 14,
                               ),
                               Flex(
                                 direction: Axis.horizontal,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.work_outline_rounded,
                                     color: Colors.black54,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 8,
                                   ),
                                   Text(
                                     "${pt.workType}",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600),
                                   )
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 14,
                               ),
                               Flex(
                                 direction: Axis.horizontal,
                                 children: [
-                                  Icon(Icons.monetization_on_outlined,
+                                  const Icon(Icons.monetization_on_outlined,
                                       color: Colors.black54),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 8,
                                   ),
                                   Text(
                                     "${pt.desiredSalary} dollar",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600),
                                   )
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 14,
                               ),
                               Flex(
                                 direction: Axis.horizontal,
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.gpp_good_outlined,
                                     color: Colors.black54,
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 8,
                                   ),
                                   Text(
-                                    "${pt.certificateIssuer!.name}",
-                                    style: TextStyle(
+                                    pt.certificateIssuer!.name,
+                                    style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600),
                                   )
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 14,
                               ),
-                              Flex(
-                                direction: Axis.horizontal,
-                                children: [
-                                  Icon(
-                                    Icons.label_outlined,
-                                    color: Colors.black54,
-                                  ),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  ...getTechniques(pt.techniques!),
-                                ],
+                              Wrap(
+                                children: [Text(getTechniques(pt.techniques!))],
                               ),
                             ],
                           ),
@@ -392,7 +383,7 @@ class _DetailPersonalTrainerPageState
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 14,
                   ),
                   Padding(
@@ -401,8 +392,8 @@ class _DetailPersonalTrainerPageState
                       "${pt.introduce}Xin chào! Tôi là Creator, một personal trainer đầy kinh nghiệm và đam mê về sức khỏe. Tôi tận tâm hỗ trợ khách hàng đạt được mục tiêu thể chất và sức khỏe tối ưu. Với phong cách huấn luyện tùy chỉnh và những kế hoạch hiệu quả, tôi cam kết giúp bạn vượt qua giới hạn và sống một cuộc sống khỏe mạnh, hạnh phúc. Hãy bắt đầu hành trình thay đổi cùng tôi!",
                     ),
                   ),
-                  Divider(),
-                  Text(
+                  const Divider(),
+                  const Text(
                     "Training Activities",
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                   ),
@@ -414,14 +405,26 @@ class _DetailPersonalTrainerPageState
                 ],
               ),
             ),
-          ),
-        ),
+          );
+        }, error: (error, _) {
+          return Center(
+            child: Text(error.toString()),
+          );
+        }, loading: () {
+          return const Center(
+            child: SizedBox(
+              width: 60,
+              height: 60,
+              child: CircularProgressIndicator(),
+            ),
+          );
+        })),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.deepPurple,
           onPressed: () async {
             await showMessageDialog();
           },
-          child: Icon(
+          child: const Icon(
             Icons.add,
             size: 32,
             color: Colors.white,
@@ -429,13 +432,9 @@ class _DetailPersonalTrainerPageState
         ));
   }
 
-  List<Widget> getTechniques(List<Tag> listTechs) {
-    return listTechs
-        .map((e) => Text(
-              "${e.name}, ",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            ))
-        .toList();
+  String getTechniques(List<Tag> listTechs) {
+    final mapped = listTechs.map((e) => e.name).toList();
+    return mapped.join(", ");
   }
 
   Future<String?> showMessageDialog() => showDialog(
@@ -454,7 +453,7 @@ class _DetailPersonalTrainerPageState
         child: TextField(
           maxLines: 8,
           controller: messageInputController,
-          decoration: InputDecoration(hintText: "Enter Message"),
+          decoration: const InputDecoration(hintText: "Enter Message"),
           autofocus: true,
         ),
       ),
@@ -464,7 +463,7 @@ class _DetailPersonalTrainerPageState
               GoRouter.of(context).pop(messageInputController.text);
               messageInputController.clear();
             },
-            child: Icon(Icons.send)),
+            child: const Icon(Icons.send)),
       ],
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
     );

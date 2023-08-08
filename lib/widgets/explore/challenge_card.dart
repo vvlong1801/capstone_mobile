@@ -8,10 +8,10 @@ import 'package:user_side_final_project/widgets/common/tag_widget.dart';
 class ChallengeCard extends ConsumerWidget {
   final Challenge challenge;
 
-  const ChallengeCard(
-      {super.key,
-      required this.challenge,
-      });
+  const ChallengeCard({
+    super.key,
+    required this.challenge,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -66,7 +66,8 @@ class ChallengeCard extends ConsumerWidget {
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      if (challenge.level != null) TagWidget(text: challenge.level!),
+                      if (challenge.level != null)
+                        TagWidget(text: challenge.level!),
                       if (challenge.phasesCount! > 1)
                         TagWidget(text: '${challenge.phasesCount} phases'),
                       if (challenge.totalSessions.isNotEmpty)
@@ -75,7 +76,7 @@ class ChallengeCard extends ConsumerWidget {
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.max,
-                    children: List.generate(challenge.tags.length,
+                    children: List.generate(2,
                         (index) => TagWidget(text: challenge.tags[index].name)),
                   )
                 ],

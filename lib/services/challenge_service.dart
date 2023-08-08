@@ -12,7 +12,7 @@ class ChallengeService {
       var response = await BaseClient().get("/challenges");
       print(response['data']);
       return response['data']
-          .map((challenge) => Challenge.fromJson(challenge))
+          .map<Challenge>((challenge) => Challenge.fromJson(challenge))
           .toList();
     } catch (e) {
       throw Exception(e);

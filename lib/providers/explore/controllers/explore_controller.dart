@@ -18,7 +18,7 @@ final showChallengeProvider =
 
 final joinChallengeProvider =
     FutureProvider.family<bool, int?>((ref, id) async {
-  Future<bool> approved = ref.watch(challengeServiceProvider).joinChallenge(id);
+  final approved = ref.watch(challengeServiceProvider).joinChallenge(id);
   return approved;
 });
 

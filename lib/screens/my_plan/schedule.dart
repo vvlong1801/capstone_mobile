@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
 import 'package:user_side_final_project/providers/my_plan/controllers/plan_controller.dart';
-import 'package:user_side_final_project/providers/workout/controller/workout_controller.dart';
+import 'package:user_side_final_project/providers/my_plan/controllers/plan_test_controller.dart';
+import 'package:user_side_final_project/providers/workout/controller/workout_test_controller.dart';
 import 'package:user_side_final_project/widgets/common/comment_widget.dart';
 import 'package:user_side_final_project/widgets/my_plan/schedule_widget.dart';
 
@@ -18,6 +19,7 @@ class SchedulePage extends ConsumerStatefulWidget {
 
 class _SchedulePageState extends ConsumerState<SchedulePage> {
   late AsyncValue feedbacks;
+  late AsyncValue plan;
   @override
   void initState() {
     ref.read(workoutProvider.notifier).planId = widget.planId!;
@@ -27,8 +29,9 @@ class _SchedulePageState extends ConsumerState<SchedulePage> {
 
   @override
   Widget build(BuildContext context) {
-    AsyncValue plan =
-        ref.read(planController.notifier).getPlanById(widget.planId);
+    // AsyncValue plan =
+    //     ref.read(planController.notifier).getPlanById(widget.planId);
+    plan = ref.watch(planProvider);
     feedbacks = ref.watch(listFeedbackProvider(widget.planId!));
     return Scaffold(
       appBar: AppBar(

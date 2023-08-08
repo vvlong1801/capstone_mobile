@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:user_side_final_project/providers/workout/controller/workout_controller.dart';
 import 'package:user_side_final_project/providers/workout/state/countdown_state.dart';
 
 import 'countdown_controller.dart';
@@ -11,7 +12,11 @@ final iconCountDownProvider = StateProvider<String>((ref) {
 });
 final countdownExerciseController =
     StateNotifierProvider<CountDownNotifier, CountDownState>((ref) {
-  return CountDownNotifier(2);
+  final init = ref.watch(initCountdownExercise);
+  return CountDownNotifier(init);
 });
 
-final initCountdownExercise = StateProvider((ref) => 10);
+final initCountdownExercise = StateProvider((ref) {
+  final init = ref.read(workoutController).currentExercise.requirement;
+  return int.parse(init ?? "5");
+});

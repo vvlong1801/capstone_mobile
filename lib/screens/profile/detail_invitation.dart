@@ -1,8 +1,11 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:user_side_final_project/core/router/name_route.dart';
+import 'package:user_side_final_project/models/media.dart';
 import 'package:user_side_final_project/models/message.dart';
 import 'package:user_side_final_project/providers/explore/controllers/explore_controller.dart';
 import 'package:user_side_final_project/services/challenge_service.dart';
@@ -54,35 +57,15 @@ class _DetailInvitationPageState extends ConsumerState<DetailInvitationPage> {
                 initialVideoId: getYoutubeId(data.youtubeUrl!)!);
           }
           return Scaffold(
+            appBar: AppBar(
+              title: const Text("Detail Invitation"),
+            ),
             body: Padding(
               padding: const EdgeInsets.all(14.0),
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          StatWidget(
-                            label: "Member",
-                            value: "5",
-                          ),
-                          StatWidget(
-                            label: "Hours",
-                            value: "0",
-                          ),
-                          StatWidget(
-                            label: "Star",
-                            value: "4.5",
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 14,
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -93,12 +76,27 @@ class _DetailInvitationPageState extends ConsumerState<DetailInvitationPage> {
                           style: const TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold),
                         ),
-                        IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.bookmark_border_rounded,
-                              size: 28,
-                            ))
+                        Flex(
+                          direction: Axis.horizontal,
+                          children: [
+                            Text(
+                              "(${data.numRate})",
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black54),
+                            ),
+                            RatingBar.builder(
+                              initialRating: data.rate ?? 0,
+                              itemBuilder: (context, _) => const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              itemSize: 24,
+                              onRatingUpdate: (rating) {},
+                              ignoreGestures: true,
+                              allowHalfRating: true,
+                            )
+                          ],
+                        ),
                       ],
                     ),
                     const SizedBox(height: 14),
@@ -109,7 +107,7 @@ class _DetailInvitationPageState extends ConsumerState<DetailInvitationPage> {
                             builder: (context, player) {
                               return player;
                             })
-                        : Image.network(data.mainImage!.url),
+                        : carouselImageWidget(data.images!),
                     const SizedBox(
                       height: 14,
                     ),
@@ -117,30 +115,38 @@ class _DetailInvitationPageState extends ConsumerState<DetailInvitationPage> {
                     const SizedBox(
                       height: 14,
                     ),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          "Feedbacks",
+                        const Text(
+                          "Comments",
                           textAlign: TextAlign.left,
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w600),
                         ),
-                        Flex(
-                          direction: Axis.horizontal,
-                          children: [
-                            Text(
-                              "See More",
-                              style: TextStyle(
-                                  color: Colors.deepPurple,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              color: Colors.deepPurple,
-                            )
-                          ],
+                        GestureDetector(
+                          onTap: () {
+                            GoRouter.of(context).pushNamed(listCommentRoute,
+                                pathParameters: {
+                                  "id": widget.challengId.toString()
+                                });
+                          },
+                          child: const Flex(
+                            direction: Axis.horizontal,
+                            children: [
+                              Text(
+                                "See More",
+                                style: TextStyle(
+                                    color: Colors.deepPurple,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Icon(
+                                Icons.chevron_right_rounded,
+                                color: Colors.deepPurple,
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -191,5 +197,23 @@ class _DetailInvitationPageState extends ConsumerState<DetailInvitationPage> {
               child: CommentWidget(comment: cmt),
             ))
         .toList();
+  }
+
+  Widget carouselImageWidget(List<Media> images) {
+    return CarouselSlider(
+        items: images
+            .map((img) => Container(
+                  margin: const EdgeInsets.all(5),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    child: Image.network(
+                      img.url,
+                      fit: BoxFit.cover,
+                      width: 1000.0,
+                    ),
+                  ),
+                ))
+            .toList(),
+        options: CarouselOptions());
   }
 }

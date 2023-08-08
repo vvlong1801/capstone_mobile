@@ -7,9 +7,11 @@ final listPersonalTrainerProvider =
   return await ref.watch(creatorServiceProvider).fetchPersonalTrainers();
 });
 
-final detailPersonalTrainerProvider =
-    Provider.family<PersonalTrainer?, int>((ref, id) {
-  ref.watch(listPersonalTrainerProvider).whenData((data) {
-    ref.state = data.firstWhere((pt) => pt.id == id);
+final personalTrainerIdProvider = StateProvider((ref) => 0);
+
+final detailPersonalTrainerProvider = Provider((ref) {
+  final ptId = ref.watch(personalTrainerIdProvider);
+  return ref.watch(listPersonalTrainerProvider).whenData((data) {
+    return data.firstWhere((pt) => pt.id == ptId);
   });
 });

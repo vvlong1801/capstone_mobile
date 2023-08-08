@@ -13,7 +13,7 @@ final readyTimerController =
 class CountDownNotifier extends StateNotifier<CountDownState> {
   Timer? _timer;
 
-  final int _init;
+  late int _init;
   late int startTime;
 
   CountDownNotifier(this._init)
@@ -59,5 +59,9 @@ class CountDownNotifier extends StateNotifier<CountDownState> {
     startTime = _init;
     state =
         state.copyWith(status: CountDownStatus.notStarted, currentTime: _init);
+  }
+
+  void updateInit(int init) {
+    _init = init;
   }
 }
