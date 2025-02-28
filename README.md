@@ -7,3 +7,7 @@
 - run flutter pub get
 - build on android: https://docs.flutter.dev/deployment/android
 - build on ios: https://docs.flutter.dev/deployment/ios
+
+## Demo
+See [Mobile](https://drive.google.com/file/d/1b0_GCgFmD1TZKAbMZMrv5tUrt8Ato1LE/view?usp=sharing).
+See [Web](https://drive.google.com/file/d/1zPCdWlORHjlp_oKmsaccsPwqe8nbs3bd/view?usp=sharing).
